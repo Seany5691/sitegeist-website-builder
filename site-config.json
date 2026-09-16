@@ -1,0 +1,229 @@
+{
+  "businessName": "Mamma & Mia Cakes And Catering",
+  "city": "North West",
+  "ownerName": "Lety Gibbon",
+  "theme": {
+    "palette": {
+      "primary": "#0ea5e9",
+      "secondary": "#6366f1",
+      "accent": "#f59e0b",
+      "bg": "#FFF8F0",
+      "text": "#1a1a1a",
+      "muted": "#6b7280"
+    },
+    "fontPairing": "Inter-Plus",
+    "stylePreset": "modern-clean"
+  },
+  "brandAssets": {
+    "logoUrl": "",
+    "brandColors": {
+      "primary": "#0ea5e9",
+      "secondary": "#6366f1",
+      "accent": "#f59e0b",
+      "bg": "#FFF8F0"
+    }
+  },
+  "features": {
+    "whatsappWidget": true,
+    "clickToCall": true,
+    "contactForm": true,
+    "googleMaps": false,
+    "businessHours": true,
+    "testimonials": true,
+    "faq": true,
+    "blog": false,
+    "teamProfiles": true,
+    "pricingTables": false,
+    "beforeAfterSlider": false,
+    "socialMediaLinks": true,
+    "newsletterSignup": false,
+    "googleAnalytics": true,
+    "facebookPixel": false,
+    "videoEmbed": false,
+    "animatedScroll": true,
+    "imageLightbox": true,
+    "darkLightToggle": false,
+    "productCatalog": false,
+    "onlineBooking": false
+  },
+  "seo": {
+    "title": "Mamma & Mia Cakes & Catering | North West Bakery",
+    "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654.",
+    "keywords": [
+      "bakery North West",
+      "custom cakes North West",
+      "catering service",
+      "wedding cakes",
+      "birthday cakes",
+      "local bakery",
+      "Mamma & Mia Cakes",
+      "Lety Gibbon baker"
+    ],
+    "openGraph": {
+      "title": "Mamma & Mia Cakes & Catering | North West Bakery",
+      "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Mamma & Mia Cakes & Catering | North West Bakery",
+      "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Mamma & Mia Cakes And Catering",
+      "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654.",
+      "telephone": "27721565654",
+      "email": "",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "North West",
+        "addressLocality": "North West",
+        "addressCountry": "ZA"
+      }
+    }
+  },
+  "geo": {
+    "serviceAreas": [
+      "Klerksdorp",
+      "Stilfontein",
+      "Potchefstroom"
+    ],
+    "region": "North West"
+  },
+  "hero": {
+    "headline": "Indulge in Homemade Happiness: Where Every Bite Tells a Story.",
+    "subheadline": "From celebration cakes to heartfelt catering, Mamma & Mia brings the warmth of a mother's kitchen to your most special moments in the North West.",
+    "heroImageUrl": "",
+    "logoUrl": "",
+    "badge": "Locally Handcrafted with Love",
+    "whatsappNumber": "27721565654",
+    "phone": "27721565654",
+    "ctaText": "Request Your Custom Quote Today",
+    "ctaLink": "#contact"
+  },
+  "services": [
+    {
+      "title": "Custom Cake Design",
+      "description": "We specialise in creating beautiful, bespoke cakes for weddings, birthdays, and all of life's celebrations, tailored to your theme and taste.",
+      "icon": "Star",
+      "realImageUrl": "Star"
+    },
+    {
+      "title": "Event Catering",
+      "description": "Our full-service catering brings a menu of homemade goodness to your event, from savoury spreads to decadent dessert tables.",
+      "icon": "MessageCircle",
+      "realImageUrl": "MessageCircle"
+    },
+    {
+      "title": "Personalised Consultation",
+      "description": "We work closely with you to understand your vision, offering expert guidance on flavours, design, and menu planning.",
+      "icon": "HelpCircle",
+      "realImageUrl": "HelpCircle"
+    },
+    {
+      "title": "Ongoing Support & Solutions",
+      "description": "We provide reliable service and support, ensuring a seamless and stress-free experience from first contact to final delivery.",
+      "icon": "Lightbulb",
+      "realImageUrl": "Lightbulb"
+    }
+  ],
+  "gallery": [],
+  "categorizedGalleries": {},
+  "testimonials": [
+    {
+      "text": "Lety made the most incredible wedding cake for us! It was not only stunning to look at but absolutely delicious. Our guests couldn't stop talking about it.",
+      "name": "Sarah & James",
+      "rating": 5,
+      "source": "Google"
+    }
+  ],
+  "faq": [
+    {
+      "question": "How far in advance should I order a custom cake?",
+      "answer": "We recommend placing your order at least 2-4 weeks in advance, especially for wedding cakes or large events, to ensure availability and detailed design time."
+    },
+    {
+      "question": "Do you cater for dietary requirements?",
+      "answer": "Absolutely! We are happy to discuss and accommodate various dietary needs, including gluten-free, vegan, and nut-free options. Please mention your requirements during your consultation."
+    },
+    {
+      "question": "What areas in the North West do you serve?",
+      "answer": "We proudly serve the entire North West province. Delivery charges may apply depending on the distance."
+    }
+  ],
+  "blogPosts": [],
+  "pricing": [],
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/groups/135211271843817/media",
+    "instagram": ""
+  },
+  "team": [
+    {
+      "name": "Lety Gibbon",
+      "role": "Founder & Head Baker",
+      "bio": ""
+    }
+  ],
+  "businessHours": [
+    {
+      "dayOfWeek": "Monday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Wednesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Thursday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Friday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00"
+    },
+    {
+      "dayOfWeek": "Sunday",
+      "opens": "Closed",
+      "closes": "Closed"
+    }
+  ],
+  "contact": {
+    "phone": "27721565654",
+    "whatsapp": "27721565654",
+    "email": "",
+    "address": "North West"
+  },
+  "legacyUrls": {
+    "discovered": [],
+    "scraped": []
+  },
+  "pageMediaMap": [],
+  "createdAt": "2026-08-12T15:18:25.071Z",
+  "buildSlug": "mamma-mia-cakes-and-catering-north-west-msq8hu0f",
+  "buildMode": "TRIAL",
+  "industry": "Bakery",
+  "motto": "Indulge in Homemade Happiness",
+  "history": "Founded by Lety Gibbon, Mamma & Mia Cakes And Catering started from a deep-rooted passion for home baking and bringing joy through food. What began as creations for friends and family blossomed into a beloved local business, built on the same principles of love, quality, and community.",
+  "specializations": [
+    "Bespoke Celebration Cakes",
+    "Full-Service Event Catering"
+  ],
+  "locations": [],
+  "hasWhatsApp": true
+}

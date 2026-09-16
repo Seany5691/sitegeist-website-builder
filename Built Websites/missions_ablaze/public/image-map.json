@@ -1,0 +1,75 @@
+{
+  "businessName": "Missions Ablaze",
+  "totalImages": 40,
+  "categories": {
+    "Portfolio": {
+      "thumbnail": "/uploads/missions_ablaze/portfolio/img-001.webp",
+      "images": [
+        "/uploads/missions_ablaze/portfolio/img-001.webp",
+        "/uploads/missions_ablaze/portfolio/img-002.webp",
+        "/uploads/missions_ablaze/portfolio/img-003.webp",
+        "/uploads/missions_ablaze/portfolio/img-004.webp",
+        "/uploads/missions_ablaze/portfolio/img-005.webp",
+        "/uploads/missions_ablaze/portfolio/img-006.webp",
+        "/uploads/missions_ablaze/portfolio/img-007.webp",
+        "/uploads/missions_ablaze/portfolio/img-008.webp",
+        "/uploads/missions_ablaze/portfolio/img-009.webp",
+        "/uploads/missions_ablaze/portfolio/img-010.webp",
+        "/uploads/missions_ablaze/portfolio/img-011.webp",
+        "/uploads/missions_ablaze/portfolio/img-012.webp",
+        "/uploads/missions_ablaze/portfolio/img-013.webp",
+        "/uploads/missions_ablaze/portfolio/img-014.webp",
+        "/uploads/missions_ablaze/portfolio/img-015.webp",
+        "/uploads/missions_ablaze/portfolio/img-016.webp",
+        "/uploads/missions_ablaze/portfolio/img-017.webp",
+        "/uploads/missions_ablaze/portfolio/img-018.webp",
+        "/uploads/missions_ablaze/portfolio/img-019.webp",
+        "/uploads/missions_ablaze/portfolio/img-020.webp",
+        "/uploads/missions_ablaze/portfolio/img-021.webp",
+        "/uploads/missions_ablaze/portfolio/img-022.webp",
+        "/uploads/missions_ablaze/portfolio/img-023.webp",
+        "/uploads/missions_ablaze/portfolio/img-024.webp",
+        "/uploads/missions_ablaze/portfolio/img-025.webp",
+        "/uploads/missions_ablaze/portfolio/img-026.webp",
+        "/uploads/missions_ablaze/portfolio/img-027.webp",
+        "/uploads/missions_ablaze/portfolio/img-028.webp",
+        "/uploads/missions_ablaze/portfolio/img-029.webp",
+        "/uploads/missions_ablaze/portfolio/img-030.webp",
+        "/uploads/missions_ablaze/portfolio/img-031.webp",
+        "/uploads/missions_ablaze/portfolio/img-032.webp",
+        "/uploads/missions_ablaze/portfolio/img-033.webp",
+        "/uploads/missions_ablaze/portfolio/img-034.webp",
+        "/uploads/missions_ablaze/portfolio/img-035.webp",
+        "/uploads/missions_ablaze/portfolio/img-036.webp",
+        "/uploads/missions_ablaze/portfolio/img-037.webp",
+        "/uploads/missions_ablaze/portfolio/img-038.webp",
+        "/uploads/missions_ablaze/portfolio/img-039.webp",
+        "/uploads/missions_ablaze/portfolio/img-040.webp",
+        "/uploads/missions_ablaze/portfolio/img-041.webp",
+        "/uploads/missions_ablaze/portfolio/img-042.webp",
+        "/uploads/missions_ablaze/portfolio/img-043.webp",
+        "/uploads/missions_ablaze/portfolio/img-044.webp",
+        "/uploads/missions_ablaze/portfolio/img-045.webp",
+        "/uploads/missions_ablaze/portfolio/img-046.webp",
+        "/uploads/missions_ablaze/portfolio/img-047.webp",
+        "/uploads/missions_ablaze/portfolio/img-048.webp",
+        "/uploads/missions_ablaze/portfolio/img-049.webp",
+        "/uploads/missions_ablaze/portfolio/img-050.webp",
+        "/uploads/missions_ablaze/portfolio/img-051.webp",
+        "/uploads/missions_ablaze/portfolio/img-052.webp"
+      ]
+    },
+    "Food & Aid": {
+      "thumbnail": "/uploads/missions_ablaze/food-aid/img-001.webp",
+      "images": [
+        "/uploads/missions_ablaze/food-aid/img-001.webp"
+      ]
+    },
+    "Team": {
+      "thumbnail": "/uploads/missions_ablaze/team/img-001.webp",
+      "images": [
+        "/uploads/missions_ablaze/team/img-001.webp"
+      ]
+    }
+  }
+}

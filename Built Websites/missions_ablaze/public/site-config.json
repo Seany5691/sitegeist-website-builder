@@ -1,0 +1,193 @@
+{
+  "businessName": "Missions Ablaze",
+  "city": "Tongaat, KwaZulu-Natal",
+  "ownerName": "Tinus Lindeque",
+  "phone": "27329450185",
+  "email": "ablaze@missionsablaze.org.za",
+  "address": "Tongaat, KwaZulu-Natal",
+  "logoUrl": "/uploads/missions_ablaze/logo/logo.webp",
+
+  "hero": {
+    "headline": "Hope Served Daily in Tongaat.",
+    "subheadline": "Since 1995, Missions Ablaze has provided nutritious meals and community support from our kitchen in Tongaat, KwaZulu-Natal. Your partnership fuels this vital work.",
+    "badge": "Serving Tongaat Since 1995 · Registered NPO & PBO",
+    "ctaText": "Become a Monthly Partner",
+    "ctaLink": "#contact",
+    "heroImageUrl": "/uploads/missions_ablaze/hero/hero.webp",
+    "heroImageAlt": "Volunteers serving meals at the Missions Ablaze community kitchen in Tongaat"
+  },
+
+  "about": {
+    "title": "Faith in Action Since 1995",
+    "tagline": "Rising Up to Serve",
+    "paragraph1": "In 1995, a small team of volunteers from Christian Renewal Church in Georgia, USA, arrived in Durban with a simple mission: feed the hungry and clothe the poor. That first outreach sparked what would become Missions Ablaze — a faith-led mission station rooted in Tongaat, KwaZulu-Natal.",
+    "paragraph2": "Today, 15 to 30 full-time missionaries live and serve on-site, supported entirely by donations from individuals, churches, and organisations. Our community kitchen serves hot meals every weekday, and our emergency food parcels reach families in crisis across the region. We operate as a registered Non-Profit Organisation, Public Benefit Organisation, and Trust, with full financial transparency and oversight from a Board of Trustees.",
+    "paragraph3": "Our logo — an eagle rising before the cross and the world — was revealed during prayer. It captures our calling: to rise in faith and serve globally, with purpose and compassion. Every meal served, every parcel delivered, every life touched is a step toward that vision.",
+    "imageUrl": "/uploads/missions_ablaze/team/img-001.webp",
+    "imageAlt": "Missions Ablaze team gathered at the Tongaat mission station"
+  },
+
+  "pageContent": {
+    "servicesTitle": "How We Serve",
+    "servicesDescription": "From our kitchen in Tongaat, four core programmes work together to fight hunger and strengthen the community that surrounds us.",
+    "servicesCtaTitle": "Ready to Make a Difference?",
+    "servicesCtaText": "Your support keeps our kitchen running and our shelves stocked. Whether you give an hour or a monthly gift, every contribution fuels the mission.",
+    "contactTitle": "Get in Touch",
+    "contactDescription": "Whether you want to donate, volunteer, visit the mission station, or simply learn more — we would love to hear from you. Reach out and a member of our team will respond within 24 hours.",
+    "portfolioTitle": "Our Work in Pictures",
+    "portfolioDescription": "Every photograph tells a story of a meal shared, a family supported, and a community strengthened. Browse our gallery to see the mission in action.",
+    "testimonialsTitle": "Voices from the Community",
+    "testimonialsSubtitle": "Real Stories, Real Impact",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Everything You Need to Know",
+    "galleryTitle": "Our Work in Pictures",
+    "gallerySubtitle": "Every photograph tells a story of a meal shared, a family supported, and a community strengthened.",
+    "aboutTitle": "Our Story",
+    "aboutSubtitle": "Rising Up to Serve Since 1995",
+    "ctaTitle": "Join the Mission Today",
+    "ctaText": "Your support keeps our kitchen running and our shelves stocked. Whether you give an hour or a monthly gift, every contribution makes a real difference in Tongaat.",
+    "pricingTitle": "",
+    "pricingSubtitle": "",
+    "teamTitle": "The People Behind the Mission",
+    "teamSubtitle": "Dedicated missionaries who give their time, energy, and hearts to serve the Tongaat community every single day."
+  },
+
+  "services": [
+    {
+      "title": "Community Kitchen",
+      "description": "Hot, nutritious meals prepared and served every weekday from our Tongaat location, providing a reliable source of nourishment for children, families, and individuals who need it most.",
+      "priceTag": "",
+      "icon": "Utensils"
+    },
+    {
+      "title": "Emergency Food Parcels",
+      "description": "Delivered to identified families in crisis, each parcel contains staple foods to support a household for several days — giving breathing room when circumstances hit hardest.",
+      "priceTag": "",
+      "icon": "Package"
+    },
+    {
+      "title": "School Feeding Support",
+      "description": "Supplementing meals at local schools to help children focus and learn, partnering directly with educators across Tongaat to ensure no child sits hungry in the classroom.",
+      "priceTag": "",
+      "icon": "GraduationCap"
+    },
+    {
+      "title": "Volunteer Coordination",
+      "description": "Organizing local volunteers for packing, distribution, and kitchen duties — creating a network of active care in Tongaat where neighbours help neighbours.",
+      "priceTag": "",
+      "icon": "HeartHandshake"
+    }
+  ],
+
+  "testimonials": [
+    {
+      "name": "A Mother from Tongaat",
+      "text": "When my husband lost his job, the food parcel from Missions Ablaze fed our children for a week. They didn't ask questions, they just helped. That parcel was hope.",
+      "rating": 5,
+      "source": "Community",
+      "photoUrl": ""
+    },
+    {
+      "name": "David, Local Volunteer",
+      "text": "I volunteer packing parcels on Saturdays. You see the same families, you learn their names. It's not charity; it's being a good neighbour.",
+      "rating": 5,
+      "source": "Community",
+      "photoUrl": ""
+    }
+  ],
+
+  "faq": [
+    {
+      "question": "Is Missions Ablaze a registered non-profit organisation?",
+      "answer": "Yes. Missions Ablaze is a registered Non-Profit Organisation (NPO), Public Benefit Organisation (PBO), and Trust. We operate with full financial transparency and accountability. All donations are used directly for outreach and relief efforts."
+    },
+    {
+      "question": "What is a Section 18A Certificate?",
+      "answer": "A Section 18A certificate is an official document issued by approved PBOs that allows donors to claim a tax deduction for qualifying donations on their annual tax return."
+    },
+    {
+      "question": "Will I receive a Section 18A certificate for my donation?",
+      "answer": "Yes. As a PBO approved under Section 18A of the Income Tax Act, we issue tax-deductible donation certificates for qualifying contributions. You'll receive a certificate for your donation that you can submit with your tax return."
+    },
+    {
+      "question": "What types of donations do you accept?",
+      "answer": "We gratefully accept monetary donations, as well as in-kind donations like clothing, non-perishable food, blankets, and school supplies. Every item is distributed directly to those who need it most."
+    },
+    {
+      "question": "How can I get involved besides donating?",
+      "answer": "There are many ways to support our mission. You can volunteer your time to help pack and distribute meals, partner with us as a business, church, or community group, or share our work and spread awareness on social media."
+    },
+    {
+      "question": "Where does my donation go?",
+      "answer": "Your donation goes toward providing daily meals for children and families, supporting disaster relief efforts, and supplying clothing and essentials to those in need."
+    },
+    {
+      "question": "What is Missions Ablaze?",
+      "answer": "Missions Ablaze is a faith-led mission station based in Tongaat, KwaZulu-Natal. Since 1995, we've been feeding the hungry, clothing the poor, and offering disaster relief and spiritual support to communities in need."
+    },
+    {
+      "question": "Who oversees the work of Missions Ablaze?",
+      "answer": "The ministry is led by founder Tinus Lindeque, under the guidance of a Board of Trustees made up of 7 South African members."
+    },
+    {
+      "question": "How is Missions Ablaze funded?",
+      "answer": "Our work is funded entirely through donations from individuals, churches, and organisations, both locally and internationally. All donations are tracked, and our financial records are available on request."
+    },
+    {
+      "question": "How many people work at Missions Ablaze?",
+      "answer": "We typically have between 15 and 30 full-time missionaries living and serving on-site. All of them volunteer their time without financial compensation."
+    },
+    {
+      "question": "How did Missions Ablaze begin?",
+      "answer": "We started in 1995 with the support of Christian Renewal Church in Georgia, USA, who brought 50 volunteers to help feed and clothe those in need in Durban. That partnership continues to this day."
+    },
+    {
+      "question": "Can I visit or volunteer at the mission station?",
+      "answer": "Yes. We welcome visitors, volunteers, and groups who want to see the work firsthand or get involved. Please contact us to arrange a visit."
+    },
+    {
+      "question": "How do I know my donation is used responsibly?",
+      "answer": "We are committed to transparency. Donations are never registered to individuals, and our annual financial reports are available upon request. Every donor receives written acknowledgement."
+    },
+    {
+      "question": "Does Missions Ablaze offer volunteer opportunities for Mandela Day?",
+      "answer": "Yes. Every year, we welcome individuals, schools, churches, and corporate teams to take part in meaningful Mandela Day activities — from packing meals and running food or blanket drives to volunteering on-site."
+    },
+    {
+      "question": "How can I donate from the United States?",
+      "answer": "U.S.-based donors can give via our representative: Deborah Walker at 110 Clapper Rail Lane, St. Simons Island, Georgia, 31522. We also accept international donations via PayPal and EFT."
+    },
+    {
+      "question": "Where is Missions Ablaze located?",
+      "answer": "We are based in Tongaat, KwaZulu-Natal, about 40km from Durban, South Africa."
+    }
+  ],
+
+  "pricing": [],
+
+  "team": [
+    {
+      "name": "Tinus Lindeque",
+      "role": "Founder & Director",
+      "bio": "Tinus has led Missions Ablaze since its founding in 1995, guiding the mission's growth from a small outreach into a fully registered NPO and PBO serving the Tongaat community daily.",
+      "imageUrl": ""
+    }
+  ],
+
+  "businessHours": [
+    { "dayOfWeek": "Monday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Tuesday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Wednesday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Thursday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Friday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" },
+    { "dayOfWeek": "Sunday", "opens": "Closed", "closes": "Closed" }
+  ],
+
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/missionsablaze",
+    "instagram": "",
+    "twitter": "",
+    "linkedin": ""
+  }
+}

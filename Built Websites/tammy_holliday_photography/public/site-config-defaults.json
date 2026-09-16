@@ -1,0 +1,105 @@
+{
+  "hero": {
+    "headline": "Capturing Your Most Precious Moments in Gauteng",
+    "subheadline": "Professional photography by Tammy Holliday, specializing in weddings, families, and portraits with a timeless, classic style.",
+    "badge": "Experienced Gauteng Photographer",
+    "ctaText": "Book Your Session Today",
+    "ctaLink": "#contact",
+    "heroImageUrl": "https://tammyholliday.co.za/wp-content/uploads/2015/02/aboutme-cover11.jpg"
+  },
+  "about": {
+    "title": "",
+    "tagline": "",
+    "paragraph1": "",
+    "paragraph2": "",
+    "paragraph3": "",
+    "imageUrl": ""
+  },
+  "services": [
+    {
+      "title": "Wedding Photography",
+      "description": "Comprehensive coverage of your special day, capturing every emotion and detail from preparation to reception.",
+      "icon": "Star"
+    },
+    {
+      "title": "Family & Portrait Sessions",
+      "description": "Fun, relaxed sessions for families, couples, and individuals, creating timeless portraits in studio or on location.",
+      "icon": "Star"
+    },
+    {
+      "title": "Newborn & Maternity",
+      "description": "Gentle, safe, and beautiful sessions to welcome your new arrival or celebrate the journey of pregnancy.",
+      "icon": "Star"
+    },
+    {
+      "title": "Matric & Cake Smash",
+      "description": "Celebrating life's milestones with creative and joyful photography sessions.",
+      "icon": "Star"
+    },
+    {
+      "title": "Events",
+      "description": "Professional coverage for your special events, ensuring no moment is missed.",
+      "icon": "Star"
+    }
+  ],
+  "pricing": [
+    {
+      "service": "2100",
+      "price": "RThese albums come with the following covers"
+    },
+    {
+      "service": "c Layflat Investment Starts at",
+      "price": "R2100.00"
+    }
+  ],
+  "pageContent": {
+    "servicesTitle": "",
+    "servicesDescription": "",
+    "servicesCtaTitle": "",
+    "servicesCtaText": "",
+    "contactTitle": "",
+    "contactDescription": "",
+    "portfolioTitle": "",
+    "portfolioDescription": "",
+    "testimonialsTitle": "",
+    "testimonialsSubtitle": "",
+    "faqTitle": "",
+    "faqSubtitle": ""
+  },
+  "seo": {
+    "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
+    "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today.",
+    "keywords": [
+      "Gauteng photographer",
+      "wedding photographer Gauteng",
+      "family portraits",
+      "newborn photography",
+      "Tammy Holliday Photography",
+      "professional photographer South Africa"
+    ],
+    "openGraph": {
+      "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
+      "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
+      "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Tammy Holliday Photography",
+      "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today.",
+      "telephone": "27834799732",
+      "email": "letsmeet@tammyholliday.co.za",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2020\n\nOctober 10, 2019",
+        "addressLocality": "Gauteng",
+        "addressCountry": "ZA"
+      }
+    }
+  }
+}

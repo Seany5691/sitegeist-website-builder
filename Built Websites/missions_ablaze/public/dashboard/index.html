@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Dashboard</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-container">
+      <div class="login-header">
+        <div class="login-logo">
+          <i class="fas fa-globe"></i>
+        </div>
+        <h1 id="loginBusinessName">Website Dashboard</h1>
+        <p>Sign in to manage your website</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Business Name" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="button" class="toggle-password" onclick="togglePassword()">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="login-btn">
+          <span>Sign In</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div id="loginError" class="login-error"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="dashboard hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i class="fas fa-globe"></i>
+        </div>
+        <h2 id="sidebarBusinessName">Dashboard</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="overview">
+          <i class="fas fa-chart-pie"></i>
+          <span>Overview</span>
+        </a>
+        <a href="#" class="nav-item" data-section="hero">
+          <i class="fas fa-image"></i>
+          <span>Hero Section</span>
+        </a>
+        <a href="#" class="nav-item" data-section="gallery">
+          <i class="fas fa-images"></i>
+          <span>Gallery</span>
+        </a>
+        <a href="#" class="nav-item" data-section="services">
+          <i class="fas fa-concierge-bell"></i>
+          <span>Services</span>
+        </a>
+        <a href="#" class="nav-item" data-section="pricing">
+          <i class="fas fa-tags"></i>
+          <span>Pricing</span>
+        </a>
+        <a href="#" class="nav-item" data-section="testimonials">
+          <i class="fas fa-star"></i>
+          <span>Testimonials</span>
+        </a>
+        <a href="#" class="nav-item" data-section="about">
+          <i class="fas fa-info-circle"></i>
+          <span>About Page</span>
+        </a>
+        <a href="#" class="nav-item" data-section="content">
+          <i class="fas fa-file-alt"></i>
+          <span>Page Content</span>
+        </a>
+        <a href="#" class="nav-item" data-section="blog">
+          <i class="fas fa-blog"></i>
+          <span>Blog</span>
+        </a>
+        <a href="#" class="nav-item" data-section="seo">
+          <i class="fas fa-search"></i>
+          <span>SEO</span>
+        </a>
+        <a href="#" class="nav-item" data-section="settings">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+        <a href="#" class="nav-item" data-section="design-system">
+          <i class="fas fa-palette"></i>
+          <span>Design System</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="dashboard-header">
+        <div class="header-left">
+          <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 id="pageTitle">Overview</h1>
+        </div>
+        <div class="header-right">
+          <div class="header-actions">
+            <button class="header-btn enhance-btn" onclick="enhanceSite()" title="Re-apply design rules and optimize content">
+              <i class="fas fa-magic"></i>
+              <span>Enhance</span>
+            </button>
+            <button class="header-btn" onclick="window.open('/', '_blank')">
+              <i class="fas fa-external-link-alt"></i>
+              <span>View Site</span>
+            </button>
+          </div>
+          <div class="user-menu">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <span id="headerBusinessName">Business</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Sections -->
+      <div class="content">
+
+        <!-- ============== OVERVIEW ============== -->
+        <section id="overview" class="section active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-eye"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Total Visits</span>
+                <span class="stat-value" id="totalVisits">--</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-users"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Unique Visitors</span>
+                <span class="stat-value" id="uniqueVisitors">--</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-images"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Gallery Images</span>
+                <span class="stat-value" id="galleryCount">--</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-blog"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Blog Posts</span>
+                <span class="stat-value" id="blogCount">--</span>
+              </div>
+            </div>
+          </div>
+          <div class="overview-grid">
+            <div class="overview-card">
+              <h3>Quick Actions</h3>
+              <div class="quick-actions">
+                <button class="action-btn" onclick="switchSection('hero')">
+                  <i class="fas fa-image"></i><span>Edit Hero</span>
+                </button>
+                <button class="action-btn" onclick="switchSection('gallery')">
+                  <i class="fas fa-images"></i><span>Upload Photos</span>
+                </button>
+                <button class="action-btn" onclick="switchSection('services')">
+                  <i class="fas fa-edit"></i><span>Edit Services</span>
+                </button>
+                <button class="action-btn" onclick="switchSection('about')">
+                  <i class="fas fa-info-circle"></i><span>Edit About</span>
+                </button>
+              </div>
+            </div>
+            <div class="overview-card">
+              <h3>Website Info</h3>
+              <div class="info-list">
+                <div class="info-item">
+                  <span class="info-label">Business</span>
+                  <span class="info-value" id="infoBusiness">--</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Industry</span>
+                  <span class="info-value" id="infoIndustry">--</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Location</span>
+                  <span class="info-value" id="infoLocation">--</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Phone</span>
+                  <span class="info-value" id="infoPhone">--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== HERO SECTION ============== -->
+        <section id="hero" class="section">
+          <div class="section-header">
+            <h2>Hero Section</h2>
+            <button class="reset-btn" onclick="resetSection('hero')">
+              <i class="fas fa-undo"></i> Reset to Default
+            </button>
+          </div>
+          <div class="editor-grid">
+            <div class="editor-card">
+              <h3>Hero Image</h3>
+              <div class="hero-image-preview" id="heroImagePreview">
+                <div class="hero-placeholder">
+                  <i class="fas fa-image"></i>
+                  <p>No hero image set</p>
+                </div>
+              </div>
+              <div class="hero-image-actions">
+                <button class="primary-btn" onclick="document.getElementById('heroImageInput').click()">
+                  <i class="fas fa-upload"></i> Upload New Hero Image
+                </button>
+                <input type="file" id="heroImageInput" accept="image/*" hidden onchange="handleHeroImageUpload(this.files)">
+                <button class="secondary-btn" onclick="removeHeroImage()">
+                  <i class="fas fa-trash"></i> Remove
+                </button>
+              </div>
+              <p class="help-text">Any image size works. It will automatically fit the hero section.</p>
+            </div>
+            <div class="editor-card">
+              <h3>Hero Text</h3>
+              <div class="editor-field">
+                <label>Headline</label>
+                <input type="text" id="heroHeadline" placeholder="Your main headline" onchange="saveHeroContent()">
+              </div>
+              <div class="editor-field">
+                <label>Subheadline</label>
+                <textarea id="heroSubheadline" rows="2" placeholder="Supporting text below headline" onchange="saveHeroContent()"></textarea>
+              </div>
+              <div class="editor-field">
+                <label>Badge Text</label>
+                <input type="text" id="heroBadge" placeholder="Small badge above headline" onchange="saveHeroContent()">
+              </div>
+              <div class="editor-field">
+                <label>Button Text</label>
+                <input type="text" id="heroCta" placeholder="e.g., Get a Free Quote" onchange="saveHeroContent()">
+              </div>
+              <div class="editor-field">
+                <label>Button Link</label>
+                <input type="text" id="heroCtaLink" placeholder="#contact" onchange="saveHeroContent()">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== GALLERY ============== -->
+        <section id="gallery" class="section">
+          <div class="section-header">
+            <h2>Gallery Management</h2>
+            <button class="primary-btn" onclick="openUploadModal()">
+              <i class="fas fa-upload"></i><span>Upload Photos</span>
+            </button>
+          </div>
+          <div class="gallery-controls">
+            <div class="folder-creator">
+              <input type="text" id="newFolderName" placeholder="New folder name (e.g., Weddings, Families)">
+              <button class="secondary-btn" onclick="createFolder()">
+                <i class="fas fa-folder-plus"></i> Create Folder
+              </button>
+            </div>
+          </div>
+          <div id="galleryGrid" class="gallery-grid"></div>
+        </section>
+
+        <!-- ============== FOLDER VIEW (inside gallery) ============== -->
+        <div id="folderViewModal" class="modal hidden">
+          <div class="modal-overlay" onclick="closeFolderView()"></div>
+          <div class="modal-content modal-wide">
+            <div class="modal-header">
+              <h3 id="folderViewTitle">Folder</h3>
+              <button class="modal-close" onclick="closeFolderView()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+              <div class="folder-thumbnail-section">
+                <h4>Category Thumbnail</h4>
+                <p class="help-text">This image shows on the category card. It is separate from the images inside.</p>
+                <div class="thumbnail-preview" id="folderThumbnailPreview">
+                  <div class="hero-placeholder"><i class="fas fa-image"></i><p>No thumbnail set</p></div>
+                </div>
+                <div class="hero-image-actions">
+                  <button class="secondary-btn" onclick="document.getElementById('folderThumbnailInput').click()">
+                    <i class="fas fa-upload"></i> Set Thumbnail
+                  </button>
+                  <input type="file" id="folderThumbnailInput" accept="image/*" hidden onchange="handleThumbnailUpload(this.files)">
+                  <button class="secondary-btn" onclick="pickThumbnailFromImages()">
+                    <i class="fas fa-images"></i> Pick from Images
+                  </button>
+                </div>
+              </div>
+              <div class="folder-images-section">
+                <h4>Images in Folder <span id="folderImageCount"></span></h4>
+                <div id="folderImageGrid" class="folder-image-grid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============== SERVICES ============== -->
+        <section id="services" class="section">
+          <div class="section-header">
+            <h2>Services</h2>
+            <div class="section-header-actions">
+              <button class="reset-btn" onclick="resetSection('services')">
+                <i class="fas fa-undo"></i> Reset to Default
+              </button>
+              <button class="primary-btn" onclick="openServiceEditor()">
+                <i class="fas fa-plus"></i><span>Add Service</span>
+              </button>
+            </div>
+          </div>
+          <p class="help-text">Drag the grip handle to reorder services.</p>
+          <div id="servicesList" class="services-list"></div>
+        </section>
+
+        <!-- ============== PRICING ============== -->
+        <section id="pricing" class="section">
+          <div class="section-header">
+            <h2>Pricing & Packages</h2>
+            <div class="section-header-actions">
+              <button class="reset-btn" onclick="resetSection('pricing')">
+                <i class="fas fa-undo"></i> Reset to Default
+              </button>
+              <button class="primary-btn" onclick="openPricingEditor()">
+                <i class="fas fa-plus"></i><span>Add Package</span>
+              </button>
+            </div>
+          </div>
+          <p class="help-text">Drag the grip handle to reorder packages.</p>
+          <div id="pricingList" class="pricing-list"></div>
+        </section>
+
+        <!-- ============== TESTIMONIALS ============== -->
+        <section id="testimonials" class="section">
+          <div class="section-header">
+            <h2>Testimonials</h2>
+            <button class="primary-btn" onclick="openTestimonialEditor()">
+              <i class="fas fa-plus"></i><span>Add Testimonial</span>
+            </button>
+          </div>
+          <p class="help-text">Drag the grip handle to reorder testimonials.</p>
+          <div id="testimonialsList" class="testimonials-list"></div>
+        </section>
+
+        <!-- ============== ABOUT PAGE ============== -->
+        <section id="about" class="section">
+          <div class="section-header">
+            <h2>About Page</h2>
+            <button class="reset-btn" onclick="resetSection('about')">
+              <i class="fas fa-undo"></i> Reset to Default
+            </button>
+          </div>
+          <div class="editor-grid">
+            <div class="editor-card">
+              <h3>About Content</h3>
+              <div class="editor-field">
+                <label>Page Title</label>
+                <input type="text" id="aboutTitle" placeholder="Our Story" onchange="saveAboutContent()">
+              </div>
+              <div class="editor-field">
+                <label>Tagline</label>
+                <input type="text" id="aboutTagline" placeholder="Baked with Love, Served with Joy" onchange="saveAboutContent()">
+              </div>
+              <div class="editor-field">
+                <label>Paragraph 1</label>
+                <textarea id="aboutPara1" rows="4" placeholder="First paragraph about the business" onchange="saveAboutContent()"></textarea>
+              </div>
+              <div class="editor-field">
+                <label>Paragraph 2</label>
+                <textarea id="aboutPara2" rows="4" placeholder="Second paragraph" onchange="saveAboutContent()"></textarea>
+              </div>
+              <div class="editor-field">
+                <label>Paragraph 3</label>
+                <textarea id="aboutPara3" rows="4" placeholder="Third paragraph" onchange="saveAboutContent()"></textarea>
+              </div>
+            </div>
+            <div class="editor-card">
+              <h3>About Image</h3>
+              <div class="hero-image-preview" id="aboutImagePreview">
+                <div class="hero-placeholder"><i class="fas fa-image"></i><p>No image set</p></div>
+              </div>
+              <div class="hero-image-actions">
+                <button class="primary-btn" onclick="document.getElementById('aboutImageInput').click()">
+                  <i class="fas fa-upload"></i> Upload Image
+                </button>
+                <input type="file" id="aboutImageInput" accept="image/*" hidden onchange="handleAboutImageUpload(this.files)">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== PAGE CONTENT ============== -->
+        <section id="content" class="section">
+          <div class="section-header">
+            <h2>Page Content</h2>
+            <button class="reset-btn" onclick="resetSection('content')">
+              <i class="fas fa-undo"></i> Reset to Default
+            </button>
+          </div>
+          <p class="help-text">Edit the text that appears on each page. Changes save automatically.</p>
+          <div class="content-pages">
+            <div class="content-page-card">
+              <h3><i class="fas fa-file-alt"></i> Services Page</h3>
+              <div class="editor-field">
+                <label>Services Page Title</label>
+                <input type="text" id="servicesPageTitle" placeholder="Our Services" onchange="savePageContent()">
+              </div>
+              <div class="editor-field">
+                <label>Services Page Description</label>
+                <textarea id="servicesPageDesc" rows="3" placeholder="Description text" onchange="savePageContent()"></textarea>
+              </div>
+              <div class="editor-field">
+                <label>CTA Section Title</label>
+                <input type="text" id="servicesCtaTitle" placeholder="Ready to Order?" onchange="savePageContent()">
+              </div>
+              <div class="editor-field">
+                <label>CTA Section Text</label>
+                <textarea id="servicesCtaText" rows="2" placeholder="Call to action text" onchange="savePageContent()"></textarea>
+              </div>
+            </div>
+            <div class="content-page-card">
+              <h3><i class="fas fa-envelope"></i> Contact Page</h3>
+              <div class="editor-field">
+                <label>Contact Page Title</label>
+                <input type="text" id="contactPageTitle" placeholder="Contact Us" onchange="savePageContent()">
+              </div>
+              <div class="editor-field">
+                <label>Contact Page Description</label>
+                <textarea id="contactPageDesc" rows="2" placeholder="Ready to order?" onchange="savePageContent()"></textarea>
+              </div>
+            </div>
+            <div class="content-page-card">
+              <h3><i class="fas fa-images"></i> Portfolio Page</h3>
+              <div class="editor-field">
+                <label>Portfolio Page Title</label>
+                <input type="text" id="portfolioPageTitle" placeholder="Our Sweet Creations" onchange="savePageContent()">
+              </div>
+              <div class="editor-field">
+                <label>Portfolio Page Description</label>
+                <textarea id="portfolioPageDesc" rows="2" placeholder="Browse our portfolio" onchange="savePageContent()"></textarea>
+              </div>
+            </div>
+            <div class="content-page-card">
+              <h3><i class="fas fa-users"></i> Testimonials Section</h3>
+              <div class="editor-field">
+                <label>Section Title</label>
+                <input type="text" id="testimonialsTitle" placeholder="What Our Customers Say" onchange="savePageContent()">
+              </div>
+              <div class="editor-field">
+                <label>Section Subtitle</label>
+                <input type="text" id="testimonialsSubtitle" placeholder="Happy Clients" onchange="savePageContent()">
+              </div>
+            </div>
+            <div class="content-page-card">
+              <h3><i class="fas fa-question-circle"></i> FAQ Section</h3>
+              <div class="editor-field">
+                <label>Section Title</label>
+                <input type="text" id="faqTitle" placeholder="Frequently Asked Questions" onchange="savePageContent()">
+              </div>
+              <div class="editor-field">
+                <label>Section Subtitle</label>
+                <input type="text" id="faqSubtitle" placeholder="Questions & Answers" onchange="savePageContent()">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== BLOG ============== -->
+        <section id="blog" class="section">
+          <div class="section-header">
+            <h2>Blog Posts</h2>
+            <button class="primary-btn" onclick="openBlogEditor()">
+              <i class="fas fa-plus"></i><span>New Post</span>
+            </button>
+          </div>
+          <p class="help-text">Drag the grip handle to reorder posts.</p>
+          <div id="blogList" class="blog-list"></div>
+        </section>
+
+        <!-- ============== SEO ============== -->
+        <section id="seo" class="section">
+          <div class="section-header">
+            <h2>SEO & Analytics</h2>
+            <button class="reset-btn" onclick="resetSection('seo')">
+              <i class="fas fa-undo"></i> Reset to Default
+            </button>
+          </div>
+          <div class="seo-grid">
+            <div class="seo-card">
+              <h3>SEO Settings</h3>
+              <div class="editor-field">
+                <label>Title</label>
+                <input type="text" id="seoTitle" placeholder="Page title">
+              </div>
+              <div class="editor-field">
+                <label>Description</label>
+                <textarea id="seoDescription" placeholder="Meta description" rows="3"></textarea>
+              </div>
+              <div class="editor-field">
+                <label>Keywords</label>
+                <input type="text" id="seoKeywords" placeholder="keyword1, keyword2, keyword3">
+              </div>
+              <button class="secondary-btn" onclick="saveSeo()">
+                <i class="fas fa-save"></i> Save SEO Settings
+              </button>
+            </div>
+            <div class="seo-card">
+              <h3>Analytics Overview</h3>
+              <div class="analytics-placeholder">
+                <i class="fas fa-chart-bar"></i>
+                <p>Connect Google Analytics to view detailed statistics</p>
+                <button class="secondary-btn">Connect Analytics</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== SETTINGS ============== -->
+        <section id="settings" class="section">
+          <div class="section-header">
+            <h2>Settings</h2>
+          </div>
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>Contact Information</h3>
+              <div class="editor-field">
+                <label>Phone</label>
+                <input type="tel" id="settingsPhone" placeholder="Phone number">
+              </div>
+              <div class="editor-field">
+                <label>Email</label>
+                <input type="email" id="settingsEmail" placeholder="Email address">
+              </div>
+              <div class="editor-field">
+                <label>Address</label>
+                <textarea id="settingsAddress" placeholder="Business address" rows="2"></textarea>
+              </div>
+              <button class="secondary-btn" onclick="saveContact()">
+                <i class="fas fa-save"></i> Save Contact Info
+              </button>
+            </div>
+            <div class="settings-card">
+              <h3>Social Media</h3>
+              <div class="editor-field">
+                <label><i class="fab fa-facebook"></i> Facebook</label>
+                <input type="url" id="settingsFacebook" placeholder="Facebook URL">
+              </div>
+              <div class="editor-field">
+                <label><i class="fab fa-instagram"></i> Instagram</label>
+                <input type="url" id="settingsInstagram" placeholder="Instagram URL">
+              </div>
+              <div class="editor-field">
+                <label><i class="fab fa-twitter"></i> Twitter</label>
+                <input type="url" id="settingsTwitter" placeholder="Twitter URL">
+              </div>
+              <button class="secondary-btn" onclick="saveSocial()">
+                <i class="fas fa-save"></i> Save Social Links
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== DESIGN SYSTEM ============== -->
+        <section id="design-system" class="section">
+          <div class="section-header">
+            <h2>Design System</h2>
+            <p class="section-subtitle">Your website's visual identity and design rules</p>
+          </div>
+          <div class="design-system-grid">
+            <!-- Color Palette -->
+            <div class="design-card">
+              <h3><i class="fas fa-palette"></i> Color Palette</h3>
+              <div class="color-swatches" id="colorSwatches">
+                <!-- Populated by JS -->
+              </div>
+              <p class="design-note">Colors are managed by the design system. Contact support to change the palette.</p>
+            </div>
+
+            <!-- Typography -->
+            <div class="design-card">
+              <h3><i class="fas fa-font"></i> Typography</h3>
+              <div class="typography-preview" id="typographyPreview">
+                <!-- Populated by JS -->
+              </div>
+              <p class="design-note">Font pairings are selected to match your industry archetype.</p>
+            </div>
+
+            <!-- Design Seed -->
+            <div class="design-card">
+              <h3><i class="fas fa-fingerprint"></i> Design Seed</h3>
+              <div class="seed-info" id="seedInfo">
+                <!-- Populated by JS -->
+              </div>
+              <p class="design-note">Your unique design fingerprint ensures your site looks different from every other.</p>
+            </div>
+
+            <!-- Spacing & Density -->
+            <div class="design-card">
+              <h3><i class="fas fa-expand-arrows-alt"></i> Spacing & Density</h3>
+              <div class="density-info" id="densityInfo">
+                <!-- Populated by JS -->
+              </div>
+              <p class="design-note">Controls how airy or compact your site feels.</p>
+            </div>
+
+            <!-- Image Treatment -->
+            <div class="design-card">
+              <h3><i class="fas fa-image"></i> Image Treatment</h3>
+              <div class="image-treatment-info" id="imageTreatmentInfo">
+                <!-- Populated by JS -->
+              </div>
+              <p class="design-note">Consistent visual treatment applied to all images.</p>
+            </div>
+
+            <!-- Guardrails -->
+            <div class="design-card guardrails-card">
+              <h3><i class="fas fa-shield-alt"></i> Design Guardrails</h3>
+              <div class="guardrails-info">
+                <div class="guardrail-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Color palette locked to brand guidelines</span>
+                </div>
+                <div class="guardrail-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Typography pairing enforced</span>
+                </div>
+                <div class="guardrail-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Section structure preserved</span>
+                </div>
+                <div class="guardrail-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Image treatment consistency</span>
+                </div>
+                <div class="guardrail-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Button & form styling unified</span>
+                </div>
+              </div>
+              <p class="design-note">These guardrails ensure your site always looks professional. Content can be edited freely within these boundaries.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeUploadModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Upload Photos</h3>
+        <button class="modal-close" onclick="closeUploadModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-zone" id="uploadZone">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Drag & drop photos here or click to browse</p>
+          <input type="file" id="fileInput" multiple accept="image/*" hidden>
+        </div>
+        <div class="upload-folder">
+          <label>Upload to folder:</label>
+          <select id="uploadFolder"><option value="general">General</option></select>
+        </div>
+        <div id="uploadPreview" class="upload-preview"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeUploadModal()">Cancel</button>
+        <button class="primary-btn" onclick="uploadFiles()"><i class="fas fa-upload"></i> Upload</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Editor Modal -->
+  <div id="serviceEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeServiceEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="serviceEditorTitle">New Service</h3>
+        <button class="modal-close" onclick="closeServiceEditor()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Service Name</label><input type="text" id="serviceTitle" placeholder="e.g., Wedding Photography"></div>
+        <div class="form-group"><label>Description</label><textarea id="serviceDescription" rows="4" placeholder="Describe this service"></textarea></div>
+        <div class="form-group"><label>Price (optional)</label><input type="text" id="servicePrice" placeholder="e.g., R5000"></div>
+        <div class="form-group"><label>Image URL (optional)</label><input type="url" id="serviceImageUrl" placeholder="https://example.com/image.jpg"><div id="serviceImagePreview" style="margin-top:8px"></div></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeServiceEditor()">Cancel</button>
+        <button class="primary-btn" id="serviceEditorSubmit"><i class="fas fa-save"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing Editor Modal -->
+  <div id="pricingEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closePricingEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="pricingEditorTitle">New Pricing Package</h3>
+        <button class="modal-close" onclick="closePricingEditor()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Package Name</label><input type="text" id="pricingName" placeholder="e.g., Basic Package"></div>
+        <div class="form-group"><label>Price</label><input type="text" id="pricingPrice" placeholder="e.g., R2500"></div>
+        <div class="form-group"><label>Details</label><textarea id="pricingDetails" rows="4" placeholder="What's included?"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closePricingEditor()">Cancel</button>
+        <button class="primary-btn" id="pricingEditorSubmit"><i class="fas fa-save"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonial Editor Modal -->
+  <div id="testimonialEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeTestimonialEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="testimonialEditorTitle">New Testimonial</h3>
+        <button class="modal-close" onclick="closeTestimonialEditor()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Client Name</label><input type="text" id="testimonialName" placeholder="Client name"></div>
+        <div class="form-group"><label>Testimonial</label><textarea id="testimonialText" rows="4" placeholder="What did they say?"></textarea></div>
+        <div class="form-group"><label>Rating (1-5)</label><input type="number" id="testimonialRating" min="1" max="5" value="5"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeTestimonialEditor()">Cancel</button>
+        <button class="primary-btn" id="testimonialEditorSubmit"><i class="fas fa-save"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Blog Editor Modal -->
+  <div id="blogEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeBlogEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="blogEditorTitle">New Blog Post</h3>
+        <button class="modal-close" onclick="closeBlogEditor()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Title</label><input type="text" id="blogTitle" placeholder="Blog post title"></div>
+        <div class="form-group"><label>Content</label><textarea id="blogContent" rows="6" placeholder="Blog post content"></textarea></div>
+        <div class="form-group"><label>Image URL (optional)</label><input type="text" id="blogImageUrl" placeholder="https://example.com/image.jpg"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeBlogEditor()">Cancel</button>
+        <button class="primary-btn" id="blogEditorSubmit"><i class="fas fa-save"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thumbnail Picker Modal -->
+  <div id="thumbnailPickerModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeThumbnailPicker()"></div>
+    <div class="modal-content modal-wide">
+      <div class="modal-header">
+        <h3>Pick Thumbnail from Images</h3>
+        <button class="modal-close" onclick="closeThumbnailPicker()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="help-text">Click an image to set it as the category thumbnail.</p>
+        <div id="thumbnailPickerGrid" class="folder-image-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

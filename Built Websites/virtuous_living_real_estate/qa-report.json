@@ -1,0 +1,30 @@
+{
+  "ruleBased": {
+    "overall": 8,
+    "accessibility": 6,
+    "contentQuality": 10,
+    "imageQuality": 9,
+    "structureScore": 6,
+    "issues": [],
+    "recommendations": [
+      "Consider adding more images for visual richness",
+      "Fix accessibility issues: add alt text, ARIA labels, and proper form labels",
+      "Fix structural issues: ensure all required files and pages exist"
+    ]
+  },
+  "llmJudge": {
+    "score": 7.2,
+    "breakdown": {
+      "visualHierarchy": 7,
+      "whitespace": 8,
+      "contrast": 7,
+      "imageQuality": 8,
+      "uniqueness": 6,
+      "overall": 7.2
+    },
+    "feedback": "The visual hierarchy is effective but could be strengthened with more prominent CTAs in the services section. Ensure consistent whitespace in the gallery layout, and consider using custom icons or color palettes to enhance brand uniqueness and better reflect the 'virtuous living' ethos.",
+    "recommendation": "review"
+  },
+  "timestamp": "2026-08-31T14:39:45.292Z",
+  "buildFolder": "C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites\\virtuous_living_real_estate"
+}

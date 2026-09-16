@@ -1,0 +1,49 @@
+{
+  "title": "Mamma & Mia Cakes | Custom Bakery in North West",
+  "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
+  "keywords": [
+    "custom cakes North West",
+    "bakery North West",
+    "cupcakes Klerksdorp",
+    "wedding cakes Potchefstroom",
+    "order cakes online North West",
+    "birthday cakes North West",
+    "dessert catering North West",
+    "Lety Gibbon baker"
+  ],
+  "openGraph": {
+    "title": "Mamma & Mia Cakes | Custom Bakery in North West",
+    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
+    "type": "website",
+    "locale": "en_ZA"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Mamma & Mia Cakes | Custom Bakery in North West",
+    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration."
+  },
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "Bakery",
+    "name": "Mamma & Mia Cakes And Catering",
+    "description": "Custom cakes, cupcakes, and dessert catering in North West, South Africa. Fresh daily by Lety Gibbon using family recipes and local ingredients.",
+    "telephone": "+27721565654",
+    "url": "",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "North West",
+      "addressCountry": "ZA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -26.8,
+      "longitude": "26.6"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "17:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" }
+    ],
+    "servesCuisine": "Bakery",
+    "priceRange": "R180-R2000"
+  }
+}

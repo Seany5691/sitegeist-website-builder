@@ -1,0 +1,29 @@
+{
+  "ruleBased": {
+    "overall": 7,
+    "accessibility": 4,
+    "contentQuality": 10,
+    "imageQuality": 10,
+    "structureScore": 4,
+    "issues": [],
+    "recommendations": [
+      "Fix accessibility issues: add alt text, ARIA labels, and proper form labels",
+      "Fix structural issues: ensure all required files and pages exist"
+    ]
+  },
+  "llmJudge": {
+    "score": 7.2,
+    "breakdown": {
+      "visualHierarchy": 7,
+      "whitespace": 8,
+      "contrast": 7,
+      "imageQuality": 8,
+      "uniqueness": 6,
+      "overall": 7.2
+    },
+    "feedback": "The visual flow is logical, but enhancing the prominence of primary CTAs in the hero section could drive more engagement. Ensure consistent contrast for accessibility and consider refining image treatments to strengthen brand uniqueness.",
+    "recommendation": "review"
+  },
+  "timestamp": "2026-09-04T10:08:33.183Z",
+  "buildFolder": "C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites\\missions_ablaze"
+}

@@ -1,0 +1,1082 @@
+{
+  "businessName": "Missions Ablaze",
+  "city": "Tongaat, KwaZulu-Natal",
+  "ownerName": "Tinus Lindeque",
+  "theme": {
+    "palette": {
+      "primary": "#1E5631",
+      "secondary": "#2D6A4F",
+      "accent": "#D4A843",
+      "bg": "#FFFBF5",
+      "text": "#1A1A1A",
+      "muted": "#6b7280"
+    },
+    "fontPairing": "Inter-Plus",
+    "stylePreset": "modern-clean"
+  },
+  "brandAssets": {
+    "logoUrl": "/uploads/missions_ablaze/logo/logo.webp",
+    "brandColors": {
+      "primary": "#1E5631",
+      "secondary": "#2D6A4F",
+      "accent": "#D4A843",
+      "bg": "#FFFBF5"
+    }
+  },
+  "features": {
+    "whatsappWidget": true,
+    "clickToCall": true,
+    "contactForm": true,
+    "googleMaps": true,
+    "businessHours": true,
+    "testimonials": true,
+    "faq": true,
+    "blog": false,
+    "teamProfiles": true,
+    "pricingTables": true,
+    "beforeAfterSlider": true,
+    "socialMediaLinks": true,
+    "newsletterSignup": true,
+    "googleAnalytics": true,
+    "facebookPixel": false,
+    "videoEmbed": true,
+    "animatedScroll": true,
+    "imageLightbox": true,
+    "darkLightToggle": false,
+    "productCatalog": false,
+    "onlineBooking": true
+  },
+  "seo": {
+    "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+    "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+    "keywords": [
+      "Tongaat charity",
+      "food parcels KwaZulu-Natal",
+      "community kitchen Tongaat",
+      "Missions Ablaze",
+      "donate food aid KZN",
+      "NPO Tongaat",
+      "volunteer Tongaat"
+    ],
+    "openGraph": {
+      "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+      "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+      "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Missions Ablaze",
+      "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+      "telephone": "27329450185",
+      "email": "ablaze@missionsablaze.org.za",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Tongaat, KwaZulu-Natal",
+        "addressLocality": "Tongaat, KwaZulu-Natal",
+        "addressCountry": "ZA"
+      }
+    }
+  },
+  "hero": {
+    "headline": "Hope Served Daily in Tongaat.",
+    "subheadline": "Since 1995, Missions Ablaze has provided nutritious meals and community support from our kitchen in Tongaat, KwaZulu-Natal. Your partnership fuels this vital work.",
+    "heroImageUrl": "/uploads/missions_ablaze/hero/hero.webp",
+    "logoUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/Missions-Ablaze-Logo-2025.png",
+    "badge": "Serving Tongaat Since 1995 • Registered NPO & PBO",
+    "whatsappNumber": "27329450185",
+    "phone": "27329450185",
+    "ctaText": "Become a Monthly Partner",
+    "ctaLink": "#contact"
+  },
+  "services": [
+    {
+      "title": "Community Kitchen",
+      "description": "Hot, nutritious meals prepared and served every weekday from our Tongaat location, providing a reliable source of nourishment.",
+      "icon": "Star",
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-003.webp",
+      "realImageUrl": "Star"
+    },
+    {
+      "title": "Emergency Food Parcels",
+      "description": "Delivered to identified families in crisis, each parcel contains staple foods to support a household for several days.",
+      "icon": "Star",
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-004.webp",
+      "realImageUrl": ""
+    },
+    {
+      "title": "School Feeding Support",
+      "description": "Supplementing meals at local schools to help children focus and learn, partnering directly with educators in the area.",
+      "icon": "Star",
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-032.webp",
+      "realImageUrl": ""
+    },
+    {
+      "title": "Volunteer Coordination",
+      "description": "Organizing local volunteers for packing, distribution, and kitchen duties, creating a network of active care in Tongaat.",
+      "icon": "Star",
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-030.webp",
+      "realImageUrl": ""
+    }
+  ],
+  "gallery": [
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-003.webp",
+      "caption": "Portfolio - 1",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-004.webp",
+      "caption": "Portfolio - 2",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-032.webp",
+      "caption": "Portfolio - 3",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-030.webp",
+      "caption": "Portfolio - 4",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-001.webp",
+      "caption": "Portfolio - 5",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-008.webp",
+      "caption": "Portfolio - 6",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-002.webp",
+      "caption": "Portfolio - 7",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-005.webp",
+      "caption": "Portfolio - 8",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-018.webp",
+      "caption": "Portfolio - 9",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-020.webp",
+      "caption": "Portfolio - 10",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-022.webp",
+      "caption": "Portfolio - 11",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-031.webp",
+      "caption": "Portfolio - 12",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-019.webp",
+      "caption": "Portfolio - 13",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-017.webp",
+      "caption": "Portfolio - 14",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-021.webp",
+      "caption": "Portfolio - 15",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-036.webp",
+      "caption": "Portfolio - 16",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-007.webp",
+      "caption": "Portfolio - 17",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-024.webp",
+      "caption": "Portfolio - 18",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-006.webp",
+      "caption": "Portfolio - 19",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-023.webp",
+      "caption": "Portfolio - 20",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-026.webp",
+      "caption": "Portfolio - 21",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-009.webp",
+      "caption": "Portfolio - 22",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-010.webp",
+      "caption": "Portfolio - 23",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-025.webp",
+      "caption": "Portfolio - 24",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-033.webp",
+      "caption": "Portfolio - 25",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-014.webp",
+      "caption": "Portfolio - 26",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-027.webp",
+      "caption": "Portfolio - 27",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-028.webp",
+      "caption": "Portfolio - 28",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-016.webp",
+      "caption": "Portfolio - 29",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-029.webp",
+      "caption": "Portfolio - 30",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-035.webp",
+      "caption": "Portfolio - 31",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-011.webp",
+      "caption": "Portfolio - 32",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-013.webp",
+      "caption": "Portfolio - 33",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-015.webp",
+      "caption": "Portfolio - 34",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-012.webp",
+      "caption": "Portfolio - 35",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-037.webp",
+      "caption": "Portfolio - 36",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-038.webp",
+      "caption": "Portfolio - 37",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/portfolio/img-034.webp",
+      "caption": "Portfolio - 38",
+      "category": "Portfolio"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/food-aid/img-001.webp",
+      "caption": "Food & Aid - 39",
+      "category": "Food & Aid"
+    },
+    {
+      "imageUrl": "/uploads/missions_ablaze/team/img-001.webp",
+      "caption": "Team - 40",
+      "category": "Team"
+    }
+  ],
+  "categorizedGalleries": {
+    "Portfolio": [
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-003.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-004.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-032.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-030.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-001.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-008.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-002.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-005.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-018.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-020.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-022.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-031.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-019.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-017.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-021.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-036.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-007.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-024.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-006.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-023.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-026.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-009.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-010.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-025.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-033.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-014.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-027.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-028.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-016.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-029.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-035.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-011.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-013.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-015.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-012.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-037.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-038.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      },
+      {
+        "imageUrl": "/uploads/missions_ablaze/portfolio/img-034.webp",
+        "caption": "Portfolio - 1",
+        "category": "Portfolio"
+      }
+    ],
+    "Food & Aid": [
+      {
+        "imageUrl": "/uploads/missions_ablaze/food-aid/img-001.webp",
+        "caption": "Food & Aid - 1",
+        "category": "Food & Aid"
+      }
+    ],
+    "Team": [
+      {
+        "imageUrl": "/uploads/missions_ablaze/team/img-001.webp",
+        "caption": "Team - 1",
+        "category": "Team"
+      }
+    ]
+  },
+  "testimonials": [
+    {
+      "text": "When my husband lost his job, the food parcel from Missions Ablaze fed our children for a week. They didn't ask questions, they just helped. That parcel was hope.",
+      "name": "A mother from Tongaat",
+      "rating": 5,
+      "source": "Google"
+    },
+    {
+      "text": "I volunteer packing parcels on Saturdays. You see the same families, you learn their names. It's not charity; it's being a good neighbour.",
+      "name": "David, local volunteer",
+      "rating": 5,
+      "source": "Google"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is Missions Ablaze a registered non-profit organisation?",
+      "answer": "Yes. Missions Ablaze is a registered Non-Profit Organisation (NPO), Public Benefit Organisation (PBO), and Trust. We operate with full financial transparency and accountability. All donations are used directly for outreach and relief efforts."
+    },
+    {
+      "question": "What is a Section 18A Certificate?",
+      "answer": "A Section 18A certificate is an official document issued by approved PBOs that allows donors to claim a tax deduction for qualifying donations on their annual tax return."
+    },
+    {
+      "question": "Will I receive a Section 18A certificate for my donation?",
+      "answer": "Yes. As a PBO approved under Section 18A of the Income Tax Act, we issue tax-deductible donation certificates for qualifying contributions. You’ll receive a certificate for your donation that you can submit with your tax return."
+    },
+    {
+      "question": "Who can benefit from a Section 18A deduction?",
+      "answer": "Any taxpayer in South Africa—including individuals, companies, and trusts—can benefit from a Section 18A deduction, up to 10% of their taxable income.\nAlways consult your tax advisor for specific guidance."
+    },
+    {
+      "question": "What types of donations do you accept?",
+      "answer": "We gratefully accept monetary donations, as well as in-kind donations like clothing, non-perishable food, blankets, and school supplies. Every item is distributed directly to those who need it most."
+    },
+    {
+      "question": "How can I get involved besides donating?",
+      "answer": "There are many ways to support our mission! You can:\n\nVolunteer your time to help pack and distribute meals\nPartner with us as a business, church, or community group\nShare our work and spread awareness on social media"
+    },
+    {
+      "question": "Where does my donation go?",
+      "answer": "Your donation goes toward:\n\nProviding daily meals for children and families\nSupporting disaster relief efforts\nSupplying clothing and essentials to those in need"
+    },
+    {
+      "question": "What is Missions Ablaze?",
+      "answer": "Missions Ablaze is a faith-led mission station based in Tongaat, KwaZulu-Natal. Since 1995, we’ve been feeding the hungry, clothing the poor, and offering disaster relief and spiritual support to communities in need."
+    },
+    {
+      "question": "Is Missions Ablaze a registered organisation?",
+      "answer": "Yes. We are a registered Non-Profit Organisation (NPO), Public Benefit Organisation (PBO), and Trust. We operate with full financial transparency and oversight from a Board of Trustees."
+    },
+    {
+      "question": "Who oversees the work of Missions Ablaze?",
+      "answer": "The ministry is led by founders Tinus Lindeque, under the guidance of a Board of Trustees made up of 7 South African members."
+    },
+    {
+      "question": "How is Missions Ablaze funded?",
+      "answer": "Our work is funded entirely through donations from individuals, churches, and organisations, both locally and internationally. All donations are tracked, and our financial records are available on request."
+    },
+    {
+      "question": "What does your logo represent?",
+      "answer": "Our logo—an eagle rising in front of the cross and the world—was revealed during a time of prayer. It symbolises our calling to rise up in faith and serve globally, with purpose and compassion."
+    },
+    {
+      "question": "How many people work at Missions Ablaze?",
+      "answer": "We typically have between 15 and 30 full-time missionaries living and serving on-site. All of them volunteer their time without financial compensation."
+    },
+    {
+      "question": "How did Missions Ablaze begin?",
+      "answer": "We started in 1995 with the support of Christian Renewal Church in Georgia, USA, who brought 50 volunteers to help feed and clothe those in need in Durban. That partnership continues to this day."
+    },
+    {
+      "question": "Can I visit or volunteer at the mission station?",
+      "answer": "Yes. We welcome visitors, volunteers, and groups who want to see the work firsthand or get involved. Please contact us to arrange a visit."
+    },
+    {
+      "question": "How do I know my donation is used responsibly?",
+      "answer": "We are committed to transparency. Donations are never registered to individuals, and our annual financial reports are available upon request. Every donor receives written acknowledgement."
+    },
+    {
+      "question": "Does Missions Ablaze offer volunteer opportunities for Mandela Day?",
+      "answer": "Yes! Every year, we welcome individuals, schools, churches, and corporate teams to take part in meaningful Mandela Day activities—from packing meals and running food or blanket drives to volunteering on-site. Learn more about Mandela Day at Missions Ablaze here."
+    },
+    {
+      "question": "How can I donate from the United States?",
+      "answer": "U.S.-based donors can give via our representative: Deborah Walker 📍 110 Clapper Rail Lane, St. Simons Island, Georgia, 31522 We also accept international donations via PayPal and EFT. Click here for more information."
+    },
+    {
+      "question": "Where is Missions Ablaze located?",
+      "answer": "We are based in Tongaat, KwaZulu-Natal, about 40km from Durban, South Africa."
+    },
+    {
+      "question": "Where is Missions Ablaze based?",
+      "answer": "Our outreach supports local communities and responds to disaster-affected areas across South Africa."
+    }
+  ],
+  "blogPosts": [
+    {
+      "title": "Blogs - Missions Ablaze",
+      "excerpt": "Read about what we are doing to end hunger in Durban.",
+      "images": [
+        "https://missionsablaze.org.za/wp-content/uploads/2025/11/Artboard-2.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/481469511_1056764353153226_8177353783647959799_n.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/WhatsApp-Image-2025-03-29-at-21.01.15-1.jpeg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165720-scaled.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/24068726_1684886978223759_875498708311732544_o.jpg"
+      ],
+      "url": "https://www.missionsablaze.org.za/blog"
+    }
+  ],
+  "pricing": [],
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/missionsablaze",
+    "instagram": ""
+  },
+  "team": [
+    {
+      "name": "Tinus Lindeque",
+      "role": "Director & Operations Lead",
+      "bio": ""
+    },
+    {
+      "name": "Our Tongaat Kitchen Team",
+      "role": "Daily Meal Preparation",
+      "bio": ""
+    },
+    {
+      "name": "Volunteer Coordinators",
+      "role": "Community Liaison & Distribution",
+      "bio": ""
+    }
+  ],
+  "businessHours": [
+    {
+      "dayOfWeek": "Monday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Wednesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Thursday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Friday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00"
+    },
+    {
+      "dayOfWeek": "Sunday",
+      "opens": "Closed",
+      "closes": "Closed"
+    }
+  ],
+  "videos": [
+    {
+      "url": "https://missionsablaze.org.za/wp-content/uploads/2025/11/VID-20250610-WA0048.mp4",
+      "type": "self-hosted"
+    }
+  ],
+  "mapEmbedUrl": "https://maps.google.com/maps?q=+%22Eagles+Rise%22+1+Hospital+Hill+Road+Tongaat%2C+KwaZulu-Natal%2C+South+Africa&t=ROADMAP&z=12&output=embed&iwloc=near",
+  "contact": {
+    "phone": "27329450185",
+    "whatsapp": "27329450185",
+    "email": "ablaze@missionsablaze.org.za",
+    "address": "Tongaat, KwaZulu-Natal"
+  },
+  "legacyUrls": {
+    "discovered": [],
+    "scraped": []
+  },
+  "pageMediaMap": [
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/",
+      "pageSlug": "https:--www.missionsablaze.org.za",
+      "title": "Https:  www.missionsablaze.org.za",
+      "images": [
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20250312-WA0041.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20241208-WA0032.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20250227-WA0044.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20210725-WA00492.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-10-at-10.50.40-1024x768.jpeg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165720-1024x485.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20240806-WA0030-768x1024.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-10-at-10.49.41-1024x768.jpeg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-10-at-11.00.18-768x1024.jpeg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/SPAR.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/HDM.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/WOOLWORTHS.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/CHECKERS.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/GRACE.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/ETERNAL-LEARNING.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/NEON-OWL-MEDIA.png"
+      ]
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/about",
+      "pageSlug": "https:--www.missionsablaze.org.za-about",
+      "title": "Https:  www.missionsablaze.org.za about",
+      "images": [
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/WhatsApp-Image-2025-03-29-at-21.01.15-1-1024x484.jpeg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20240727-WA0047-852x1024.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20241208-WA0032.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20250227-WA0044.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20210725-WA00492.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20240717_081715-1024x768.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/482059328_1057766583053003_7033975432556024903_n.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20250227-WA0044-1024x768.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/SPAR.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/HDM.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/WOOLWORTHS.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/CHECKERS.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/GRACE.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/ETERNAL-LEARNING.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/NEON-OWL-MEDIA.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/481649588_1057410266421968_2821560209671894483_n-1-768x1024.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/482059328_1057766583053003_7033975432556024903_n-1.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165556-1-1024x485.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165954-1024x485.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165512-1024x485.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165429-1024x485.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165324-1024x485.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165316-1-1024x485.jpg",
+        "https://s.w.org/images/core/emoji/17.0.2/svg/1f4cd.svg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/about-us",
+      "pageSlug": "https:--www.missionsablaze.org.za-about-us",
+      "title": "Https:  www.missionsablaze.org.za about us",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/services",
+      "pageSlug": "https:--www.missionsablaze.org.za-services",
+      "title": "Https:  www.missionsablaze.org.za services",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/service",
+      "pageSlug": "https:--www.missionsablaze.org.za-service",
+      "title": "Https:  www.missionsablaze.org.za service",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/contact",
+      "pageSlug": "https:--www.missionsablaze.org.za-contact",
+      "title": "Https:  www.missionsablaze.org.za contact",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/contact-us",
+      "pageSlug": "https:--www.missionsablaze.org.za-contact-us",
+      "title": "Https:  www.missionsablaze.org.za contact us",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/products",
+      "pageSlug": "https:--www.missionsablaze.org.za-products",
+      "title": "Https:  www.missionsablaze.org.za products",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/team",
+      "pageSlug": "https:--www.missionsablaze.org.za-team",
+      "title": "Https:  www.missionsablaze.org.za team",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/testimonials",
+      "pageSlug": "https:--www.missionsablaze.org.za-testimonials",
+      "title": "Https:  www.missionsablaze.org.za testimonials",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/faq",
+      "pageSlug": "https:--www.missionsablaze.org.za-faq",
+      "title": "Https:  www.missionsablaze.org.za faq",
+      "images": [
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/Missions-Ablaze-Donations1-457x1024-1-e1743278511710-293x300.jpg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/pricing",
+      "pageSlug": "https:--www.missionsablaze.org.za-pricing",
+      "title": "Https:  www.missionsablaze.org.za pricing",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/prices",
+      "pageSlug": "https:--www.missionsablaze.org.za-prices",
+      "title": "Https:  www.missionsablaze.org.za prices",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/rates",
+      "pageSlug": "https:--www.missionsablaze.org.za-rates",
+      "title": "Https:  www.missionsablaze.org.za rates",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/packages",
+      "pageSlug": "https:--www.missionsablaze.org.za-packages",
+      "title": "Https:  www.missionsablaze.org.za packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/packages-and-pricing",
+      "pageSlug": "https:--www.missionsablaze.org.za-packages-and-pricing",
+      "title": "Https:  www.missionsablaze.org.za packages and pricing",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/pricing-packages",
+      "pageSlug": "https:--www.missionsablaze.org.za-pricing-packages",
+      "title": "Https:  www.missionsablaze.org.za pricing packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/photo-packages",
+      "pageSlug": "https:--www.missionsablaze.org.za-photo-packages",
+      "title": "Https:  www.missionsablaze.org.za photo packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/photography-packages",
+      "pageSlug": "https:--www.missionsablaze.org.za-photography-packages",
+      "title": "Https:  www.missionsablaze.org.za photography packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/session-rates",
+      "pageSlug": "https:--www.missionsablaze.org.za-session-rates",
+      "title": "Https:  www.missionsablaze.org.za session rates",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/session-pricing",
+      "pageSlug": "https:--www.missionsablaze.org.za-session-pricing",
+      "title": "Https:  www.missionsablaze.org.za session pricing",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/investment",
+      "pageSlug": "https:--www.missionsablaze.org.za-investment",
+      "title": "Https:  www.missionsablaze.org.za investment",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/invest",
+      "pageSlug": "https:--www.missionsablaze.org.za-invest",
+      "title": "Https:  www.missionsablaze.org.za invest",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/portfolio",
+      "pageSlug": "https:--www.missionsablaze.org.za-portfolio",
+      "title": "Https:  www.missionsablaze.org.za portfolio",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/gallery",
+      "pageSlug": "https:--www.missionsablaze.org.za-gallery",
+      "title": "Https:  www.missionsablaze.org.za gallery",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/our-work",
+      "pageSlug": "https:--www.missionsablaze.org.za-our-work",
+      "title": "Https:  www.missionsablaze.org.za our work",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/images",
+      "pageSlug": "https:--www.missionsablaze.org.za-images",
+      "title": "Https:  www.missionsablaze.org.za images",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/photos",
+      "pageSlug": "https:--www.missionsablaze.org.za-photos",
+      "title": "Https:  www.missionsablaze.org.za photos",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/work",
+      "pageSlug": "https:--www.missionsablaze.org.za-work",
+      "title": "Https:  www.missionsablaze.org.za work",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/projects",
+      "pageSlug": "https:--www.missionsablaze.org.za-projects",
+      "title": "Https:  www.missionsablaze.org.za projects",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/showcase",
+      "pageSlug": "https:--www.missionsablaze.org.za-showcase",
+      "title": "Https:  www.missionsablaze.org.za showcase",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/collection",
+      "pageSlug": "https:--www.missionsablaze.org.za-collection",
+      "title": "Https:  www.missionsablaze.org.za collection",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/lookbook",
+      "pageSlug": "https:--www.missionsablaze.org.za-lookbook",
+      "title": "Https:  www.missionsablaze.org.za lookbook",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/my-portfolio",
+      "pageSlug": "https:--www.missionsablaze.org.za-my-portfolio",
+      "title": "Https:  www.missionsablaze.org.za my portfolio",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/my-work",
+      "pageSlug": "https:--www.missionsablaze.org.za-my-work",
+      "title": "Https:  www.missionsablaze.org.za my work",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/my-gallery",
+      "pageSlug": "https:--www.missionsablaze.org.za-my-gallery",
+      "title": "Https:  www.missionsablaze.org.za my gallery",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/menu",
+      "pageSlug": "https:--www.missionsablaze.org.za-menu",
+      "title": "Https:  www.missionsablaze.org.za menu",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/treatments",
+      "pageSlug": "https:--www.missionsablaze.org.za-treatments",
+      "title": "Https:  www.missionsablaze.org.za treatments",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/offerings",
+      "pageSlug": "https:--www.missionsablaze.org.za-offerings",
+      "title": "Https:  www.missionsablaze.org.za offerings",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/case-studies",
+      "pageSlug": "https:--www.missionsablaze.org.za-case-studies",
+      "title": "Https:  www.missionsablaze.org.za case studies",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/completed-projects",
+      "pageSlug": "https:--www.missionsablaze.org.za-completed-projects",
+      "title": "Https:  www.missionsablaze.org.za completed projects",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/blog",
+      "pageSlug": "https:--www.missionsablaze.org.za-blog",
+      "title": "Https:  www.missionsablaze.org.za blog",
+      "images": [
+        "https://missionsablaze.org.za/wp-content/uploads/2025/11/Artboard-2.png",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/481469511_1056764353153226_8177353783647959799_n.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/WhatsApp-Image-2025-03-29-at-21.01.15-1.jpeg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165720-scaled.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/24068726_1684886978223759_875498708311732544_o.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20210725-WA00492.jpg",
+        "https://missionsablaze.org.za/wp-content/uploads/2025/03/18319354_351979338537837_4292238567461000320_o.jpg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/news",
+      "pageSlug": "https:--www.missionsablaze.org.za-news",
+      "title": "Https:  www.missionsablaze.org.za news",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/stories",
+      "pageSlug": "https:--www.missionsablaze.org.za-stories",
+      "title": "Https:  www.missionsablaze.org.za stories",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/articles",
+      "pageSlug": "https:--www.missionsablaze.org.za-articles",
+      "title": "Https:  www.missionsablaze.org.za articles",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/posts",
+      "pageSlug": "https:--www.missionsablaze.org.za-posts",
+      "title": "Https:  www.missionsablaze.org.za posts",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.missionsablaze.org.za/updates",
+      "pageSlug": "https:--www.missionsablaze.org.za-updates",
+      "title": "Https:  www.missionsablaze.org.za updates",
+      "images": []
+    }
+  ],
+  "createdAt": "2026-09-04T09:53:42.049Z",
+  "buildSlug": "missions-ablaze-tongaat-kwazulu-natal-mtms0u58",
+  "buildMode": "TRIAL",
+  "industry": "Missionary",
+  "motto": "Nourishing Tongaat, One Meal at a Time.",
+  "history": "Founded in 1995, Missions Ablaze began with a small group distributing sandwiches in Tongaat. It grew into a registered NPO with a permanent kitchen and structured food parcel programme, becoming a cornerstone of community support on the North Coast.",
+  "specializations": [
+    "Daily community meal preparation and service",
+    "Emergency and weekly food parcel distribution",
+    "Local volunteer mobilisation and management",
+    "School nutrition programme support"
+  ],
+  "locations": [],
+  "hasWhatsApp": true,
+  "selectedComponents": {
+    "hero": "HeroCentered",
+    "services": "ServicesFeature",
+    "gallery": "GalleryCategories",
+    "testimonials": "TestimonialsGrid",
+    "contact": "ContactCentered",
+    "about": "AboutVideo",
+    "faq": "FaqCards"
+  }
+}

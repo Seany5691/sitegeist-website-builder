@@ -1,0 +1,35 @@
+{
+  "title": "Mamma & Mia Cakes | Custom Bakery in North West",
+  "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
+  "keywords": [
+    "custom cakes North West",
+    "bakery North West",
+    "cupcakes Klerksdorp",
+    "wedding cakes Potchefstroom",
+    "order cakes online North West"
+  ],
+  "openGraph": {
+    "title": "Mamma & Mia Cakes | Custom Bakery in North West",
+    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
+    "type": "website"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Mamma & Mia Cakes | Custom Bakery in North West",
+    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration."
+  },
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Mamma & Mia Cakes And Catering",
+    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
+    "telephone": "27721565654",
+    "email": "",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "North West",
+      "addressLocality": "North West",
+      "addressCountry": "ZA"
+    }
+  }
+}

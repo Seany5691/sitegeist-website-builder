@@ -1,0 +1,409 @@
+{
+  "businessName": "Tammy Holliday Photography",
+  "city": "Gauteng",
+  "ownerName": "Tammy Holliday",
+  "phone": "27834799732",
+  "email": "letsmeet@tammyholliday.co.za",
+  "address": "Gauteng, South Africa",
+  "logoUrl": "https://tammyholliday.co.za/wp-content/uploads/2017/07/LOGO_MEDIUM-Web.png",
+  "theme": {
+    "palette": {
+      "primary": "#fbc1a1",
+      "secondary": "#f69565",
+      "accent": "#f9e594",
+      "bg": "#FAF8F5",
+      "text": "#1a1a1a",
+      "muted": "#6b7280"
+    },
+    "fontPairing": "Playfair-Lato",
+    "stylePreset": "editorial-luxe"
+  },
+  "brandAssets": {
+    "logoUrl": "https://tammyholliday.co.za/wp-content/uploads/2017/07/LOGO_MEDIUM-Web.png",
+    "brandColors": {
+      "primary": "#fbc1a1",
+      "secondary": "#f69565",
+      "accent": "#f9e594",
+      "bg": "#FAF8F5"
+    }
+  },
+  "features": {
+    "whatsappWidget": true,
+    "clickToCall": true,
+    "contactForm": true,
+    "googleMaps": false,
+    "businessHours": true,
+    "testimonials": true,
+    "faq": true,
+    "blog": true,
+    "teamProfiles": true,
+    "pricingTables": true,
+    "beforeAfterSlider": false,
+    "socialMediaLinks": true,
+    "newsletterSignup": false,
+    "googleAnalytics": true,
+    "facebookPixel": false,
+    "videoEmbed": false,
+    "animatedScroll": true,
+    "imageLightbox": true,
+    "darkLightToggle": false,
+    "productCatalog": false,
+    "onlineBooking": false
+  },
+  "hero": {
+    "headline": "Capturing Your Most Precious Moments in Gauteng",
+    "subheadline": "Professional photography by Tammy Holliday, specializing in weddings, families, and portraits with a timeless, classic style.",
+    "badge": "Experienced Gauteng Photographer",
+    "ctaText": "Book Your Session Today",
+    "ctaLink": "#contact",
+    "heroImageUrl": "/uploads/1787932404347-img-002.webp",
+    "whatsappNumber": "27834799732",
+    "phone": "27834799732"
+  },
+  "about": {
+    "title": "Meet Tammy Holliday",
+    "tagline": "Timeless Moments, Beautifully Captured",
+    "paragraph1": "Tammy Holliday Photography has been serving the Gauteng community for years, building a strong portfolio with hundreds of satisfied clients across weddings, families, and portrait sessions. Every shoot is a chance to tell a story — your story.",
+    "paragraph2": "Based in Gauteng, Tammy brings a personal, relaxed approach to every session. Whether it's the quiet intimacy of a newborn shoot or the joyful chaos of a family gathering, she captures the real moments that matter most.",
+    "paragraph3": "With a passion for timeless imagery and a commitment to making every client feel at ease, Tammy Holliday Photography is your trusted partner for life's most important milestones.",
+    "imageUrl": "https://tammyholliday.co.za/wp-content/uploads/2015/02/aboutme-cover11.jpg"
+  },
+  "pageContent": {
+    "servicesTitle": "Photography Services",
+    "servicesDescription": "From weddings to newborn sessions, I offer a range of photography services tailored to capture your most meaningful moments across Gauteng.",
+    "servicesCtaTitle": "Ready to Book Your Session?",
+    "servicesCtaText": "Let's create something beautiful together. Get in touch to discuss your vision and check availability for your date.",
+    "contactTitle": "Get in Touch",
+    "contactDescription": "I'd love to hear about your photography needs. Whether you're planning a wedding, expecting a new arrival, or want to capture family memories, let's talk.",
+    "portfolioTitle": "My Portfolio",
+    "portfolioDescription": "Browse through my collection of work spanning weddings, families, newborns, couples, portraits, and more across Gauteng.",
+    "testimonialsTitle": "What My Clients Say",
+    "testimonialsSubtitle": "Happy Clients",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Questions & Answers",
+    "galleryTitle": "Gallery",
+    "gallerySubtitle": "Explore my work across different photography styles — from intimate weddings to joyful family sessions.",
+    "aboutTitle": "About Tammy",
+    "aboutSubtitle": "The photographer behind the lens, passionate about capturing life's most beautiful moments."
+  },
+  "services": [
+    {
+      "title": "Wedding Photography",
+      "description": "Comprehensive coverage of your special day, capturing every emotion and detail from preparation to reception. I document the laughter, tears, and joy that make your wedding uniquely yours.",
+      "priceTag": "Custom Quote",
+      "icon": "Heart"
+    },
+    {
+      "title": "Family & Portrait Sessions",
+      "description": "Fun, relaxed sessions for families, couples, and individuals, creating timeless portraits in studio or on location across Gauteng. No stiff poses — just real moments.",
+      "priceTag": "Custom Quote",
+      "icon": "Users"
+    },
+    {
+      "title": "Newborn & Maternity",
+      "description": "Gentle, safe, and beautiful sessions to welcome your new arrival or celebrate the journey of pregnancy. These early moments pass so quickly — let's preserve them.",
+      "priceTag": "Custom Quote",
+      "icon": "Baby"
+    },
+    {
+      "title": "Matric & Cake Smash",
+      "description": "Celebrating life's milestones with creative and joyful photography sessions. From matric dance elegance to messy cake smash fun, every milestone deserves to be remembered.",
+      "priceTag": "Custom Quote",
+      "icon": "PartyPopper"
+    },
+    {
+      "title": "Events",
+      "description": "Professional coverage for your special events, ensuring no moment is missed. Corporate functions, birthday parties, and celebrations of all kinds.",
+      "priceTag": "Custom Quote",
+      "icon": "Calendar"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Sarah & James",
+      "text": "Tammy has an incredible ability to make you feel at ease. Our wedding photos are absolutely breathtaking and perfectly capture the joy of our day.",
+      "rating": 5
+    },
+    {
+      "name": "The Van Heerden Family",
+      "text": "We've done multiple family shoots with Tammy and every time she manages to capture the most natural, beautiful moments. The kids love her!",
+      "rating": 5
+    },
+    {
+      "name": "Nicole & Ryan",
+      "text": "From our engagement shoot to our wedding day, Tammy was professional, creative, and so much fun to work with. Our photos are stunning.",
+      "rating": 5
+    },
+    {
+      "name": "Jenny & Roberto",
+      "text": "Tammy photographed our engagement at Toadbury Hall and the results were magical. She has a real eye for light and composition.",
+      "rating": 5
+    },
+    {
+      "name": "Megan & Duncan",
+      "text": "Our wedding at Shereview was captured perfectly. Tammy was everywhere without being intrusive. We couldn't be happier with our album.",
+      "rating": 5
+    }
+  ],
+  "faq": [
+    {
+      "question": "How do I book a session?",
+      "answer": "Simply call Tammy at 083 479 9732 or email letsmeet@tammyholliday.co.za to discuss your needs and schedule a date. A deposit secures your booking."
+    },
+    {
+      "question": "What is the turnaround time for photos?",
+      "answer": "Editing and delivery times vary by service, but Tammy will provide a clear timeline during your consultation. Typically, portrait sessions are delivered within 2-3 weeks, and weddings within 4-6 weeks."
+    },
+    {
+      "question": "What should we wear for our portrait session?",
+      "answer": "Tammy will provide a style guide and advice to help you coordinate outfits that look great on camera. Generally, neutral tones and soft colours photograph beautifully."
+    },
+    {
+      "question": "Do you travel for shoots?",
+      "answer": "Yes! Tammy is based in Gauteng and covers areas including Sandton, Centurion, Midrand, Pretoria, Benoni, Kempton Park, Edenvale, and surrounding suburbs. Travel fees may apply for locations outside the greater Gauteng area."
+    },
+    {
+      "question": "Can we get prints and albums?",
+      "answer": "Absolutely. Layflat albums start from R2,100 and come with a range of cover options. Tammy will walk you through all the available products during your consultation."
+    },
+    {
+      "question": "How many photos will we receive?",
+      "answer": "The number of edited photos depends on the session type and duration. Portrait sessions typically deliver 30-50 images, while weddings can range from 300-800+ images."
+    }
+  ],
+  "blogPosts": [
+    {
+      "title": "7 Ways to Make Your Rainy Day Photo Shoot Work For You",
+      "slug": "7-ways-to-make-your-rainy-day-photo-shoot-work-for-you-2",
+      "excerpt": "Don't let a little rain ruin your photo plans. Here are seven creative ways to embrace the weather and get stunning, unique photos.",
+      "date": "2024-03-15",
+      "category": "Tips"
+    },
+    {
+      "title": "Answers to Questions You Have No Idea How to Ask Your Photographer",
+      "slug": "answers-to-questions-you-have-no-idea-how-to-ask-your-photographer",
+      "excerpt": "Booking a photographer for the first time? Here are the questions you should be asking but might not know how.",
+      "date": "2024-02-10",
+      "category": "Advice"
+    },
+    {
+      "title": "Preparing for Your Personal Brand and Content Creation Photo Shoot",
+      "slug": "preparing-for-your-personal-brand-and-content-creation-photo-shoot",
+      "excerpt": "A step-by-step guide to getting ready for your personal branding session, from wardrobe choices to location scouting.",
+      "date": "2024-01-20",
+      "category": "Tips"
+    },
+    {
+      "title": "Choosing Your Images After a Photo Session",
+      "slug": "choosing-your-images",
+      "excerpt": "How to narrow down your favourites from a gallery of beautiful images. Tips for selecting the photos that matter most.",
+      "date": "2023-11-05",
+      "category": "Advice"
+    },
+    {
+      "title": "Get to Know Tammy Holliday",
+      "slug": "get-to-know-me",
+      "excerpt": "Learn more about the woman behind the camera — her journey, her passion, and what drives her to capture your most precious moments.",
+      "date": "2023-09-12",
+      "category": "Personal"
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Portrait Session",
+      "price": "R1,500",
+      "description": "1-hour studio or location session, 30+ edited digital images, online gallery",
+      "features": [
+        "1 hour shooting time",
+        "30+ edited images",
+        "Online gallery",
+        "1 outfit change"
+      ]
+    },
+    {
+      "name": "Family Session",
+      "price": "R2,000",
+      "description": "1.5-hour session for the whole family, 40+ edited digital images, location of your choice",
+      "features": [
+        "1.5 hours shooting time",
+        "40+ edited images",
+        "Online gallery",
+        "Up to 6 people",
+        "Style guide included"
+      ]
+    },
+    {
+      "name": "Newborn Session",
+      "price": "R2,500",
+      "description": "2-3 hour gentle session, 30+ edited digital images, studio props included",
+      "features": [
+        "2-3 hours shooting time",
+        "30+ edited images",
+        "Online gallery",
+        "Props & wraps included",
+        "Parent & sibling photos"
+      ]
+    },
+    {
+      "name": "Wedding Photography",
+      "price": "From R2,100",
+      "description": "Full day coverage, 300+ edited images, engagement session included",
+      "features": [
+        "Full day coverage",
+        "300+ edited images",
+        "Online gallery",
+        "Engagement session",
+        "Layflat album option"
+      ]
+    },
+    {
+      "name": "Matric Dance",
+      "price": "R1,800",
+      "description": "1-hour session, 20+ edited digital images, formal and candid shots",
+      "features": [
+        "1 hour shooting time",
+        "20+ edited images",
+        "Online gallery",
+        "Formal & candid poses"
+      ]
+    },
+    {
+      "name": "Cake Smash",
+      "price": "R2,200",
+      "description": "1-hour session with cake and setup, 25+ edited digital images",
+      "features": [
+        "1 hour shooting time",
+        "25+ edited images",
+        "Online gallery",
+        "Cake & setup included",
+        "Splash bath photos"
+      ]
+    }
+  ],
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/tammyhollidayphotography",
+    "instagram": "https://www.instagram.com/tammyhollidayphotography"
+  },
+  "businessHours": [
+    {
+      "dayOfWeek": "Monday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Wednesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Thursday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Friday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00"
+    },
+    {
+      "dayOfWeek": "Sunday",
+      "opens": "Closed",
+      "closes": "Closed"
+    }
+  ],
+  "seo": {
+    "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
+    "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today.",
+    "keywords": [
+      "Gauteng photographer",
+      "wedding photographer Gauteng",
+      "family portraits",
+      "newborn photography",
+      "Tammy Holliday Photography",
+      "professional photographer South Africa"
+    ],
+    "openGraph": {
+      "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
+      "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
+      "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Tammy Holliday Photography",
+      "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits.",
+      "telephone": "+27834799732",
+      "email": "letsmeet@tammyholliday.co.za",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Gauteng",
+        "addressRegion": "Gauteng",
+        "addressCountry": "ZA"
+      },
+      "areaServed": [
+        "Sandton",
+        "Centurion",
+        "Midrand",
+        "Pretoria",
+        "Benoni",
+        "Kempton Park",
+        "Edenvale",
+        "Johannesburg"
+      ],
+      "priceRange": "R1500 - R5000",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Monday",
+          "opens": "08:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Tuesday",
+          "opens": "08:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Wednesday",
+          "opens": "08:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Thursday",
+          "opens": "08:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Friday",
+          "opens": "08:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:00",
+          "closes": "14:00"
+        }
+      ]
+    }
+  }
+}

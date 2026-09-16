@@ -1,0 +1,255 @@
+{
+  "businessName": "Klerksdorp Engineering",
+  "city": "North West",
+  "ownerName": "Gideon Crouwkamp",
+  "theme": {
+    "palette": {
+      "primary": "#453e07",
+      "secondary": "#c6352c",
+      "accent": "#ccc847",
+      "bg": "#fafafa"
+    },
+    "fontPairing": "Oswald-Roboto",
+    "stylePreset": "sharp-industrial"
+  },
+  "brandAssets": {
+    "logoUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Logo.jpg",
+    "brandColors": {
+      "primary": "#453e07",
+      "secondary": "#c6352c",
+      "accent": "#ccc847",
+      "bg": "#fafafa"
+    }
+  },
+  "seo": {
+    "title": "Klerksdorp Engineering | Professional Services in North West",
+    "description": "Get premium services from Klerksdorp Engineering in North West. Managed by Gideon Crouwkamp.",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Klerksdorp Engineering",
+      "description": "Klerksdorp Engineering in North West.",
+      "telephone": "0180112453",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "North West",
+        "addressCountry": "ZA"
+      }
+    }
+  },
+  "hero": {
+    "headline": "Premium Custom Fabrications & Services in North West",
+    "subheadline": "High-quality industrial and engineering solutions built to order, managed by Gideon Crouwkamp.",
+    "heroImageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering.jpg",
+    "logoUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Logo.jpg",
+    "badge": "Certified Professional Service",
+    "whatsappNumber": "0180112453",
+    "phone": "0180112453"
+  },
+  "services": [
+    {
+      "title": "Services & Products | Klerksdorp Engineering",
+      "description": "Quality service tailored to client requirements.",
+      "icon": "Shield",
+      "realImageUrl": ""
+    }
+  ],
+  "gallery": [
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering.jpg",
+      "caption": "Portfolio Showcase Item 1",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/62441148_2269756679903330_141568847994945536_n.jpg",
+      "caption": "Portfolio Showcase Item 2",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/62367925_2269758533236478_708127424348422144_n.jpg",
+      "caption": "Portfolio Showcase Item 3",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike1.jpg",
+      "caption": "Portfolio Showcase Item 4",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike3.jpg",
+      "caption": "Portfolio Showcase Item 5",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike4.jpg",
+      "caption": "Portfolio Showcase Item 6",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike2.jpg",
+      "caption": "Portfolio Showcase Item 7",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Services.jpg",
+      "caption": "Portfolio Showcase Item 8",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/rgjtujku-300x191.jpg",
+      "caption": "Portfolio Showcase Item 9",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/ewrgerg.jpg",
+      "caption": "Portfolio Showcase Item 10",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/aertgt-300x47.jpg",
+      "caption": "Portfolio Showcase Item 11",
+      "category": "Work"
+    },
+    {
+      "imageUrl": "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Cattle-feeder-3-400x284.jpg",
+      "caption": "Portfolio Showcase Item 12",
+      "category": "Work"
+    }
+  ],
+  "contact": {
+    "phone": "0180112453",
+    "whatsapp": "0180112453",
+    "email": "gideon@klerksdorpengineering.co.za",
+    "address": "North West"
+  },
+  "createdAt": "2026-08-07T14:34:16.146Z",
+  "buildSlug": "klerksdorp-engineering-north-west-msj1psr6",
+  "pageMediaMap": [
+    {
+      "pageUrl": "https://www.klerksdorpengineering.co.za/",
+      "pageSlug": "home",
+      "title": "Klerksdorp Engineering |",
+      "images": [
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Logo.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/62441148_2269756679903330_141568847994945536_n.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/62367925_2269758533236478_708127424348422144_n.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike1.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike3.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike4.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bike2.jpg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.klerksdorpengineering.co.za/services-products/",
+      "pageSlug": "services-products",
+      "title": "Services & Products | Klerksdorp Engineering",
+      "images": [
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Logo.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Services.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/rgjtujku-300x191.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/ewrgerg.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/aertgt-300x47.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Chemcrete-logo.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/720x405-logo_de_heus-57b1d8030d171_Crop_CY3_CX13_DPC_W715_H380-300x159.png",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/logo-300x122.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Cattle-feeder-3-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Cattle-feeder-1-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Cattle-feeder-7-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Cattle-feeder-2-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-73-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-74-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-75-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/awertg-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-60-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-62-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-53-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-61-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-59-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-57-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-63-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-55-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-76-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-28-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-27-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-24-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-1-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-22-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-16-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-23-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-78-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-77-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-79-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-66-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-20-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-19-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-12-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-3-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-21-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-25-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-26-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/62441148_2269756679903330_141568847994945536_n-1-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-5-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-6-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-7-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-9-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-15-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-35-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-36-400x284.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-8-400x284.jpg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.klerksdorpengineering.co.za/klerksdorp-exhausts/",
+      "pageSlug": "klerksdorp-exhausts",
+      "title": "Klerksdorp Exhausts | Klerksdorp Engineering",
+      "images": [
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Logo.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Exhausts.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/06/Klerksdorp-Exhaust.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Morne-Meintjies-274x300.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Exhausts-1.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Exhausts-5-400x516.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Exhausts-6-400x516.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Exhausts-2-400x516.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Exhausts-4.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Bull-Bar.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-4-1.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-1-1.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Roof-Rack.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-2-1.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-8-1.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Hunting-Rails.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-5-1.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-9-1.jpg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.klerksdorpengineering.co.za/contact-us/",
+      "pageSlug": "contact-us",
+      "title": "Contact Us | Klerksdorp Engineering",
+      "images": [
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Logo.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/Klerksdorp-Engineering-Contact.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/06/Klerksdorp-Engineering-Logo-300x76.jpg",
+        "https://www.klerksdorpengineering.co.za/wp-content/uploads/2019/07/blue-and-red-abstract-smooth-waves-background-vector-20552345.jpg"
+      ]
+    }
+  ],
+  "legacyUrls": {
+    "discovered": [
+      "https://www.klerksdorpengineering.co.za/",
+      "https://www.klerksdorpengineering.co.za/services-products/",
+      "https://www.klerksdorpengineering.co.za/klerksdorp-exhausts/",
+      "https://www.klerksdorpengineering.co.za/contact-us/"
+    ],
+    "scraped": [
+      "https://www.klerksdorpengineering.co.za/",
+      "https://www.klerksdorpengineering.co.za/services-products/",
+      "https://www.klerksdorpengineering.co.za/klerksdorp-exhausts/",
+      "https://www.klerksdorpengineering.co.za/contact-us/"
+    ]
+  },
+  "openRouterError": "OpenRouter synthesis failed: OpenRouter: 429 - Provider returned error. Local fallback config was generated.",
+  "analytics": {}
+}

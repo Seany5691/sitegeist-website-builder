@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Dashboard</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-container">
+      <div class="login-header">
+        <div class="login-logo">
+          <i class="fas fa-globe"></i>
+        </div>
+        <h1 id="loginBusinessName">Website Dashboard</h1>
+        <p>Sign in to manage your website</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Business Name" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="button" class="toggle-password" onclick="togglePassword()">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="login-btn">
+          <span>Sign In</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div id="loginError" class="login-error"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="dashboard hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i class="fas fa-globe"></i>
+        </div>
+        <h2 id="sidebarBusinessName">Dashboard</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="overview">
+          <i class="fas fa-chart-pie"></i>
+          <span>Overview</span>
+        </a>
+        <a href="#" class="nav-item" data-section="gallery">
+          <i class="fas fa-images"></i>
+          <span>Gallery</span>
+        </a>
+        <a href="#" class="nav-item" data-section="blog">
+          <i class="fas fa-blog"></i>
+          <span>Blog</span>
+        </a>
+        <a href="#" class="nav-item" data-section="services">
+          <i class="fas fa-concierge-bell"></i>
+          <span>Services</span>
+        </a>
+        <a href="#" class="nav-item" data-section="pricing">
+          <i class="fas fa-tags"></i>
+          <span>Pricing</span>
+        </a>
+        <a href="#" class="nav-item" data-section="seo">
+          <i class="fas fa-search"></i>
+          <span>SEO & Analytics</span>
+        </a>
+        <a href="#" class="nav-item" data-section="testimonials">
+          <i class="fas fa-star"></i>
+          <span>Testimonials</span>
+        </a>
+        <a href="#" class="nav-item" data-section="settings">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="dashboard-header">
+        <div class="header-left">
+          <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 id="pageTitle">Overview</h1>
+        </div>
+        <div class="header-right">
+          <div class="header-actions">
+            <button class="header-btn" onclick="window.open('/', '_blank')">
+              <i class="fas fa-external-link-alt"></i>
+              <span>View Site</span>
+            </button>
+          </div>
+          <div class="user-menu">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <span id="headerBusinessName">Business</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Sections -->
+      <div class="content">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-eye"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Total Visits</span>
+                <span class="stat-value" id="totalVisits">--</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-users"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Unique Visitors</span>
+                <span class="stat-value" id="uniqueVisitors">--</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-images"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Gallery Images</span>
+                <span class="stat-value" id="galleryCount">--</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-blog"></i></div>
+              <div class="stat-info">
+                <span class="stat-label">Blog Posts</span>
+                <span class="stat-value" id="blogCount">--</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="overview-grid">
+            <div class="overview-card">
+              <h3>Quick Actions</h3>
+              <div class="quick-actions">
+                <button class="action-btn" onclick="switchSection('gallery')">
+                  <i class="fas fa-image"></i>
+                  <span>Upload Photos</span>
+                </button>
+                <button class="action-btn" onclick="switchSection('blog')">
+                  <i class="fas fa-plus"></i>
+                  <span>New Blog Post</span>
+                </button>
+                <button class="action-btn" onclick="switchSection('services')">
+                  <i class="fas fa-edit"></i>
+                  <span>Edit Services</span>
+                </button>
+                <button class="action-btn" onclick="switchSection('seo')">
+                  <i class="fas fa-chart-line"></i>
+                  <span>View Analytics</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="overview-card">
+              <h3>Website Info</h3>
+              <div class="info-list">
+                <div class="info-item">
+                  <span class="info-label">Business</span>
+                  <span class="info-value" id="infoBusiness">--</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Industry</span>
+                  <span class="info-value" id="infoIndustry">--</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Location</span>
+                  <span class="info-value" id="infoLocation">--</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Phone</span>
+                  <span class="info-value" id="infoPhone">--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section">
+          <div class="section-header">
+            <h2>Gallery Management</h2>
+            <button class="primary-btn" onclick="openUploadModal()">
+              <i class="fas fa-upload"></i>
+              <span>Upload Photos</span>
+            </button>
+          </div>
+
+          <div class="gallery-controls">
+            <div class="folder-creator">
+              <input type="text" id="newFolderName" placeholder="New folder name (e.g., Weddings, Families)">
+              <button class="secondary-btn" onclick="createFolder()">
+                <i class="fas fa-folder-plus"></i>
+                Create Folder
+              </button>
+            </div>
+          </div>
+
+          <div id="galleryGrid" class="gallery-grid">
+            <!-- Filled by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="section">
+          <div class="section-header">
+            <h2>Blog Posts</h2>
+            <button class="primary-btn" onclick="openBlogEditor()">
+              <i class="fas fa-plus"></i>
+              <span>New Post</span>
+            </button>
+          </div>
+
+          <div id="blogList" class="blog-list">
+            <!-- Filled by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section">
+          <div class="section-header">
+            <h2>Services</h2>
+            <button class="primary-btn" onclick="openServiceEditor()">
+              <i class="fas fa-plus"></i>
+              <span>Add Service</span>
+            </button>
+          </div>
+
+          <div id="servicesList" class="services-list">
+            <!-- Filled by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="section">
+          <div class="section-header">
+            <h2>Pricing & Packages</h2>
+            <button class="primary-btn" onclick="openPricingEditor()">
+              <i class="fas fa-plus"></i>
+              <span>Add Package</span>
+            </button>
+          </div>
+
+          <div id="pricingList" class="pricing-list">
+            <!-- Filled by JavaScript -->
+          </div>
+        </section>
+
+        <!-- SEO Section -->
+        <section id="seo" class="section">
+          <div class="section-header">
+            <h2>SEO & Analytics</h2>
+          </div>
+
+          <div class="seo-grid">
+            <div class="seo-card">
+              <h3>SEO Settings</h3>
+              <div class="seo-field">
+                <label>Title</label>
+                <input type="text" id="seoTitle" placeholder="Page title">
+              </div>
+              <div class="seo-field">
+                <label>Description</label>
+                <textarea id="seoDescription" placeholder="Meta description" rows="3"></textarea>
+              </div>
+              <div class="seo-field">
+                <label>Keywords</label>
+                <input type="text" id="seoKeywords" placeholder="keyword1, keyword2, keyword3">
+              </div>
+              <button class="secondary-btn" onclick="saveSeo()">
+                <i class="fas fa-save"></i>
+                Save SEO Settings
+              </button>
+            </div>
+
+            <div class="seo-card">
+              <h3>Analytics Overview</h3>
+              <div class="analytics-placeholder">
+                <i class="fas fa-chart-bar"></i>
+                <p>Connect Google Analytics to view detailed statistics</p>
+                <button class="secondary-btn">Connect Analytics</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="section">
+          <div class="section-header">
+            <h2>Testimonials</h2>
+            <button class="primary-btn" onclick="openTestimonialEditor()">
+              <i class="fas fa-plus"></i>
+              <span>Add Testimonial</span>
+            </button>
+          </div>
+
+          <div id="testimonialsList" class="testimonials-list">
+            <!-- Filled by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+          <div class="section-header">
+            <h2>Settings</h2>
+          </div>
+
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>Contact Information</h3>
+              <div class="settings-field">
+                <label>Phone</label>
+                <input type="tel" id="settingsPhone" placeholder="Phone number">
+              </div>
+              <div class="settings-field">
+                <label>Email</label>
+                <input type="email" id="settingsEmail" placeholder="Email address">
+              </div>
+              <div class="settings-field">
+                <label>Address</label>
+                <textarea id="settingsAddress" placeholder="Business address" rows="2"></textarea>
+              </div>
+              <button class="secondary-btn" onclick="saveContact()">
+                <i class="fas fa-save"></i>
+                Save Contact Info
+              </button>
+            </div>
+
+            <div class="settings-card">
+              <h3>Social Media</h3>
+              <div class="settings-field">
+                <label><i class="fab fa-facebook"></i> Facebook</label>
+                <input type="url" id="settingsFacebook" placeholder="Facebook URL">
+              </div>
+              <div class="settings-field">
+                <label><i class="fab fa-instagram"></i> Instagram</label>
+                <input type="url" id="settingsInstagram" placeholder="Instagram URL">
+              </div>
+              <div class="settings-field">
+                <label><i class="fab fa-twitter"></i> Twitter</label>
+                <input type="url" id="settingsTwitter" placeholder="Twitter URL">
+              </div>
+              <button class="secondary-btn" onclick="saveSocial()">
+                <i class="fas fa-save"></i>
+                Save Social Links
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeUploadModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Upload Photos</h3>
+        <button class="modal-close" onclick="closeUploadModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-zone" id="uploadZone">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Drag & drop photos here or click to browse</p>
+          <input type="file" id="fileInput" multiple accept="image/*" hidden>
+        </div>
+        <div class="upload-folder">
+          <label>Upload to folder:</label>
+          <select id="uploadFolder">
+            <option value="general">General</option>
+          </select>
+        </div>
+        <div id="uploadPreview" class="upload-preview"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeUploadModal()">Cancel</button>
+        <button class="primary-btn" onclick="uploadFiles()">
+          <i class="fas fa-upload"></i>
+          Upload
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Blog Editor Modal -->
+  <div id="blogEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeBlogEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="blogEditorTitle">New Blog Post</h3>
+        <button class="modal-close" onclick="closeBlogEditor()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="blogTitle">Title</label>
+          <input type="text" id="blogTitle" placeholder="Blog post title">
+        </div>
+        <div class="form-group">
+          <label for="blogContent">Content</label>
+          <textarea id="blogContent" placeholder="Blog post content" rows="6"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="blogImageUrl">Image URL (optional)</label>
+          <input type="text" id="blogImageUrl" placeholder="https://example.com/image.jpg">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeBlogEditor()">Cancel</button>
+        <button class="primary-btn" id="blogEditorSubmit">
+          <i class="fas fa-save"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Editor Modal -->
+  <div id="serviceEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeServiceEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="serviceEditorTitle">New Service</h3>
+        <button class="modal-close" onclick="closeServiceEditor()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="serviceTitle">Service Name</label>
+          <input type="text" id="serviceTitle" placeholder="e.g., Wedding Photography">
+        </div>
+        <div class="form-group">
+          <label for="serviceDescription">Description</label>
+          <textarea id="serviceDescription" placeholder="Describe this service" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="servicePrice">Price (optional)</label>
+          <input type="text" id="servicePrice" placeholder="e.g., R5000">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeServiceEditor()">Cancel</button>
+        <button class="primary-btn" id="serviceEditorSubmit">
+          <i class="fas fa-save"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing Editor Modal -->
+  <div id="pricingEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closePricingEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="pricingEditorTitle">New Pricing Package</h3>
+        <button class="modal-close" onclick="closePricingEditor()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="pricingName">Package Name</label>
+          <input type="text" id="pricingName" placeholder="e.g., Basic Package">
+        </div>
+        <div class="form-group">
+          <label for="pricingPrice">Price</label>
+          <input type="text" id="pricingPrice" placeholder="e.g., R2500">
+        </div>
+        <div class="form-group">
+          <label for="pricingDetails">Details (optional)</label>
+          <textarea id="pricingDetails" placeholder="What's included in this package?" rows="4"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closePricingEditor()">Cancel</button>
+        <button class="primary-btn" id="pricingEditorSubmit">
+          <i class="fas fa-save"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonial Editor Modal -->
+  <div id="testimonialEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeTestimonialEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="testimonialEditorTitle">New Testimonial</h3>
+        <button class="modal-close" onclick="closeTestimonialEditor()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="testimonialName">Client Name</label>
+          <input type="text" id="testimonialName" placeholder="Client name">
+        </div>
+        <div class="form-group">
+          <label for="testimonialText">Testimonial</label>
+          <textarea id="testimonialText" placeholder="What did the client say?" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="testimonialRating">Rating (1-5)</label>
+          <input type="number" id="testimonialRating" min="1" max="5" value="5">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeTestimonialEditor()">Cancel</button>
+        <button class="primary-btn" id="testimonialEditorSubmit">
+          <i class="fas fa-save"></i>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+import { ReadonlyDeep } from 'type-fest';
+
+interface SiteConfig {
+  businessName: string;
+  city?: string;
+  ownerName?: string;
+  theme?: {
+    palette?: {
+      primary?: string;
+      secondary?: string;
+      accent?: string;
+      bg?: string;
+    };
+  };
+  seo?: {
+    description?: string;
+    title?: string;
+  };
+  services?: Array<{ title: string; description: string; priceTag?: string }>;
+  gallery?: Array<{ imageUrl: string; caption?: string; category?: string }>;
+  legacyUrls?: { discovered?: string[]; scraped?: string[] };
+  contact?: { phone?: string; whatsapp?: string; email?: string; address?: string };
+}
+
+export interface PromptBuilderOptions {
+  buildMode: 'TRIAL' | 'PRODUCTION';
+  siteConfig: SiteConfig;
+}
+
+/**
+ * Intelligent Prompt Builder Engine
+ * Analyzes site payload, determines industry archetype, enforces design systems,
+ * and outputs a master prompt for MiMo Code CLI.
+ */
+export function generateMiMoPrompt(options: PromptBuilderOptions): string {
+  const { buildMode, siteConfig } = options;
+  const { businessName, seo, services, gallery, theme, legacyUrls, contact } = siteConfig;
+
+  // 1. Industry Archetype & Theme Detection Engine
+  const fullTextContext = `${businessName} ${seo?.title || ''} ${seo?.description || ''} ${
+    services?.map((s) => s.title + ' ' + s.description).join(' ') || ''
+  }`.toLowerCase();
+
+  const isPhotographyOrCreative = /photograph|photo|studio|wedding|portrait|gallery|artist|creative|media|film|video/i.test(
+    fullTextContext
+  );
+  const isCorporateOrMedical = /law|legal|attorney|doctor|clinic|medical|dental|finance|consulting|accounting|corporate/i.test(
+    fullTextContext
+  );
+  const isTradeOrService = /plumb|electric|hvac|roof|repair|auto|mechanic|cleaning|towing|construction/i.test(
+    fullTextContext
+  );
+
+  let archetypePreset = '';
+
+  if (isPhotographyOrCreative) {
+    archetypePreset = `
+- Archetype: Creative Photography / Fine Art Portfolio
+- Layout Philosophy: Editorial Lux, image-first presentation, wide padding.
+- Color Palette: Warm Dark Charcoal (#121212) or Warm Cream (#FAF8F5). Accent: Champagne Gold (#C5A059) or Muted Bronze.
+- Typography: Playfair Display / Cormorant Garamond (Serif Headings) + Montserrat / Inter (Sans Body).
+- Image Presentation: Borderless masonry grids, scale-105 smooth hover zoom transitions, lightbox preview overlays.
+- Card Styling: Borderless or ultra-subtle border (border-white/10), dark ambient glow.`;
+  } else if (isCorporateOrMedical) {
+    archetypePreset = `
+- Archetype: Modern Corporate / Professional Services
+- Layout Philosophy: High trust, structured grid hierarchy, clear information architecture.
+- Color Palette: Clean Light (#FFFFFF / #F8FAFC) or Deep Navy (#0A192F). Accent: Royal Trust Blue or Slate Gold.
+- Typography: Plus Jakarta Sans or Inter (Clean Modern Sans-Serif).
+- Image Presentation: Rounded aspect-ratio cards with crisp shadows and subtle hover elevation.
+- Card Styling: Clean light surface (bg-white border border-slate-200 shadow-sm).`;
+  } else if (isTradeOrService) {
+    archetypePreset = `
+- Archetype: High-Conversion Local Trades & Services
+- Layout Philosophy: Action-oriented, direct callouts, friction-free booking.
+- Color Palette: High-Contrast Light (#F8FAFC) with bold primary callout colors (Industrial Orange/Red/Navy).
+- Typography: Oswald or Roboto (Bold Sans-Serif).
+- Image Presentation: Feature comparison cards, before/after showcase grids.
+- Card Styling: High contrast cards with bold border highlights and instant action buttons.`;
+  } else {
+    // ROBUST FALLBACK ENGINE FOR UNKNOWN INDUSTRIES
+    const totalImages = gallery?.length || 0;
+    const isImageDense = totalImages > 8;
+
+    if (isImageDense) {
+      archetypePreset = `
+- Archetype: Visual Portfolio / Specialized Showcase (Auto-Detected)
+- Layout Philosophy: Image-first editorial presentation with balanced whitespace.
+- Color Palette: Rich Dark Charcoal (#121212) or Soft Neutral (#F5F5F0) with contrast accent.
+- Typography: Playfair Display (Serif Headings) + Inter (Sans Body).
+- Image Presentation: Clean responsive masonry grid with hover micro-interactions.`;
+    } else {
+      archetypePreset = `
+- Archetype: Modern Business & Services (Auto-Detected)
+- Layout Philosophy: Clean, high-converting modern layout with clear visual hierarchy.
+- Color Palette: Modern High-Contrast Light (#FFFFFF / #F9FAFB) with Primary Brand Accent.
+- Typography: Plus Jakarta Sans / Inter (Modern Sans-Serif).
+- Image Presentation: Structured feature cards with smooth hover states.`;
+    }
+  }
+
+  // 2. Navigation Parity Mapping
+  const extractedRoutes = legacyUrls?.discovered || legacyUrls?.scraped || [];
+  const routeListFormatted = extractedRoutes.length > 0 
+    ? extractedRoutes.slice(0, 15).map(url => `- ${url}`).join('\n')
+    : '- / (Home)\n- /portfolio (Gallery)\n- /services (Services)\n- /about (About)\n- /contact (Contact)';
+
+  // 3. Build Mode Configuration Directive
+  const buildModeDirective = buildMode === 'TRIAL'
+    ? `
+- BUILD MODE: DEMO / TRIAL PREVIEW
+- IMAGE LOADING INSTRUCTION: Use remote image URLs directly from 'data/gallery-data.json'. Configure 'next.config.mjs' with required 'remotePatterns'. DO NOT attempt to load missing local image files.`
+    : `
+- BUILD MODE: PRODUCTION DEPLOYMENT
+- IMAGE LOADING INSTRUCTION: Map local static assets directly from '/public/assets/clients/...' referenced in 'data/gallery-data.json'. Use Next.js Image optimization out of the box.`;
+
+  // 4. Final Output Generation
+  return `Act as a Principal Frontend Engineer and Lead UI/UX Architect. Build a custom, production-ready Next.js 14 (App Router) web application for "${businessName}" from scratch using Tailwind CSS, Lucide React, and Framer Motion.
+
+==================================================
+1. AUTOMATED BRAND & DESIGN SYSTEM SPECIFICATIONS
+==================================================
+${archetypePreset}
+- Extracted Primary Color: ${theme?.palette?.primary || '#0ea5e9'}
+- Extracted Secondary Color: ${theme?.palette?.secondary || '#6366f1'}
+- Extracted Accent Color: ${theme?.palette?.accent || '#f59e0b'}
+- Extracted Background: ${theme?.palette?.bg || '#09090b'}
+
+==================================================
+2. MEDIA & DEPLOYMENT PIPELINE
+==================================================
+${buildModeDirective}
+
+==================================================
+3. NAVIGATION & STRUCTURAL PARITY
+==================================================
+- Preserve the client's original site structure and page links while modernizing the layout and user experience:
+${routeListFormatted}
+- Create an intuitive header navigation with desktop hover dropdowns/flyouts or interactive tabbed category filters.
+- Ensure all category routes render dynamic galleries filtered directly from 'data/gallery-data.json'.
+
+==================================================
+4. CONVERSION & SEO ARCHITECTURE
+==================================================
+- Inject valid LocalBusiness JSON-LD schema into 'app/layout.tsx'.
+- Primary Contact Phone / WhatsApp: ${contact?.whatsapp || contact?.phone || '083 479 9732'}
+- Direct Email: ${contact?.email || 'contact@domain.com'}
+- Include a sticky floating WhatsApp button and an interactive inquiry form that redirects to WhatsApp.
+
+==================================================
+5. CODE EXECUTION REQUIREMENTS
+==================================================
+- Write clean, modular, fully-typed TypeScript (.tsx) for every file.
+- Generate complete files without skipping code or using comments like "// rest of the code here".
+- Test component interactions with Framer Motion scroll and hover effects.
+
+Execute the build generation now.`;
+}

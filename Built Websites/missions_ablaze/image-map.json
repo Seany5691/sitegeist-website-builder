@@ -1,0 +1,247 @@
+{
+  "businessName": "Missions Ablaze",
+  "scrapedAt": "2026-09-04T09:53:50.872Z",
+  "totalImages": 40,
+  "logo": "/uploads/missions_ablaze/logo/logo.webp",
+  "hero": [
+    {
+      "url": "/uploads/missions_ablaze/hero/hero.webp",
+      "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20250312-WA0041.jpg",
+      "category": "hero",
+      "alt": "Missions Ablaze hero image"
+    }
+  ],
+  "categories": {
+    "Portfolio": {
+      "thumbnail": "/uploads/missions_ablaze/portfolio/img-003.webp",
+      "images": [
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-003.webp",
+          "alt": "charity South Africa",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20250227-WA0044.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-004.webp",
+          "alt": "food aid South Africa",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20210725-WA00492.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-032.webp",
+          "alt": "end hunger South Africa",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/24068726_1684886978223759_875498708311732544_o.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-030.webp",
+          "alt": "Portfolio photo 30",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/481469511_1056764353153226_8177353783647959799_n.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-001.webp",
+          "alt": "volunteer for hunger relief",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20250312-WA0041.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-008.webp",
+          "alt": "Portfolio photo 8",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-10-at-10.49.41-1024x768.jpeg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-002.webp",
+          "alt": "food aid South Africa",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20241208-WA0032.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-005.webp",
+          "alt": "Portfolio photo 5",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-10-at-10.50.40-1024x768.jpeg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-018.webp",
+          "alt": "food aid South Africa",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20240727-WA0047-852x1024.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-020.webp",
+          "alt": "Portfolio photo 20",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/482059328_1057766583053003_7033975432556024903_n.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-022.webp",
+          "alt": "Portfolio photo 22",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/482059328_1057766583053003_7033975432556024903_n-1.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-031.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165720-scaled.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-019.webp",
+          "alt": "Portfolio photo 19",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20240717_081715-1024x768.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-017.webp",
+          "alt": "missions ablaze team",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/WhatsApp-Image-2025-03-29-at-21.01.15-1.jpeg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-021.webp",
+          "alt": "Donate",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/481649588_1057410266421968_2821560209671894483_n-1-768x1024.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-036.webp",
+          "alt": "Portfolio photo 36",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/04/logoSQ.webp"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-007.webp",
+          "alt": "feed the hungry",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/IMG-20240806-WA0030-768x1024.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-024.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165954-1024x485.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-006.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165720-1024x485.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-023.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165556-1-1024x485.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-026.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165429-1024x485.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-009.webp",
+          "alt": "Portfolio photo 9",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/04/WhatsApp-Image-2025-04-10-at-11.00.18-768x1024.jpeg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-010.webp",
+          "alt": "Portfolio photo 10",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/SPAR.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-025.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165512-1024x485.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-033.webp",
+          "alt": "missions ablaze",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/18319354_351979338537837_4292238567461000320_o.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-014.webp",
+          "alt": "Portfolio photo 14",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/GRACE.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-027.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165324-1024x485.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-028.webp",
+          "alt": "Missions Ablaze Property",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/20250323_165316-1-1024x485.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-016.webp",
+          "alt": "Portfolio photo 16",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/NEON-OWL-MEDIA.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-029.webp",
+          "alt": "Portfolio photo 29",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/11/Artboard-2.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-035.webp",
+          "alt": "Portfolio photo 35",
+          "originalUrl": "https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/504460693_1132092598953734_2159540037097239834_n.png?stp=dst-png&cstp=mx852x316&ctp=s852x316&_nc_cat=111&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=HiWSAmD9pOgQ7kNvwHyb37n&_nc_oc=Adpxjev2EdjD9LN1-asywvyuuOR_4uaXrf3cCCaGJR7BsMrHjEDnbcozXVnMsRbQMkliEpwM9QeBgENarbhJhhE8&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=1J43QkH1G_PPsJ_LVfZlZw&_nc_ss=7920f&oh=00_AQKZU0Zg5zVd696z2StAvuMLhFjeZ3yGvzCXdp3wIdP3KA&oe=6AA07D17"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-011.webp",
+          "alt": "Portfolio photo 11",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/HDM.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-013.webp",
+          "alt": "Portfolio photo 13",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/CHECKERS.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-015.webp",
+          "alt": "Portfolio photo 15",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/ETERNAL-LEARNING.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-012.webp",
+          "alt": "Portfolio photo 12",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/WOOLWORTHS.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-037.webp",
+          "alt": "Portfolio photo 37",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/04/supershield-logo-2.jpg"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-038.webp",
+          "alt": "Portfolio photo 38",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/04/LOGO_KENSINGTON.png"
+        },
+        {
+          "src": "/uploads/missions_ablaze/portfolio/img-034.webp",
+          "alt": "Portfolio photo 34",
+          "originalUrl": "https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/504460693_1132092598953734_2159540037097239834_n.png?stp=dst-png_fb50_s320x320&_nc_cat=111&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=HiWSAmD9pOgQ7kNvwHyb37n&_nc_oc=Adpxjev2EdjD9LN1-asywvyuuOR_4uaXrf3cCCaGJR7BsMrHjEDnbcozXVnMsRbQMkliEpwM9QeBgENarbhJhhE8&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=1J43QkH1G_PPsJ_LVfZlZw&_nc_ss=7920f&oh=00_AQL3sYrb1iDGKSAhbjhwS4evR5T1NAB1ExOwGW95zYIbVg&oe=6AA07D17"
+        }
+      ]
+    },
+    "Food & Aid": {
+      "thumbnail": "/uploads/missions_ablaze/food-aid/img-001.webp",
+      "images": [
+        {
+          "src": "/uploads/missions_ablaze/food-aid/img-001.webp",
+          "alt": "Food & Aid photo 1",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/Missions-Ablaze-Donations1-457x1024-1-e1743278511710-293x300.jpg"
+        }
+      ]
+    },
+    "Team": {
+      "thumbnail": "/uploads/missions_ablaze/team/img-001.webp",
+      "images": [
+        {
+          "src": "/uploads/missions_ablaze/team/img-001.webp",
+          "alt": "Missions Ablaze logo",
+          "originalUrl": "https://missionsablaze.org.za/wp-content/uploads/2025/03/Missions-Ablaze-Logo-2025.png"
+        }
+      ]
+    }
+  },
+  "recommendedLayout": "filterable",
+  "presentationStyle": "editorial",
+  "assignments": {
+    "hero": "/uploads/missions_ablaze/portfolio/img-003.webp",
+    "about": "/uploads/missions_ablaze/portfolio/img-003.webp",
+    "thumbnails": {
+      "Portfolio": "/uploads/missions_ablaze/portfolio/img-003.webp",
+      "Food & Aid": "/uploads/missions_ablaze/food-aid/img-001.webp",
+      "Team": "/uploads/missions_ablaze/team/img-001.webp"
+    }
+  },
+  "qualitySummary": {
+    "averageScore": 6.5,
+    "highQualityCount": 15,
+    "lowQualityCount": 1
+  }
+}

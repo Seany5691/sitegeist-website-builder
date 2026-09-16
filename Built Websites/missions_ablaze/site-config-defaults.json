@@ -1,0 +1,110 @@
+{
+  "hero": {
+    "headline": "Hope Served Daily in Tongaat.",
+    "subheadline": "Since 1995, Missions Ablaze has provided nutritious meals and community support from our kitchen in Tongaat, KwaZulu-Natal. Your partnership fuels this vital work.",
+    "badge": "Serving Tongaat Since 1995 • Registered NPO & PBO",
+    "ctaText": "Become a Monthly Partner",
+    "ctaLink": "#contact",
+    "heroImageUrl": "/uploads/missions_ablaze/hero/hero.webp"
+  },
+  "about": {
+    "title": "",
+    "tagline": "",
+    "paragraph1": "",
+    "paragraph2": "",
+    "paragraph3": "",
+    "imageUrl": ""
+  },
+  "services": [
+    {
+      "title": "Community Kitchen",
+      "description": "Hot, nutritious meals prepared and served every weekday from our Tongaat location, providing a reliable source of nourishment.",
+      "icon": "Star"
+    },
+    {
+      "title": "Emergency Food Parcels",
+      "description": "Delivered to identified families in crisis, each parcel contains staple foods to support a household for several days.",
+      "icon": "Star"
+    },
+    {
+      "title": "School Feeding Support",
+      "description": "Supplementing meals at local schools to help children focus and learn, partnering directly with educators in the area.",
+      "icon": "Star"
+    },
+    {
+      "title": "Volunteer Coordination",
+      "description": "Organizing local volunteers for packing, distribution, and kitchen duties, creating a network of active care in Tongaat.",
+      "icon": "Star"
+    }
+  ],
+  "pricing": [],
+  "pageContent": {
+    "servicesTitle": "",
+    "servicesDescription": "",
+    "servicesCtaTitle": "",
+    "servicesCtaText": "",
+    "contactTitle": "",
+    "contactDescription": "",
+    "portfolioTitle": "",
+    "portfolioDescription": "",
+    "testimonialsTitle": "",
+    "testimonialsSubtitle": "",
+    "faqTitle": "",
+    "faqSubtitle": ""
+  },
+  "seo": {
+    "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+    "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+    "keywords": [
+      "Tongaat charity",
+      "food parcels KwaZulu-Natal",
+      "community kitchen Tongaat",
+      "Missions Ablaze",
+      "donate food aid KZN",
+      "NPO Tongaat",
+      "volunteer Tongaat"
+    ],
+    "openGraph": {
+      "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+      "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+      "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Missions Ablaze",
+      "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+      "telephone": "27329450185",
+      "email": "ablaze@missionsablaze.org.za",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Tongaat, KwaZulu-Natal",
+        "addressLocality": "Tongaat, KwaZulu-Natal",
+        "addressCountry": "ZA"
+      }
+    }
+  },
+  "designSystem": {
+    "seedId": "default",
+    "archetype": "Nonprofit, Charity & Humanitarian",
+    "artDirection": "warm-organic",
+    "typographyPairing": "modern-sans",
+    "headingFont": "Merriweather",
+    "bodyFont": "Source Sans Pro",
+    "densityProfile": "airy",
+    "decorativeIntensity": "subtle",
+    "motionIntensity": "subtle",
+    "colorPalette": {
+      "primary": "#1E5631",
+      "secondary": "#2D6A4F",
+      "accent": "#D4A843",
+      "bg": "#FFFBF5",
+      "text": "#1A1A1A"
+    }
+  }
+}

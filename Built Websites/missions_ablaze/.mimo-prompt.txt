@@ -1,0 +1,57 @@
+WORKING DIRECTORY: C:\Users\seany\OneDrive\Documents\Coding Projects\sitegeist_ecosystem\Websites\missions_ablaze
+You are ALREADY in the correct directory. All files are here. Do NOT search elsewhere.
+
+==================================================
+WHAT IS ALREADY BUILT (DO NOT MODIFY)
+==================================================
+Boilerplate: package.json, next.config.js, tsconfig.json, tailwind.config.ts, postcss.config.js, app/globals.css, app/layout.tsx
+Components: components/Hero.tsx (HeroCentered), components/Services.tsx (ServicesFeature), components/Gallery.tsx (GalleryCategories), components/Testimonials.tsx (TestimonialsGrid), components/Faq.tsx (FaqCards), components/Contact.tsx (ContactCentered), components/About.tsx (AboutVideo), components/Footer.tsx (FooterCentered), components/Header.tsx, components/WhatsAppWidget.tsx, components/AnimateOnScroll.tsx, components/ScrollToTop.tsx, components/CtaBanner.tsx, components/PricingTable.tsx
+Lib: lib/use-site-data.ts (fetches site-config.json and image-map.json at runtime)
+API: app/api/save-config/route.ts, app/api/upload/route.ts
+Dashboard: public/dashboard/ (DO NOT modify)
+Pages: app/dashboard/page.tsx (already has redirect)
+
+These components read ALL content from site-config.json via useSiteData(). They use CSS variables for colors. DO NOT modify them.
+
+==================================================
+WHAT YOU NEED TO CREATE
+==================================================
+1. app/page.tsx — Homepage with dynamic imports (MUST follow Rule 1 below)
+2. app/about/page.tsx, app/services/page.tsx, app/contact/page.tsx, app/portfolio/page.tsx — Sub-pages
+3. public/site-config.json — ALL website data (copywriting, services, testimonials, FAQ, hours, contact)
+4. public/image-map.json — Gallery data with categories and images
+5. public/seo.json — SEO metadata
+6. public/llms.txt — Business summary for AI models
+
+==================================================
+CRITICAL RULES (3 RULES — VIOLATION = BUILD FAILURE)
+==================================================
+
+RULE 1: DYNAMIC IMPORTS (NON-NEGOTIABLE)
+app/page.tsx MUST use this pattern:
+  'use client'
+  import dynamic from 'next/dynamic'
+  const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+  const Services = dynamic(() => import('@/components/Services'), { ssr: false })
+  // ... all components with { ssr: false }
+Static imports will crash the build with "Cannot read properties of null (reading 'useContext')".
+
+RULE 2: ZERO HARDCODED TEXT
+EVERY piece of text MUST come from site-config.json. Components read it via useSiteData().
+  BAD:  <h2>Our Work</h2>
+  GOOD: <h2>{config?.pageContent?.galleryTitle || 'Our Work'}</h2>
+
+RULE 3: NO ERROR PAGES
+Do NOT create app/error.tsx, app/404.tsx, app/500.tsx, app/not-found.tsx. Next.js handles these.
+
+==================================================
+READ THESE FILES FOR DETAILED GUIDANCE
+==================================================
+- prompt.md — Design seed, creative brief, business data, section order
+- .build-instructions/technical-rules.md — All technical rules with code examples
+- .build-instructions/design-system.md — Colors, typography, spacing for this business
+- .build-instructions/content-guide.md — Writing style, banned words, SEO rules
+- .build-instructions/data-schemas.md — Exact JSON structure for site-config.json, image-map.json
+- .build-instructions/visual-standards.md — Card geometry, contrast, micro-interactions
+
+START by reading prompt.md, then .build-instructions/technical-rules.md, then create app/page.tsx.

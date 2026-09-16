@@ -1,0 +1,20 @@
+{
+  "businessName": "Mamma & Mia Cakes And Catering",
+  "scrapedAt": "2026-09-02T16:51:30.101Z",
+  "totalImages": 0,
+  "logo": null,
+  "hero": [],
+  "categories": {},
+  "recommendedLayout": "cinematic",
+  "presentationStyle": "editorial",
+  "assignments": {
+    "hero": null,
+    "about": null,
+    "thumbnails": {}
+  },
+  "qualitySummary": {
+    "averageScore": 0,
+    "highQualityCount": 0,
+    "lowQualityCount": 0
+  }
+}

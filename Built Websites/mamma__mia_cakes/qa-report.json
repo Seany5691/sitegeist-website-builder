@@ -1,0 +1,30 @@
+{
+  "ruleBased": {
+    "overall": 7,
+    "accessibility": 4,
+    "contentQuality": 10,
+    "imageQuality": 9,
+    "structureScore": 4,
+    "issues": [],
+    "recommendations": [
+      "Consider adding more images for visual richness",
+      "Fix accessibility issues: add alt text, ARIA labels, and proper form labels",
+      "Fix structural issues: ensure all required files and pages exist"
+    ]
+  },
+  "llmJudge": {
+    "score": 0,
+    "breakdown": {
+      "visualHierarchy": 0,
+      "whitespace": 0,
+      "contrast": 0,
+      "imageQuality": 0,
+      "uniqueness": 0,
+      "overall": 0
+    },
+    "feedback": "LLM judge call failed — skipping visual scoring",
+    "recommendation": "pass"
+  },
+  "timestamp": "2026-09-02T17:13:24.171Z",
+  "buildFolder": "C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites\\mamma_mia_cakes_and_catering"
+}

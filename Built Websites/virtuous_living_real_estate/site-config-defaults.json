@@ -1,0 +1,98 @@
+{
+  "hero": {
+    "headline": "Your Trusted Partner in Finding the Perfect Home in Klerksdorp",
+    "subheadline": "At Virtuous Living Real Estate, we believe that every property journey should be guided by integrity, dedication, and a genuine commitment to your dreams. Let us help you find your place to call home.",
+    "badge": "Proudly Serving Klerksdorp & Surrounding Areas",
+    "ctaText": "Call Sean Jordaan Today on 072 108 3360 to Start Your Property Journey",
+    "ctaLink": "#contact",
+    "heroImageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.30808-6/707561603_122216824946307616_7496415081572575016_n.jpg?stp=dst-jpg_fb50_s320x320_tt6&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=7ibRVw1dhFcQ7kNvwH_2hSk&_nc_oc=Adqv4ajYr6Gm-YrrtECjvs0UsazUetVR_f5O6JWEWp7sHWFGHTPK_sodKlPVgmxPk1Y&_nc_zt=23&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQIuT47vuQu_570KnpaWF8uCXzfhIvEQTzeXcgEM-KS5bg&oe=6A9B6BDA"
+  },
+  "about": {
+    "title": "",
+    "tagline": "",
+    "paragraph1": "",
+    "paragraph2": "",
+    "paragraph3": "",
+    "imageUrl": ""
+  },
+  "services": [
+    {
+      "title": "Property Consultation",
+      "description": "Receive expert, one-on-one guidance tailored to your unique property goals, whether you are buying, selling, or investing in Klerksdorp.",
+      "icon": "Star"
+    },
+    {
+      "title": "Residential Sales",
+      "description": "We specialise in connecting families and individuals with their ideal homes across Klerksdorp's most sought-after neighbourhoods.",
+      "icon": "MessageCircle"
+    },
+    {
+      "title": "Property Listings & Marketing",
+      "description": "Benefit from professional property listings and strategic marketing designed to attract the right buyers and achieve the best possible price.",
+      "icon": "HelpCircle"
+    },
+    {
+      "title": "Client Support & After-Sales Service",
+      "description": "Our relationship does not end at the signing table. We provide ongoing support to ensure your complete satisfaction long after the deal is done.",
+      "icon": "Lightbulb"
+    },
+    {
+      "title": "Investment Solutions",
+      "description": "Explore lucrative property investment opportunities in and around Klerksdorp with expert advice to maximise your returns.",
+      "icon": "Star"
+    }
+  ],
+  "pricing": [],
+  "pageContent": {
+    "servicesTitle": "",
+    "servicesDescription": "",
+    "servicesCtaTitle": "",
+    "servicesCtaText": "",
+    "contactTitle": "",
+    "contactDescription": "",
+    "portfolioTitle": "",
+    "portfolioDescription": "",
+    "testimonialsTitle": "",
+    "testimonialsSubtitle": "",
+    "faqTitle": "",
+    "faqSubtitle": ""
+  },
+  "seo": {
+    "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+    "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+    "keywords": [
+      "Klerksdorp real estate",
+      "property for sale Klerksdorp",
+      "Virtuous Living Real Estate",
+      "Sean Jordaan real estate",
+      "homes for sale Klerksdorp",
+      "property consultation Klerksdorp",
+      "North West Province property",
+      "first-time homebuyer Klerksdorp"
+    ],
+    "openGraph": {
+      "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+      "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+      "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Virtuous Living Real Estate",
+      "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+      "telephone": "27721083360",
+      "email": "",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Klerksdorp",
+        "addressLocality": "Klerksdorp",
+        "addressCountry": "ZA"
+      }
+    }
+  }
+}

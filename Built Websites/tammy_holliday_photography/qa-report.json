@@ -1,0 +1,29 @@
+{
+  "ruleBased": {
+    "overall": 7,
+    "accessibility": 4,
+    "contentQuality": 10,
+    "imageQuality": 10,
+    "structureScore": 0,
+    "issues": [],
+    "recommendations": [
+      "Fix accessibility issues: add alt text, ARIA labels, and proper form labels",
+      "Fix structural issues: ensure all required files and pages exist"
+    ]
+  },
+  "llmJudge": {
+    "score": 0,
+    "breakdown": {
+      "visualHierarchy": 0,
+      "whitespace": 0,
+      "contrast": 0,
+      "imageQuality": 0,
+      "uniqueness": 0,
+      "overall": 0
+    },
+    "feedback": "LLM judge call failed — skipping visual scoring",
+    "recommendation": "pass"
+  },
+  "timestamp": "2026-08-28T15:33:43.264Z",
+  "buildFolder": "C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites\\tammy_holliday_photography"
+}

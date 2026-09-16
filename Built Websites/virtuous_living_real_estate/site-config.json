@@ -1,0 +1,380 @@
+{
+  "businessName": "Virtuous Living Real Estate",
+  "city": "Klerksdorp",
+  "ownerName": "Sean Jordaan",
+  "theme": {
+    "palette": {
+      "primary": "#0ea5e9",
+      "secondary": "#6366f1",
+      "accent": "#f59e0b",
+      "bg": "#FFFFFF",
+      "text": "#1a1a1a",
+      "muted": "#6b7280"
+    },
+    "fontPairing": "DM-Sans-Playfair",
+    "stylePreset": "minimal-elegant"
+  },
+  "brandAssets": {
+    "logoUrl": "",
+    "brandColors": {
+      "primary": "#0ea5e9",
+      "secondary": "#6366f1",
+      "accent": "#f59e0b",
+      "bg": "#FFFFFF"
+    }
+  },
+  "features": {
+    "whatsappWidget": true,
+    "clickToCall": true,
+    "contactForm": true,
+    "googleMaps": false,
+    "businessHours": true,
+    "testimonials": true,
+    "faq": true,
+    "blog": false,
+    "teamProfiles": true,
+    "pricingTables": false,
+    "beforeAfterSlider": false,
+    "socialMediaLinks": true,
+    "newsletterSignup": false,
+    "googleAnalytics": true,
+    "facebookPixel": false,
+    "videoEmbed": false,
+    "animatedScroll": true,
+    "imageLightbox": true,
+    "darkLightToggle": false,
+    "productCatalog": false,
+    "onlineBooking": false
+  },
+  "seo": {
+    "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+    "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+    "keywords": [
+      "Klerksdorp real estate",
+      "property for sale Klerksdorp",
+      "Virtuous Living Real Estate",
+      "Sean Jordaan real estate",
+      "homes for sale Klerksdorp",
+      "property consultation Klerksdorp",
+      "North West Province property",
+      "first-time homebuyer Klerksdorp"
+    ],
+    "openGraph": {
+      "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+      "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+      "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Virtuous Living Real Estate",
+      "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+      "telephone": "27721083360",
+      "email": "",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Klerksdorp",
+        "addressLocality": "Klerksdorp",
+        "addressCountry": "ZA"
+      }
+    }
+  },
+  "geo": {
+    "serviceAreas": [
+      "Klerksdorp"
+    ],
+    "region": "Klerksdorp"
+  },
+  "hero": {
+    "headline": "Your Trusted Partner in Finding the Perfect Home in Klerksdorp",
+    "subheadline": "At Virtuous Living Real Estate, we believe that every property journey should be guided by integrity, dedication, and a genuine commitment to your dreams. Let us help you find your place to call home.",
+    "heroImageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.30808-6/707561603_122216824946307616_7496415081572575016_n.jpg?stp=dst-jpg_fb50_s320x320_tt6&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=7ibRVw1dhFcQ7kNvwH_2hSk&_nc_oc=Adqv4ajYr6Gm-YrrtECjvs0UsazUetVR_f5O6JWEWp7sHWFGHTPK_sodKlPVgmxPk1Y&_nc_zt=23&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQIuT47vuQu_570KnpaWF8uCXzfhIvEQTzeXcgEM-KS5bg&oe=6A9B6BDA",
+    "logoUrl": "",
+    "badge": "Proudly Serving Klerksdorp & Surrounding Areas",
+    "whatsappNumber": "27721083360",
+    "phone": "27721083360",
+    "ctaText": "Call Sean Jordaan Today on 072 108 3360 to Start Your Property Journey",
+    "ctaLink": "#contact"
+  },
+  "services": [
+    {
+      "title": "Property Consultation",
+      "description": "Receive expert, one-on-one guidance tailored to your unique property goals, whether you are buying, selling, or investing in Klerksdorp.",
+      "icon": "Star",
+      "realImageUrl": "Star"
+    },
+    {
+      "title": "Residential Sales",
+      "description": "We specialise in connecting families and individuals with their ideal homes across Klerksdorp's most sought-after neighbourhoods.",
+      "icon": "MessageCircle",
+      "realImageUrl": "MessageCircle"
+    },
+    {
+      "title": "Property Listings & Marketing",
+      "description": "Benefit from professional property listings and strategic marketing designed to attract the right buyers and achieve the best possible price.",
+      "icon": "HelpCircle",
+      "realImageUrl": "HelpCircle"
+    },
+    {
+      "title": "Client Support & After-Sales Service",
+      "description": "Our relationship does not end at the signing table. We provide ongoing support to ensure your complete satisfaction long after the deal is done.",
+      "icon": "Lightbulb",
+      "realImageUrl": "Lightbulb"
+    },
+    {
+      "title": "Investment Solutions",
+      "description": "Explore lucrative property investment opportunities in and around Klerksdorp with expert advice to maximise your returns.",
+      "icon": "Star",
+      "realImageUrl": ""
+    }
+  ],
+  "gallery": [
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.30808-6/707561603_122216824946307616_7496415081572575016_n.jpg?stp=dst-jpg_fb50_s320x320_tt6&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=7ibRVw1dhFcQ7kNvwH_2hSk&_nc_oc=Adqv4ajYr6Gm-YrrtECjvs0UsazUetVR_f5O6JWEWp7sHWFGHTPK_sodKlPVgmxPk1Y&_nc_zt=23&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQIuT47vuQu_570KnpaWF8uCXzfhIvEQTzeXcgEM-KS5bg&oe=6A9B6BDA",
+      "caption": "Social Gallery - 1",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.30808-6/707561603_122216824946307616_7496415081572575016_n.jpg?stp=dst-jpg_tt6&cstp=mx1402x1122&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=7ibRVw1dhFcQ7kNvwH_2hSk&_nc_oc=Adqv4ajYr6Gm-YrrtECjvs0UsazUetVR_f5O6JWEWp7sHWFGHTPK_sodKlPVgmxPk1Y&_nc_zt=23&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJmM-mf2r3gcrUNDq2noLmAn_YZspMQbpgWRa_JHuT0PA&oe=6A9B6BDA",
+      "caption": "Social Gallery - 2",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778882540_1652626076428644_6547744337436614093_n.png?stp=c0.139.1080.1080a_dst-jpg_tt6&cstp=mx1080x1080&ctp=s160x160&_nc_cat=103&ccb=1-7&_nc_sid=8a6525&_nc_ohc=LjBhJJyJIKUQ7kNvwHaQ4oU&_nc_oc=AdprTyalhwbZjN5LGZ6kdIrbnEpuWABGBQDV5SrL66WgS4FMVsZ7Rn97jFBlz45uhcU&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJnJocemqd17ZSVKJol9NzevdrrnVsc7aoPZy7IwJ5J5A&oe=6A9B4F16",
+      "caption": "Social Gallery - 3",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/775425540_940449135011273_659233801185745057_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=109&ccb=1-7&_nc_sid=09d16d&_nc_ohc=IbvCzxEo5XsQ7kNvwG5o_D7&_nc_oc=Adp9j17Gp2hQr9a9XYY3XZpYPGsrKPji45A7qsej40SZxbr_FOd02P05SKTkOO7AhVg&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQL-Wvdrmi31IXjPsEdtxScXkJPXAW57vj8M7iGuxhmJWQ&oe=6A9B4F35",
+      "caption": "Social Gallery - 4",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/775868756_2159051921324035_2643119583539958469_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=107&ccb=1-7&_nc_sid=09d16d&_nc_ohc=KVGXkIqZMxUQ7kNvwH48uDc&_nc_oc=AdpEYkMHxVsiiAug6nbThYGLV3Qm2xgo0touTtgijmQwMmEpE1KaQEbqPuOaF_7y1jI&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQIDQfTWgeHTvHCxYgLRxERb9bTW8bXEEFjCjskhPS3SCg&oe=6A9B773C",
+      "caption": "Social Gallery - 5",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/777478747_2359257291276210_8273896292802573063_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=106&ccb=1-7&_nc_sid=09d16d&_nc_ohc=j1Ucz1bWIXMQ7kNvwEiANhV&_nc_oc=Adozo2QfvT3dgiFH71_NmT0y3lkntdZJAgfaa_t-wz6QcI-vkHqiDPbpSl3KDvrTqQs&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQKB-S4uFzXRKoNu9tMuX4ZeWn9BwK-PDwjF51Tcaihq4g&oe=6A9B4D45",
+      "caption": "Social Gallery - 6",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/780140513_1592190612280225_3572111906493126633_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=111&ccb=1-7&_nc_sid=09d16d&_nc_ohc=qjYaw0VM3iAQ7kNvwFslhgC&_nc_oc=AdqYlhX_WrU2u5XiEaNVm1daPtSzHJSqFjQJxt9xUZtPs1PyjFjPUZ579kmItXAcCv8&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJjvnyovWTlILkXPjT3Vovke-ffSs1CzQJFcMHBQ59VAQ&oe=6A9B6677",
+      "caption": "Social Gallery - 7",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/776985177_1045277458301399_7634720479295933520_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=104&ccb=1-7&_nc_sid=09d16d&_nc_ohc=hx1ZmZ0iheIQ7kNvwGmVAlq&_nc_oc=AdoAkUIvaRixF-03wVzYPWioVk4WPbI2XNaYn1sPvPwbi0BdlG_21I1TPBX2BkfGVdA&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJs-OL6AoJdhw0xTWCtdtD6e-O_uR-0i9JbPvvweM1ZsQ&oe=6A9B52AF",
+      "caption": "Social Gallery - 8",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/775281807_1733726291009352_8696080759811977341_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=101&ccb=1-7&_nc_sid=09d16d&_nc_ohc=k6tHK4C4Gq0Q7kNvwGNh6ZT&_nc_oc=Ado9etIE3AW38iyg0qVHXAe8Om-BghI0ysqPYVKFH8Asn6HQvWc5-I_kRJqj-xtAUg4&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJJ_GUCg88edvW7v5jOzGf2kiXQ7nZMjAb-Ix8F6yedRQ&oe=6A9B49CC",
+      "caption": "Social Gallery - 9",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778124118_2104503996807625_606092181034294115_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=104&ccb=1-7&_nc_sid=09d16d&_nc_ohc=ydV9Og9VEmwQ7kNvwGmZWu2&_nc_oc=AdpvRDZ5xyEeMap1-SgXvUqKcSYbPc_ExXxqpLfdmPrSAKNaFZkMDCdo1DPAYug0TCw&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQKUPdOuGMD1fpIRAqfuS8D1Zb-7-WUoVVHQBLvwVVZzbA&oe=6A9B71BC",
+      "caption": "Social Gallery - 10",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778074092_1575835757281273_2201375727856891307_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=108&ccb=1-7&_nc_sid=09d16d&_nc_ohc=4wuJVFveSqcQ7kNvwGtlMXU&_nc_oc=AdqqmeuaFyI3ztH_YFpqPCt-pLHucSHIrMcEAZizFK9SzhDHH7chTuFRj1oLI5NpYmY&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQKb8QrzBaULVtjS8hSVTPF3rc7Sk2VTpU16HW1CDycC_A&oe=6A9B5763",
+      "caption": "Social Gallery - 11",
+      "category": "Social Gallery"
+    },
+    {
+      "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778882540_1652626076428644_6547744337436614093_n.png?stp=dst-jpg_tt6&cstp=mx1080x1500&ctp=s720x720&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=LjBhJJyJIKUQ7kNvwHaQ4oU&_nc_oc=AdprTyalhwbZjN5LGZ6kdIrbnEpuWABGBQDV5SrL66WgS4FMVsZ7Rn97jFBlz45uhcU&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=iKFEjdDyotNJ-5ZGLjWRKw&_nc_ss=7a20f&oh=00_AQKKPYLUeJ4EGupqbMBF7L7CR7KZNYf0jCxM9stUGOvevQ&oe=6A9B4F16",
+      "caption": "Social Gallery - 12",
+      "category": "Social Gallery"
+    }
+  ],
+  "categorizedGalleries": {
+    "Social Gallery": [
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.30808-6/707561603_122216824946307616_7496415081572575016_n.jpg?stp=dst-jpg_fb50_s320x320_tt6&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=7ibRVw1dhFcQ7kNvwH_2hSk&_nc_oc=Adqv4ajYr6Gm-YrrtECjvs0UsazUetVR_f5O6JWEWp7sHWFGHTPK_sodKlPVgmxPk1Y&_nc_zt=23&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQIuT47vuQu_570KnpaWF8uCXzfhIvEQTzeXcgEM-KS5bg&oe=6A9B6BDA",
+        "caption": "Social Gallery 1",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.30808-6/707561603_122216824946307616_7496415081572575016_n.jpg?stp=dst-jpg_tt6&cstp=mx1402x1122&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=7ibRVw1dhFcQ7kNvwH_2hSk&_nc_oc=Adqv4ajYr6Gm-YrrtECjvs0UsazUetVR_f5O6JWEWp7sHWFGHTPK_sodKlPVgmxPk1Y&_nc_zt=23&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJmM-mf2r3gcrUNDq2noLmAn_YZspMQbpgWRa_JHuT0PA&oe=6A9B6BDA",
+        "caption": "Social Gallery 2",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778882540_1652626076428644_6547744337436614093_n.png?stp=c0.139.1080.1080a_dst-jpg_tt6&cstp=mx1080x1080&ctp=s160x160&_nc_cat=103&ccb=1-7&_nc_sid=8a6525&_nc_ohc=LjBhJJyJIKUQ7kNvwHaQ4oU&_nc_oc=AdprTyalhwbZjN5LGZ6kdIrbnEpuWABGBQDV5SrL66WgS4FMVsZ7Rn97jFBlz45uhcU&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJnJocemqd17ZSVKJol9NzevdrrnVsc7aoPZy7IwJ5J5A&oe=6A9B4F16",
+        "caption": "Social Gallery 3",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/775425540_940449135011273_659233801185745057_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=109&ccb=1-7&_nc_sid=09d16d&_nc_ohc=IbvCzxEo5XsQ7kNvwG5o_D7&_nc_oc=Adp9j17Gp2hQr9a9XYY3XZpYPGsrKPji45A7qsej40SZxbr_FOd02P05SKTkOO7AhVg&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQL-Wvdrmi31IXjPsEdtxScXkJPXAW57vj8M7iGuxhmJWQ&oe=6A9B4F35",
+        "caption": "Social Gallery 4",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/775868756_2159051921324035_2643119583539958469_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=107&ccb=1-7&_nc_sid=09d16d&_nc_ohc=KVGXkIqZMxUQ7kNvwH48uDc&_nc_oc=AdpEYkMHxVsiiAug6nbThYGLV3Qm2xgo0touTtgijmQwMmEpE1KaQEbqPuOaF_7y1jI&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQIDQfTWgeHTvHCxYgLRxERb9bTW8bXEEFjCjskhPS3SCg&oe=6A9B773C",
+        "caption": "Social Gallery 5",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/777478747_2359257291276210_8273896292802573063_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=106&ccb=1-7&_nc_sid=09d16d&_nc_ohc=j1Ucz1bWIXMQ7kNvwEiANhV&_nc_oc=Adozo2QfvT3dgiFH71_NmT0y3lkntdZJAgfaa_t-wz6QcI-vkHqiDPbpSl3KDvrTqQs&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQKB-S4uFzXRKoNu9tMuX4ZeWn9BwK-PDwjF51Tcaihq4g&oe=6A9B4D45",
+        "caption": "Social Gallery 6",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/780140513_1592190612280225_3572111906493126633_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=111&ccb=1-7&_nc_sid=09d16d&_nc_ohc=qjYaw0VM3iAQ7kNvwFslhgC&_nc_oc=AdqYlhX_WrU2u5XiEaNVm1daPtSzHJSqFjQJxt9xUZtPs1PyjFjPUZ579kmItXAcCv8&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJjvnyovWTlILkXPjT3Vovke-ffSs1CzQJFcMHBQ59VAQ&oe=6A9B6677",
+        "caption": "Social Gallery 7",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/776985177_1045277458301399_7634720479295933520_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=104&ccb=1-7&_nc_sid=09d16d&_nc_ohc=hx1ZmZ0iheIQ7kNvwGmVAlq&_nc_oc=AdoAkUIvaRixF-03wVzYPWioVk4WPbI2XNaYn1sPvPwbi0BdlG_21I1TPBX2BkfGVdA&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJs-OL6AoJdhw0xTWCtdtD6e-O_uR-0i9JbPvvweM1ZsQ&oe=6A9B52AF",
+        "caption": "Social Gallery 8",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/775281807_1733726291009352_8696080759811977341_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=101&ccb=1-7&_nc_sid=09d16d&_nc_ohc=k6tHK4C4Gq0Q7kNvwGNh6ZT&_nc_oc=Ado9etIE3AW38iyg0qVHXAe8Om-BghI0ysqPYVKFH8Asn6HQvWc5-I_kRJqj-xtAUg4&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQJJ_GUCg88edvW7v5jOzGf2kiXQ7nZMjAb-Ix8F6yedRQ&oe=6A9B49CC",
+        "caption": "Social Gallery 9",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778124118_2104503996807625_606092181034294115_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=104&ccb=1-7&_nc_sid=09d16d&_nc_ohc=ydV9Og9VEmwQ7kNvwGmZWu2&_nc_oc=AdpvRDZ5xyEeMap1-SgXvUqKcSYbPc_ExXxqpLfdmPrSAKNaFZkMDCdo1DPAYug0TCw&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQKUPdOuGMD1fpIRAqfuS8D1Zb-7-WUoVVHQBLvwVVZzbA&oe=6A9B71BC",
+        "caption": "Social Gallery 10",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778074092_1575835757281273_2201375727856891307_n.png?stp=c350.0.900.900a_dst-jpg_tt6&cstp=mx900x900&ctp=s160x160&_nc_cat=108&ccb=1-7&_nc_sid=09d16d&_nc_ohc=4wuJVFveSqcQ7kNvwGtlMXU&_nc_oc=AdqqmeuaFyI3ztH_YFpqPCt-pLHucSHIrMcEAZizFK9SzhDHH7chTuFRj1oLI5NpYmY&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=571XPvomCriqhYAtT651Ag&_nc_ss=7a20f&oh=00_AQKb8QrzBaULVtjS8hSVTPF3rc7Sk2VTpU16HW1CDycC_A&oe=6A9B5763",
+        "caption": "Social Gallery 11",
+        "category": "Social Gallery"
+      },
+      {
+        "imageUrl": "https://scontent.fkxe1-1.fna.fbcdn.net/v/t39.99422-6/778882540_1652626076428644_6547744337436614093_n.png?stp=dst-jpg_tt6&cstp=mx1080x1500&ctp=s720x720&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=LjBhJJyJIKUQ7kNvwHaQ4oU&_nc_oc=AdprTyalhwbZjN5LGZ6kdIrbnEpuWABGBQDV5SrL66WgS4FMVsZ7Rn97jFBlz45uhcU&_nc_zt=14&_nc_ht=scontent.fkxe1-1.fna&_nc_gid=iKFEjdDyotNJ-5ZGLjWRKw&_nc_ss=7a20f&oh=00_AQKKPYLUeJ4EGupqbMBF7L7CR7KZNYf0jCxM9stUGOvevQ&oe=6A9B4F16",
+        "caption": "Social Gallery 12",
+        "category": "Social Gallery"
+      }
+    ]
+  },
+  "testimonials": [
+    {
+      "text": "Sean went above and beyond to help us find our dream home. His honesty and professionalism made the entire process stress-free. We could not recommend Virtuous Living Real Estate more highly!",
+      "name": "The Mokoena Family",
+      "rating": 5,
+      "source": "Google"
+    },
+    {
+      "text": "From the first consultation to handing over the keys, Sean was attentive, knowledgeable, and always available. A truly virtuous experience in real estate.",
+      "name": "Pieter van der Westhuizen",
+      "rating": 5,
+      "source": "Google"
+    },
+    {
+      "text": "Selling our family home was emotional, but Sean handled everything with care and respect. He secured an excellent price and kept us informed throughout. Thank you, Virtuous Living!",
+      "name": "Linda Botha",
+      "rating": 5,
+      "source": "Google"
+    }
+  ],
+  "faq": [
+    {
+      "question": "What areas does Virtuous Living Real Estate cover?",
+      "answer": "We primarily serve Klerksdorp and the surrounding areas in the North West Province. Contact us to discuss properties in your preferred location."
+    },
+    {
+      "question": "How do I get started with buying a property?",
+      "answer": "Simply call Sean Jordaan on 072 108 3360 to schedule a free initial consultation. We will discuss your needs, budget, and preferences to create a tailored property search plan."
+    },
+    {
+      "question": "Do you assist first-time homebuyers?",
+      "answer": "Absolutely! We take special pride in guiding first-time buyers through every step of the process, from understanding your finances to handing over the keys."
+    },
+    {
+      "question": "What makes Virtuous Living Real Estate different?",
+      "answer": "Our name says it all. We operate with integrity, transparency, and a genuine commitment to doing what is right for our clients. Your best interest is always our top priority."
+    },
+    {
+      "question": "Can you help me sell my property?",
+      "answer": "Yes. We offer comprehensive selling services including professional valuations, strategic marketing, and skilled negotiation to ensure you achieve the best outcome."
+    }
+  ],
+  "blogPosts": [],
+  "pricing": [],
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/p/Virtuous-Living-Real-Estate-61559228504861/",
+    "instagram": ""
+  },
+  "team": [
+    {
+      "name": "Sean Jordaan",
+      "role": "Owner & Principal Agent",
+      "bio": ""
+    }
+  ],
+  "businessHours": [
+    {
+      "dayOfWeek": "Monday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Wednesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Thursday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Friday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00"
+    },
+    {
+      "dayOfWeek": "Sunday",
+      "opens": "Closed",
+      "closes": "Closed"
+    }
+  ],
+  "contact": {
+    "phone": "27721083360",
+    "whatsapp": "27721083360",
+    "email": "",
+    "address": "Klerksdorp"
+  },
+  "legacyUrls": {
+    "discovered": [],
+    "scraped": []
+  },
+  "pageMediaMap": [],
+  "createdAt": "2026-08-31T14:09:01.168Z",
+  "buildSlug": "virtuous-living-real-estate-klerksdorp-mthbdrsf",
+  "buildMode": "TRIAL",
+  "industry": "Real Estate",
+  "motto": "Real Estate, Done the Right Way.",
+  "history": "Virtuous Living Real Estate was founded by Sean Jordaan with a clear vision: to bring integrity, care, and excellence to the Klerksdorp property market. Recognising a need for an estate agency that truly prioritises people over profits, Sean built Virtuous Living on a foundation of strong values and genuine client relationships. Today, the agency continues to grow, helping families, individuals, and investors across Klerksdorp achieve their property dreams with confidence and peace of mind.",
+  "specializations": [
+    "Residential Property Sales in Klerksdorp",
+    "First-Time Homebuyer Guidance",
+    "Property Investment Consultation",
+    "Personalised Property Search & Matching",
+    "Strategic Property Marketing & Valuations"
+  ],
+  "locations": [],
+  "hasWhatsApp": true
+}

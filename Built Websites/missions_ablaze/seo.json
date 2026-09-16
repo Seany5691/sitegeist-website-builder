@@ -1,0 +1,37 @@
+{
+  "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+  "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+  "keywords": [
+    "Tongaat charity",
+    "food parcels KwaZulu-Natal",
+    "community kitchen Tongaat",
+    "Missions Ablaze",
+    "donate food aid KZN",
+    "NPO Tongaat",
+    "volunteer Tongaat"
+  ],
+  "openGraph": {
+    "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+    "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+    "type": "website"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Missions Ablaze | Food Aid & Community Kitchen in Tongaat, KZN",
+    "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185."
+  },
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Missions Ablaze",
+    "description": "Missions Ablaze, a registered NPO & PBO in Tongaat, provides daily meals and food parcels across KwaZulu-Natal. Donate or volunteer. Call 032 945 0185.",
+    "telephone": "27329450185",
+    "email": "ablaze@missionsablaze.org.za",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Tongaat, KwaZulu-Natal",
+      "addressLocality": "Tongaat, KwaZulu-Natal",
+      "addressCountry": "ZA"
+    }
+  }
+}

@@ -1,0 +1,311 @@
+You are building a complete Next.js 14 website for tammy_holliday_photography.
+
+BOILERPLATE FILES ARE ALREADY CREATED:
+- package.json (with all dependencies)
+- next.config.js
+- tsconfig.json
+- tailwind.config.ts
+- postcss.config.js
+- app/globals.css (with CSS variables)
+- app/layout.tsx (with fonts, metadata, JSON-LD)
+- components/Header.tsx (pre-generated with navigation, mobile menu)
+- components/WhatsAppWidget.tsx (pre-generated with WhatsApp integration)
+
+A DASHBOARD HAS BEEN DEPLOYED TO public/dashboard/:
+- Dashboard files are in public/dashboard/ (index.html, assets/)
+- Dashboard is configured for this business with login credentials
+- Login: Username = "Tammy Holliday Photography", Password = "TammyHollidayPhotography@2026!"
+- DO NOT modify the public/dashboard folder
+
+PRE-BUILT COMPONENTS ALREADY IN PLACE (DO NOT RECREATE — they read from site-config.json automatically):
+- components/Hero.tsx (HeroOverlapping variant)
+- components/Services.tsx (ServicesAsymmetric variant)
+- components/Gallery.tsx (GalleryCategories variant)
+- components/Testimonials.tsx (TestimonialsQuote variant)
+- components/Faq.tsx (FaqMinimal variant)
+- components/Contact.tsx (ContactSplit variant)
+- components/About.tsx (AboutLayered variant)
+- components/Footer.tsx (FooterFull variant)
+- components/Header.tsx (already generated)
+- components/WhatsAppWidget.tsx (already generated)
+- components/AnimateOnScroll.tsx (scroll animation wrapper)
+- app/dashboard/page.tsx (already has correct redirect)
+
+These components are PRE-BUILT and read all content from site-config.json via useSiteData().
+They use CSS variables for colors, so they automatically adapt to your design seed.
+DO NOT modify these component files. They work as-is.
+
+YOU NEED TO CREATE:
+- app/page.tsx (homepage — MUST use dynamic imports, see Rule 1D)
+- public/site-config.json (FINAL website data for dashboard, see Section 12)
+- public/image-map.json (FINAL gallery data for dashboard, see Section 12)
+- public/seo.json (SEO data for dashboard)
+- app/pricing/page.tsx (pricing page with all packages)
+- app/blog/page.tsx (blog listing page)
+- app/services/page.tsx (services page)
+- lib/use-site-data.ts (fetches site-config.json and image-map.json at runtime)
+- app/api/save-config/route.ts (saves siteConfig and imageMap to public/)
+- app/api/upload/route.ts (handles image uploads to public/uploads/)
+
+CRITICAL RULES (MUST FOLLOW - BUILD WILL FAIL IF IGNORED):
+
+WARNING: These rules are MANDATORY. Ignoring them will cause build failures and waste AI tokens.
+
+=== RULE 1: FRAMER MOTION SSR SAFETY (CRITICAL — #1 BUILD KILLER) ===
+
+framer-motion CANNOT run on the server. If ANY component using motion.* is rendered during
+Next.js static generation, the build crashes with: TypeError: Cannot read properties of null (reading 'useContext')
+
+THIS IS NON-NEGOTIABLE. Follow this EXACT pattern:
+
+RULE 1A — ALL framer-motion components MUST be wrapped with dynamic import (ssr: false):
+
+In app/page.tsx and any other page file that imports animated components, use this EXACT pattern:
+
+    'use client'
+    import dynamic from 'next/dynamic'
+
+    const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+    const Services = dynamic(() => import('@/components/Services'), { ssr: false })
+    const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
+    const Testimonials = dynamic(() => import('@/components/Testimonials'), { ssr: false })
+    const Faq = dynamic(() => import('@/components/Faq'), { ssr: false })
+    const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
+
+RULE 1B — Every component that uses framer-motion MUST also have "use client" as line 1:
+
+    'use client'
+    import { motion } from 'framer-motion'
+    // ... component code
+
+RULE 1C — NEVER use regular static imports for animated components in page files.
+    BAD:  import Hero from '@/components/Hero'
+    GOOD: const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+
+RULE 1D — app/page.tsx MUST use this EXACT pattern (copy it verbatim):
+
+    'use client'
+    import dynamic from 'next/dynamic'
+
+    const Header = dynamic(() => import('@/components/Header'), { ssr: false })
+    const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+    const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
+    const Testimonials = dynamic(() => import('@/components/Testimonials'), { ssr: false })
+    const Faq = dynamic(() => import('@/components/Faq'), { ssr: false })
+    const About = dynamic(() => import('@/components/About'), { ssr: false })
+    const Services = dynamic(() => import('@/components/Services'), { ssr: false })
+    const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
+    const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
+    const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
+
+RULE 1E — Sub-pages (about, services, portfolio, contact) MUST also use dynamic imports:
+
+    import type { Metadata } from 'next'
+    import dynamic from 'next/dynamic'
+
+    const Header = dynamic(() => import('@/components/Header'), { ssr: false })
+    const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
+    const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
+    const PageContent = dynamic(() => import('./PageContent'), { ssr: false })
+
+=== RULE 2: NEVER import from next/document (CRITICAL — #2 BUILD KILLER) ===
+
+NEVER import Html, Head, Main, NextScript from 'next/document'.
+These ONLY work in pages/_document.tsx which we DO NOT USE (App Router).
+The layout.tsx already handles the <html> and <body> structure.
+
+NEVER create a custom _document.tsx or _document.js.
+NEVER use <Html> tag in any component — the layout.tsx provides it.
+
+=== RULE 3: NO ERROR PAGES (MANDATORY) ===
+
+Do NOT create any of these files:
+- app/error.tsx, app/404.tsx, app/500.tsx, app/not-found.tsx
+- pages/_error.tsx, pages/404.tsx, pages/500.tsx
+- Any file that imports from 'next/document'
+
+Next.js handles error pages automatically. Creating them causes build failures.
+
+=== RULE 4: APP ROUTER ONLY ===
+
+- All pages go in app/ directory (NOT pages/)
+- Use app/page.tsx, app/about/page.tsx, etc.
+- Use layout.tsx for shared layout (already created)
+
+=== RULE 5: NEXT.JS IMAGE COMPONENT ===
+
+- Import: import Image from 'next/image'
+- Add "use client" if using Image with event handlers
+- Use unoptimized={true} for external URLs
+
+=== RULE 6: DASHBOARD PAGE (ALREADY CREATED — DO NOT MODIFY) ===
+
+app/dashboard/page.tsx is ALREADY generated by the boilerplate with the correct client-side redirect.
+Do NOT create or modify app/dashboard/page.tsx. Do NOT add Dashboard to navigation menu.
+Dashboard is only accessible by typing /dashboard in the URL.
+The dashboard HTML files are in public/dashboard/ — do NOT modify those either.
+
+=== RULE 7: IMAGES — STOCK IMAGES FOR CLEAN BUILDS (MANDATORY) ===
+
+When there are NO scraped images (image-map.json has 0 totalImages or empty categories),
+you MUST use stock images from Unsplash. NEVER use gradient placeholders or colored boxes.
+
+HERO IMAGE — Replace the gradient background with a real image:
+    <div className="absolute inset-0 bg-cover bg-center"
+         style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1920&q=80)' }} />
+    <div className="absolute inset-0 bg-black/50" />
+
+GALLERY IMAGES — Use <img> tags with Unsplash URLs, NOT gradient divs:
+    {items.map(item => (
+      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+    ))}
+
+FOUNDER/PORTRAIT — Use a relevant stock photo:
+    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80"
+         alt="Founder portrait" className="w-full h-full object-cover" />
+
+SUB-PAGE HEADERS — Use background images instead of plain gradients:
+    <section className="relative py-24 overflow-hidden">
+      <div className="absolute inset-0 bg-cover bg-center"
+           style={{ backgroundImage: 'url(https://images.unsplash.com/...)' }} />
+      <div className="absolute inset-0 bg-primary/80" />
+      <div className="relative max-w-4xl mx-auto px-4">...</div>
+    </section>
+
+Pick Unsplash images that match the industry (bakery → cakes/food, medical → clinic, etc.)
+
+=== RULE 8: API ROUTES (ALREADY CREATED — DO NOT MODIFY) ===
+
+app/api/save-config/route.ts and app/api/upload/route.ts are ALREADY generated by the boilerplate.
+Do NOT create or modify these files — they already work correctly.
+
+=== RULE 9: COMPONENTS MUST FETCH DATA AT RUNTIME (CRITICAL — DASHBOARD WILL NOT WORK WITHOUT THIS) ===
+
+lib/use-site-data.ts is ALREADY generated by the boilerplate. Do NOT create or modify it.
+components/AnimateOnScroll.tsx is ALSO already generated. Do NOT create or modify it.
+
+The dashboard saves changes to public/site-config.json and public/image-map.json.
+For those changes to appear on the actual website, components MUST fetch from these files at runtime.
+NEVER hardcode services, testimonials, gallery images, or other data in components.
+
+Import and use the pre-built hook in components:
+
+    import { useSiteData } from '@/lib/use-site-data'
+    import { AnimateOnScroll } from '@/components/AnimateOnScroll'
+    }
+
+Then use it in components:
+
+    'use client'
+    import { useSiteData } from '@/lib/use-site-data'
+
+    export default function Services() {
+      const { config } = useSiteData()
+      const services = config?.services || fallbackServices
+      // render from services data
+    }
+
+    export default function Gallery() {
+      const { imageMap } = useSiteData()
+      const categories = imageMap?.categories || {}
+      // render from categories data
+    }
+
+This ensures dashboard changes appear on the website immediately.
+
+=== RULE 10: ZERO HARDCODED COPYWRITING (CRITICAL — DASHBOARD WILL BE EMPTY WITHOUT THIS) ===
+
+EVERY piece of text on the website MUST come from site-config.json. This includes:
+- Hero: headline, subheadline, badge, CTA text
+- About: title, tagline, all paragraphs
+- Gallery/Portfolio: section heading and description
+- Services: section heading and description
+- Testimonials: section heading and subtitle
+- FAQ: section heading and subtitle
+- Contact: page title and description
+- Business hours: all days and times
+
+NEVER write hardcoded strings like:
+    BAD:  <h2>Our Work</h2>
+    GOOD: <h2>{config?.pageContent?.galleryTitle || 'Our Work'}</h2>
+
+    BAD:  <p>Browse our gallery of handcrafted creations</p>
+    GOOD: <p>{config?.pageContent?.gallerySubtitle || 'Browse our gallery'}</p>
+
+The fallback text (after ||) is only for the initial render before the config loads.
+The actual text MUST come from site-config.json so the dashboard can edit it.
+
+When you CREATE public/site-config.json, you MUST populate ALL fields:
+- hero.headline, hero.subheadline, hero.badge, hero.ctaText, hero.heroImageUrl
+- about.title, about.tagline, about.paragraph1, about.paragraph2, about.paragraph3
+- pageContent.servicesTitle, pageContent.galleryTitle, pageContent.testimonialsTitle,
+  pageContent.faqTitle, pageContent.contactTitle, pageContent.portfolioTitle,
+  and ALL their descriptions/subtitles
+- businessHours with all 7 days
+
+=== SUMMARY OF NON-COMPLIANCE CONSEQUENCES ===
+
+If you violate ANY of these rules:
+- Rule 1 violation → "Cannot read properties of null (reading 'useContext')" on EVERY page
+- Rule 2 violation → "<Html> should not be imported outside of pages/_document" error
+- Rule 3 violation → Build crashes during static generation of error pages
+- Rule 6 violation → Dashboard already exists, creating it again causes conflicts
+- Rule 7 violation → Website looks broken with empty gradient placeholders
+- Rule 8 violation → Dashboard saves don't persist to server
+- Rule 9 violation → Dashboard changes don't appear on the actual website
+- Rule 10 violation → Dashboard shows blank fields, client cannot edit any text
+
+These errors repeat on EVERY page and the build will fail completely. Follow the patterns exactly.
+
+INSTRUCTIONS:
+- Read prompt.md for ALL design specifications and content
+- Read site-config.json for business data, services, testimonials
+- Read image-map.json for gallery structure (categories with images)
+- Create ONLY the custom components and pages listed above
+- Use the existing boilerplate as-is (don't modify it)
+- Make it beautiful, professional, and UNIQUE
+
+GALLERY STRUCTURE:
+- Read image-map.json - it contains categories with images
+- Each category should be a separate gallery folder/card
+- When user clicks a category card, show all images from that category
+- Images must be displayed in the EXACT order from image-map.json
+- Do NOT show all images underneath the category cards - ONLY show the cards
+- If there are NO gallery categories, show ALL images in a flat gallery
+- Do NOT create gallery folders for non-gallery pages (About, Contact, Services, etc.)
+
+AFTER BUILDING ALL COMPONENTS — CREATE DASHBOARD DATA FILES:
+
+The dashboard at /dashboard needs data files in public/ to work. These are NEW files
+you CREATE with the FINAL website data. Do NOT copy the root-level scraped files.
+
+1. CREATE public/site-config.json with ALL final website data.
+   CRITICAL: EVERY piece of copywriting MUST be in this file. NEVER hardcode text in .tsx components.
+
+   Must include ALL of these sections:
+   - businessName, city, ownerName, phone, email, address
+   - hero: { headline, subheadline, badge, ctaText, ctaLink, heroImageUrl }
+   - about: { title, tagline, paragraph1, paragraph2, paragraph3, imageUrl }
+   - pageContent: { servicesTitle, servicesDescription, servicesCtaTitle, servicesCtaText,
+       contactTitle, contactDescription, portfolioTitle, portfolioDescription,
+       testimonialsTitle, testimonialsSubtitle, faqTitle, faqSubtitle,
+       galleryTitle, gallerySubtitle, aboutTitle, aboutSubtitle }
+   - services: [{ title, description, priceTag }]
+   - testimonials: [{ name, text, rating }]
+   - faq: [{ question, answer }]
+   - blogPosts, pricing, socialLinks, businessHours, logoUrl
+
+   Components read these via useSiteData() hook at runtime.
+
+2. CREATE public/image-map.json with ALL gallery data:
+   - Each category MUST have "thumbnail" and "images" fields:
+     { "categories": { "Category Name": { "thumbnail": "url", "images": ["url1", "url2"] } } }
+   - thumbnail = image shown on the category card (NOT inside the folder)
+   - If using stock images, include the Unsplash URLs
+
+3. CREATE public/seo.json with SEO data:
+   - title, description, keywords, openGraph, twitter, jsonLd
+
+4. CREATE public/llms.txt with business summary.
+
+START by reading prompt.md and creating app/page.tsx.

@@ -1,0 +1,165 @@
+{
+  "businessName": "Virtuous Living Real Estate",
+  "city": "Klerksdorp",
+  "ownerName": "Sean Jordaan",
+  "phone": "27721083360",
+  "email": "info@virtuousliving.co.za",
+  "address": "Klerksdorp, North West Province, South Africa",
+  "motto": "Real Estate, Done the Right Way.",
+
+  "hero": {
+    "headline": "Your Trusted Partner in Finding the Perfect Home in Klerksdorp",
+    "subheadline": "At Virtuous Living Real Estate, we believe that every property journey should be guided by integrity, dedication, and a genuine commitment to your dreams. Let us help you find your place to call home.",
+    "badge": "Proudly Serving Klerksdorp & Surrounding Areas",
+    "ctaText": "Call Sean Jordaan Today on 072 108 3360",
+    "ctaLink": "#contact",
+    "heroImageUrl": "/uploads/virtuous_living_real_estate/stock/stock-001.webp",
+    "stat1Value": "10+",
+    "stat1Label": "Years in Klerksdorp",
+    "stat2Value": "100+",
+    "stat2Label": "Families Housed",
+    "stat3Value": "24/7",
+    "stat3Label": "Availability"
+  },
+
+  "about": {
+    "title": "Our Story",
+    "tagline": "Real Estate, Done the Right Way.",
+    "paragraph1": "Virtuous Living Real Estate was founded by Sean Jordaan with a clear vision: to bring integrity, care, and excellence to the Klerksdorp property market. Recognising a need for an estate agency that truly prioritises people over profits, Sean built Virtuous Living on a foundation of strong values and genuine client relationships.",
+    "paragraph2": "Today, the agency continues to grow, helping families, individuals, and investors across Klerksdorp achieve their property dreams with confidence and peace of mind. Every property journey is personal, and we treat it that way.",
+    "paragraph3": "Whether you are buying your first home, selling a cherished family property, or exploring investment opportunities in the North West Province, Virtuous Living Real Estate is here to guide you every step of the way.",
+    "imageUrl": "/uploads/virtuous_living_real_estate/stock/stock-002.webp"
+  },
+
+  "pageContent": {
+    "servicesTitle": "How We Help You",
+    "servicesDescription": "From your first consultation to handing over the keys, we provide comprehensive property services tailored to your needs in Klerksdorp and surrounding areas.",
+    "servicesCtaTitle": "Ready to Start Your Property Journey?",
+    "servicesCtaText": "Call Sean Jordaan on 072 108 3360 for a free consultation. No pressure, just honest advice about your property options in Klerksdorp.",
+    "contactTitle": "Get In Touch",
+    "contactDescription": "Whether you are looking to buy, sell, or simply have a question about the Klerksdorp property market, we would love to hear from you.",
+    "portfolioTitle": "Our Portfolio",
+    "portfolioDescription": "Browse our collection of properties and moments from across Klerksdorp. Each image tells a story of families finding their perfect home.",
+    "testimonialsTitle": "What Our Clients Say",
+    "testimonialsSubtitle": "Real Stories, Real Results",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Questions & Answers",
+    "galleryTitle": "Our Work in Klerksdorp",
+    "gallerySubtitle": "A glimpse into the properties and communities we serve across the North West Province.",
+    "aboutTitle": "About Virtuous Living",
+    "aboutSubtitle": "Built on integrity, driven by results"
+  },
+
+  "services": [
+    {
+      "title": "Property Consultation",
+      "description": "Receive expert, one-on-one guidance tailored to your unique property goals, whether you are buying, selling, or investing in Klerksdorp.",
+      "priceTag": "Free Initial Consultation"
+    },
+    {
+      "title": "Residential Sales",
+      "description": "We specialise in connecting families and individuals with their ideal homes across Klerksdorp's most sought-after neighbourhoods.",
+      "priceTag": ""
+    },
+    {
+      "title": "Property Listings & Marketing",
+      "description": "Benefit from professional property listings and strategic marketing designed to attract the right buyers and achieve the best possible price.",
+      "priceTag": ""
+    },
+    {
+      "title": "Client Support & After-Sales Service",
+      "description": "Our relationship does not end at the signing table. We provide ongoing support to ensure your complete satisfaction long after the deal is done.",
+      "priceTag": ""
+    },
+    {
+      "title": "Investment Solutions",
+      "description": "Explore lucrative property investment opportunities in and around Klerksdorp with expert advice to maximise your returns.",
+      "priceTag": ""
+    }
+  ],
+
+  "testimonials": [
+    {
+      "text": "Sean went above and beyond to help us find our dream home. His honesty and professionalism made the entire process stress-free. We could not recommend Virtuous Living Real Estate more highly!",
+      "name": "The Mokoena Family",
+      "rating": 5,
+      "source": "Google"
+    },
+    {
+      "text": "From the first consultation to handing over the keys, Sean was attentive, knowledgeable, and always available. A truly virtuous experience in real estate.",
+      "name": "Pieter van der Westhuizen",
+      "rating": 5,
+      "source": "Google"
+    },
+    {
+      "text": "Selling our family home was emotional, but Sean handled everything with care and respect. He secured an excellent price and kept us informed throughout. Thank you, Virtuous Living!",
+      "name": "Linda Botha",
+      "rating": 5,
+      "source": "Google"
+    }
+  ],
+
+  "faq": [
+    {
+      "question": "What areas does Virtuous Living Real Estate cover?",
+      "answer": "We primarily serve Klerksdorp and the surrounding areas in the North West Province, including Stilfontein, Orkney, and Potchefstroom. Contact us to discuss properties in your preferred location."
+    },
+    {
+      "question": "How do I get started with buying a property?",
+      "answer": "Simply call Sean Jordaan on 072 108 3360 to schedule a free initial consultation. We will discuss your needs, budget, and preferences to create a tailored property search plan."
+    },
+    {
+      "question": "Do you assist first-time homebuyers?",
+      "answer": "Absolutely! We take special pride in guiding first-time buyers through every step of the process, from understanding your finances to handing over the keys."
+    },
+    {
+      "question": "What makes Virtuous Living Real Estate different?",
+      "answer": "Our name says it all. We operate with integrity, transparency, and a genuine commitment to doing what is right for our clients. Your best interest is always our top priority."
+    },
+    {
+      "question": "Can you help me sell my property?",
+      "answer": "Yes. We offer comprehensive selling services including professional valuations, strategic marketing, and skilled negotiation to ensure you achieve the best outcome."
+    }
+  ],
+
+  "blogPosts": [],
+  "pricing": [],
+
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/p/Virtuous-Living-Real-Estate-61559228504861/",
+    "instagram": "",
+    "twitter": ""
+  },
+
+  "businessHours": [
+    { "dayOfWeek": "Monday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Tuesday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Wednesday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Thursday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Friday", "opens": "08:00", "closes": "17:00" },
+    { "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" },
+    { "dayOfWeek": "Sunday", "opens": "Closed", "closes": "Closed" }
+  ],
+
+  "contact": {
+    "phone": "27721083360",
+    "whatsapp": "27721083360",
+    "email": "info@virtuousliving.co.za",
+    "address": "Klerksdorp, North West Province, South Africa"
+  },
+
+  "team": [
+    {
+      "name": "Sean Jordaan",
+      "role": "Owner & Principal Agent",
+      "bio": "Sean founded Virtuous Living Real Estate with a vision to bring integrity and excellence to the Klerksdorp property market. His hands-on approach and genuine care for clients have made him a trusted name in local real estate."
+    }
+  ],
+
+  "logoUrl": "",
+  "industry": "Real Estate",
+  "geo": {
+    "serviceAreas": ["Klerksdorp", "Stilfontein", "Orkney", "Potchefstroom", "North West Province"],
+    "region": "Klerksdorp"
+  }
+}

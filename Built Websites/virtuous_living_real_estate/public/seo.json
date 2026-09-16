@@ -1,0 +1,104 @@
+{
+  "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+  "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+  "keywords": [
+    "Klerksdorp real estate",
+    "property for sale Klerksdorp",
+    "Virtuous Living Real Estate",
+    "Sean Jordaan real estate",
+    "homes for sale Klerksdorp",
+    "property consultation Klerksdorp",
+    "North West Province property",
+    "first-time homebuyer Klerksdorp",
+    "residential sales Klerksdorp",
+    "property investment Klerksdorp"
+  ],
+  "openGraph": {
+    "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+    "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today.",
+    "type": "website",
+    "locale": "en_ZA"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Virtuous Living Real Estate | Klerksdorp Property Experts",
+    "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions. Contact owner Sean Jordaan on 072 108 3360 today."
+  },
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "Virtuous Living Real Estate",
+    "description": "Virtuous Living Real Estate in Klerksdorp offers expert property consultation, sales, and investment solutions.",
+    "telephone": "+27721083360",
+    "email": "info@virtuousliving.co.za",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Klerksdorp",
+      "addressLocality": "Klerksdorp",
+      "addressRegion": "North West Province",
+      "addressCountry": "ZA"
+    },
+    "areaServed": [
+      "Klerksdorp",
+      "Stilfontein",
+      "Orkney",
+      "Potchefstroom",
+      "North West Province"
+    ],
+    "founder": {
+      "@type": "Person",
+      "name": "Sean Jordaan"
+    },
+    "priceRange": "Varies",
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "17:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" }
+    ]
+  },
+  "faqSchema": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What areas does Virtuous Living Real Estate cover?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We primarily serve Klerksdorp and the surrounding areas in the North West Province, including Stilfontein, Orkney, and Potchefstroom."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get started with buying a property?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Simply call Sean Jordaan on 072 108 3360 to schedule a free initial consultation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you assist first-time homebuyers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely! We take special pride in guiding first-time buyers through every step of the process."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What makes Virtuous Living Real Estate different?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We operate with integrity, transparency, and a genuine commitment to doing what is right for our clients."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you help me sell my property?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We offer comprehensive selling services including professional valuations, strategic marketing, and skilled negotiation."
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "title": "Mamma & Mia Cakes & Catering | North West Bakery",
+  "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654.",
+  "keywords": [
+    "bakery North West",
+    "custom cakes North West",
+    "catering service",
+    "wedding cakes",
+    "birthday cakes",
+    "local bakery",
+    "Mamma & Mia Cakes",
+    "Lety Gibbon baker"
+  ],
+  "openGraph": {
+    "title": "Mamma & Mia Cakes & Catering | North West Bakery",
+    "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654.",
+    "type": "website"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Mamma & Mia Cakes & Catering | North West Bakery",
+    "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654."
+  },
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Mamma & Mia Cakes And Catering",
+    "description": "Mamma & Mia Cakes And Catering in North West. Custom cakes, event catering, and personalised service by Lety Gibbon. Handcrafted with love for your special moments. Call 072 156 5654.",
+    "telephone": "27721565654",
+    "email": "",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "North West",
+      "addressLocality": "North West",
+      "addressCountry": "ZA"
+    }
+  }
+}

@@ -1,0 +1,1146 @@
+{
+  "businessName": "Lekwa Security Services",
+  "city": "Lephalale",
+  "ownerName": "John Mashigo",
+  "theme": {
+    "palette": {
+      "primary": "#eecf91",
+      "secondary": "#e8c274",
+      "accent": "#f5e5c3",
+      "bg": "#0F172A",
+      "text": "#f5f5f5",
+      "muted": "#9ca3af"
+    },
+    "fontPairing": "Oswald-Roboto",
+    "stylePreset": "modern-clean"
+  },
+  "brandAssets": {
+    "logoUrl": "https://www.lekwasecurityservices.co.za//gallery/favicons/favicon-120x120.png",
+    "brandColors": {
+      "primary": "#eecf91",
+      "secondary": "#e8c274",
+      "accent": "#f5e5c3",
+      "bg": "#0F172A"
+    }
+  },
+  "features": {
+    "whatsappWidget": true,
+    "clickToCall": true,
+    "contactForm": true,
+    "googleMaps": false,
+    "businessHours": true,
+    "testimonials": true,
+    "faq": true,
+    "blog": false,
+    "teamProfiles": true,
+    "pricingTables": false,
+    "beforeAfterSlider": false,
+    "socialMediaLinks": false,
+    "newsletterSignup": false,
+    "googleAnalytics": true,
+    "facebookPixel": false,
+    "videoEmbed": false,
+    "animatedScroll": true,
+    "imageLightbox": true,
+    "darkLightToggle": false,
+    "productCatalog": false,
+    "onlineBooking": false
+  },
+  "seo": {
+    "title": "Lekwa Security Services | Lephalale Armed Response & Guarding",
+    "description": "Lekwa Security Services in Lephalale offers 24/7 armed response, drone surveillance, static guarding, and business security solutions. Contact John Mashigo today.",
+    "keywords": [
+      "Lephalale security services",
+      "armed response Lephalale",
+      "security company Limpopo",
+      "drone surveillance",
+      "static guarding Lephalale",
+      "business security Lephalale",
+      "John Mashigo security",
+      "24/7 security Lephalale."
+    ],
+    "openGraph": {
+      "title": "Lekwa Security Services | Lephalale Armed Response & Guarding",
+      "description": "Lekwa Security Services in Lephalale offers 24/7 armed response, drone surveillance, static guarding, and business security solutions. Contact John Mashigo today.",
+      "type": "website"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Lekwa Security Services | Lephalale Armed Response & Guarding",
+      "description": "Lekwa Security Services in Lephalale offers 24/7 armed response, drone surveillance, static guarding, and business security solutions. Contact John Mashigo today."
+    },
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Lekwa Security Services",
+      "description": "Lekwa Security Services in Lephalale offers 24/7 armed response, drone surveillance, static guarding, and business security solutions. Contact John Mashigo today.",
+      "telephone": "27140040336",
+      "email": "contact@lekwasecurityservices.co.za",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Lephalale",
+        "addressLocality": "Lephalale",
+        "addressCountry": "ZA"
+      }
+    }
+  },
+  "hero": {
+    "headline": "Trusted Security Solutions for Lephalale & Beyond",
+    "subheadline": "Providing reliable armed response, advanced drone surveillance, and professional guarding services to protect what matters most to you, 24/7.",
+    "heroImageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309012",
+    "logoUrl": "https://www.lekwasecurityservices.co.za//gallery/favicons/favicon-120x120.png",
+    "badge": "Locally Operated | Fully Compliant | Rapid Response",
+    "whatsappNumber": "27140040336",
+    "phone": "27140040336",
+    "ctaText": "Need Immediate Security Assistance?\n**Call Us Now:** 014 004 0336",
+    "ctaLink": "#contact"
+  },
+  "services": [
+    {
+      "title": "Armed Response",
+      "description": "Our rapid armed response units are available 24 hours a day, 7 days a week. We provide a decisive and immediate reaction to any alarm activation or security breach, ensuring your safety and the security of your property.",
+      "icon": "Star",
+      "realImageUrl": "Star"
+    },
+    {
+      "title": "Drone Security & Aerial Surveillance",
+      "description": "Utilize cutting-edge technology for superior oversight. Our drone services offer large-area perimeter monitoring, after-hours site patrols, and detailed aerial assessments to identify vulnerabilities and enhance situational awareness.",
+      "icon": "Star",
+      "realImageUrl": "Star"
+    },
+    {
+      "title": "Static Security & Guarding",
+      "description": "Provide a constant, visible deterrent with our professional static guarding services. Our trained officers are skilled in access control, patrol procedures, and incident reporting for commercial, industrial, and residential sites.",
+      "icon": "Star",
+      "realImageUrl": "Star"
+    },
+    {
+      "title": "Business Security Solutions",
+      "description": "We design and implement integrated security strategies for businesses. From risk assessments to the deployment of response teams and surveillance, we create secure environments that allow your business to thrive.",
+      "icon": "Star",
+      "realImageUrl": "Star"
+    }
+  ],
+  "gallery": [
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309012",
+      "caption": "Services - 1",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309012",
+      "caption": "Services - 2",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309012",
+      "caption": "Services - 3",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309013",
+      "caption": "Services - 4",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_fit.jpg?ts=1773309014",
+      "caption": "Services - 5",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/76477bf71b77e9f63cd465664526cafa_518x778_fit.jpg?ts=1773309015",
+      "caption": "Services - 6",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_498x332_fit.jpg?ts=1773309016",
+      "caption": "Services - 7",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_472x630_fit.jpg?ts=1773309016",
+      "caption": "Services - 8",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/dca9af17e4af88cef2d84ec816f4c965_fit.png",
+      "caption": "Services - 9",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_2122x1412_fit.jpg",
+      "caption": "Services - 10",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/css/__old_image__",
+      "caption": "Services - 11",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309017",
+      "caption": "Services - 12",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309017",
+      "caption": "Services - 13",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309019",
+      "caption": "Services - 14",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309019",
+      "caption": "Services - 15",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_fit.jpg",
+      "caption": "Services - 16",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_1202x800_fit.jpg",
+      "caption": "Services - 17",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/cbc17ffc9459f5a7453a75f713298dc1_960x602_fit.jpg",
+      "caption": "Services - 18",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/82e3160b77d53285d2d273350e0bf836_960x568_fit.jpg",
+      "caption": "Services - 19",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/87f6c292b3937847401fc14e898f0a9c_fit.jpg",
+      "caption": "Services - 20",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/ef26f77e3a21850baaa7fec1a37af58f_960x1440_fit.jpg",
+      "caption": "Services - 21",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/66ae4acb7efc37966bf077414fac070f_960x540_fit.jpg",
+      "caption": "Services - 22",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/57d3bb2975f37259aefb1c3f8c095275_960x1400_fit.jpg",
+      "caption": "Services - 23",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c4c6e4d70669a8385bc3e0294ace6c71_fit.jpg",
+      "caption": "Services - 24",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_960x540_fit.jpg",
+      "caption": "Services - 25",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309017",
+      "caption": "Services - 26",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309017",
+      "caption": "Services - 27",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309019",
+      "caption": "Services - 28",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309019",
+      "caption": "Services - 29",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_fit.jpg",
+      "caption": "Services - 30",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_1202x800_fit.jpg",
+      "caption": "Services - 31",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/cbc17ffc9459f5a7453a75f713298dc1_960x602_fit.jpg",
+      "caption": "Services - 32",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/82e3160b77d53285d2d273350e0bf836_960x568_fit.jpg",
+      "caption": "Services - 33",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/87f6c292b3937847401fc14e898f0a9c_fit.jpg",
+      "caption": "Services - 34",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/ef26f77e3a21850baaa7fec1a37af58f_960x1440_fit.jpg",
+      "caption": "Services - 35",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/66ae4acb7efc37966bf077414fac070f_960x540_fit.jpg",
+      "caption": "Services - 36",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/57d3bb2975f37259aefb1c3f8c095275_960x1400_fit.jpg",
+      "caption": "Services - 37",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c4c6e4d70669a8385bc3e0294ace6c71_fit.jpg",
+      "caption": "Services - 38",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_960x540_fit.jpg",
+      "caption": "Services - 39",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309019",
+      "caption": "Services - 40",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309019",
+      "caption": "Services - 41",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/2aca91a54d009fb5b8681e9f0d29d8f7_fit.png?ts=1773309020",
+      "caption": "Services - 42",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309020",
+      "caption": "Services - 43",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_960x540_fit.jpg",
+      "caption": "Services - 44",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/cbc17ffc9459f5a7453a75f713298dc1_960x602_fit.jpg",
+      "caption": "Services - 45",
+      "category": "Services"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309016",
+      "caption": "About - 46",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309016",
+      "caption": "About - 47",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_1200x674_fit.jpg?ts=1773309017",
+      "caption": "About - 48",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309017",
+      "caption": "About - 49",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_2400x1350_fit.jpg",
+      "caption": "About - 50",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/css/__old_image__",
+      "caption": "About - 51",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309016",
+      "caption": "About - 52",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309016",
+      "caption": "About - 53",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_1200x674_fit.jpg?ts=1773309017",
+      "caption": "About - 54",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309017",
+      "caption": "About - 55",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_2400x1350_fit.jpg",
+      "caption": "About - 56",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/css/__old_image__",
+      "caption": "About - 57",
+      "category": "About"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309019",
+      "caption": "Contact - 58",
+      "category": "Contact"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309019",
+      "caption": "Contact - 59",
+      "category": "Contact"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/2aca91a54d009fb5b8681e9f0d29d8f7_fit.png?ts=1773309019",
+      "caption": "Contact - 60",
+      "category": "Contact"
+    },
+    {
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309019",
+      "caption": "Contact - 61",
+      "category": "Contact"
+    }
+  ],
+  "categorizedGalleries": {
+    "Services": [
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309012",
+        "caption": "Services 1",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309012",
+        "caption": "Services 2",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309012",
+        "caption": "Services 3",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309013",
+        "caption": "Services 4",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_fit.jpg?ts=1773309014",
+        "caption": "Services 5",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/76477bf71b77e9f63cd465664526cafa_518x778_fit.jpg?ts=1773309015",
+        "caption": "Services 6",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_498x332_fit.jpg?ts=1773309016",
+        "caption": "Services 7",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_472x630_fit.jpg?ts=1773309016",
+        "caption": "Services 8",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/dca9af17e4af88cef2d84ec816f4c965_fit.png",
+        "caption": "Services 9",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_2122x1412_fit.jpg",
+        "caption": "Services 10",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/css/__old_image__",
+        "caption": "Services 11",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309017",
+        "caption": "Services 12",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309017",
+        "caption": "Services 13",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309019",
+        "caption": "Services 14",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309019",
+        "caption": "Services 15",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_fit.jpg",
+        "caption": "Services 16",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_1202x800_fit.jpg",
+        "caption": "Services 17",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/cbc17ffc9459f5a7453a75f713298dc1_960x602_fit.jpg",
+        "caption": "Services 18",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/82e3160b77d53285d2d273350e0bf836_960x568_fit.jpg",
+        "caption": "Services 19",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/87f6c292b3937847401fc14e898f0a9c_fit.jpg",
+        "caption": "Services 20",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/ef26f77e3a21850baaa7fec1a37af58f_960x1440_fit.jpg",
+        "caption": "Services 21",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/66ae4acb7efc37966bf077414fac070f_960x540_fit.jpg",
+        "caption": "Services 22",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/57d3bb2975f37259aefb1c3f8c095275_960x1400_fit.jpg",
+        "caption": "Services 23",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c4c6e4d70669a8385bc3e0294ace6c71_fit.jpg",
+        "caption": "Services 24",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_960x540_fit.jpg",
+        "caption": "Services 25",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309019",
+        "caption": "Services 26",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309019",
+        "caption": "Services 27",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/2aca91a54d009fb5b8681e9f0d29d8f7_fit.png?ts=1773309020",
+        "caption": "Services 28",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309020",
+        "caption": "Services 29",
+        "category": "Services"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_960x540_fit.jpg",
+        "caption": "Services 30",
+        "category": "Services"
+      }
+    ],
+    "About": [
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309016",
+        "caption": "About 1",
+        "category": "About"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309016",
+        "caption": "About 2",
+        "category": "About"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_1200x674_fit.jpg?ts=1773309017",
+        "caption": "About 3",
+        "category": "About"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309017",
+        "caption": "About 4",
+        "category": "About"
+      },
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_2400x1350_fit.jpg",
+        "caption": "About 5",
+        "category": "About"
+      }
+    ],
+    "Contact": [
+      {
+        "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/2aca91a54d009fb5b8681e9f0d29d8f7_fit.png?ts=1773309019",
+        "caption": "Contact 1",
+        "category": "Contact"
+      }
+    ]
+  },
+  "testimonials": [
+    {
+      "text": "Lekwa Security's response time is impeccable. They are professional, courteous, and give us great confidence in the safety of our business premises. Highly recommended.",
+      "name": "S. Botha, Commercial Client",
+      "rating": 5,
+      "source": "Google"
+    }
+  ],
+  "faq": [
+    {
+      "question": "What areas do you service?",
+      "answer": "We are based in Lephalale and primarily provide security services throughout the Lephalale region and surrounding areas in Limpopo."
+    },
+    {
+      "question": "Are your security officers trained and registered?",
+      "answer": "Yes. All our security personnel undergo rigorous training and are registered with the Private Security Industry Regulatory Authority (PSiRA) as required by law."
+    },
+    {
+      "question": "How can I get a quote for security services?",
+      "answer": "You can contact our office directly at 014 004 0336 or email contact@lekwasecurityservices.co.za for a free, no-obligation consultation and quote tailored to your needs."
+    }
+  ],
+  "blogPosts": [
+    {
+      "title": "404 Not Found",
+      "excerpt": "404 Not Found",
+      "images": [],
+      "url": "https://www.lekwasecurityservices.co.za/blog"
+    },
+    {
+      "title": "404 Not Found",
+      "excerpt": "404 Not Found",
+      "images": [],
+      "url": "https://www.lekwasecurityservices.co.za/news"
+    },
+    {
+      "title": "404 Not Found",
+      "excerpt": "404 Not Found",
+      "images": [],
+      "url": "https://www.lekwasecurityservices.co.za/stories"
+    },
+    {
+      "title": "404 Not Found",
+      "excerpt": "404 Not Found",
+      "images": [],
+      "url": "https://www.lekwasecurityservices.co.za/articles"
+    },
+    {
+      "title": "404 Not Found",
+      "excerpt": "404 Not Found",
+      "images": [],
+      "url": "https://www.lekwasecurityservices.co.za/posts"
+    },
+    {
+      "title": "404 Not Found",
+      "excerpt": "404 Not Found",
+      "images": [],
+      "url": "https://www.lekwasecurityservices.co.za/updates"
+    }
+  ],
+  "pricing": [
+    {
+      "service": "580",
+      "price": "RR"
+    },
+    {
+      "service": "1770",
+      "price": "RR"
+    },
+    {
+      "service": "ECTIVE SERVICES\n\nStudy Courses",
+      "price": "R580"
+    },
+    {
+      "service": "Special Courses",
+      "price": "R1770"
+    }
+  ],
+  "socialLinks": {
+    "facebook": "",
+    "instagram": ""
+  },
+  "team": [
+    {
+      "name": "John Mashigo",
+      "role": "Owner & Director",
+      "bio": "",
+      "imageUrl": "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309016"
+    }
+  ],
+  "businessHours": [
+    {
+      "dayOfWeek": "Monday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Wednesday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Thursday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Friday",
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00"
+    },
+    {
+      "dayOfWeek": "Sunday",
+      "opens": "Closed",
+      "closes": "Closed"
+    }
+  ],
+  "contact": {
+    "phone": "27140040336",
+    "whatsapp": "27140040336",
+    "email": "contact@lekwasecurityservices.co.za",
+    "address": "Lephalale"
+  },
+  "legacyUrls": {
+    "discovered": [],
+    "scraped": []
+  },
+  "pageMediaMap": [
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za",
+      "title": "Https:  www.lekwasecurityservices.co.za",
+      "images": [
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309012",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309012",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309012",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309013",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_fit.jpg?ts=1773309014",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/76477bf71b77e9f63cd465664526cafa_518x778_fit.jpg?ts=1773309015",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_498x332_fit.jpg?ts=1773309016",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_472x630_fit.jpg?ts=1773309016",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/dca9af17e4af88cef2d84ec816f4c965_fit.png",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_2122x1412_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/css/__old_image__"
+      ]
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/about",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-about",
+      "title": "Https:  www.lekwasecurityservices.co.za about",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/about-us",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-about-us",
+      "title": "Https:  www.lekwasecurityservices.co.za about us",
+      "images": [
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309016",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309016",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_1200x674_fit.jpg?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_2400x1350_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/css/__old_image__"
+      ]
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/services",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-services",
+      "title": "Https:  www.lekwasecurityservices.co.za services",
+      "images": [
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_1202x800_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/cbc17ffc9459f5a7453a75f713298dc1_960x602_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/82e3160b77d53285d2d273350e0bf836_960x568_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/87f6c292b3937847401fc14e898f0a9c_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/ef26f77e3a21850baaa7fec1a37af58f_960x1440_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/66ae4acb7efc37966bf077414fac070f_960x540_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/57d3bb2975f37259aefb1c3f8c095275_960x1400_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c4c6e4d70669a8385bc3e0294ace6c71_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_960x540_fit.jpg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/service",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-service",
+      "title": "Https:  www.lekwasecurityservices.co.za service",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/contact",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-contact",
+      "title": "Https:  www.lekwasecurityservices.co.za contact",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/contact-us",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-contact-us",
+      "title": "Https:  www.lekwasecurityservices.co.za contact us",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/products",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-products",
+      "title": "Https:  www.lekwasecurityservices.co.za products",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/team",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-team",
+      "title": "Https:  www.lekwasecurityservices.co.za team",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/testimonials",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-testimonials",
+      "title": "Https:  www.lekwasecurityservices.co.za testimonials",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/faq",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-faq",
+      "title": "Https:  www.lekwasecurityservices.co.za faq",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/pricing",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-pricing",
+      "title": "Https:  www.lekwasecurityservices.co.za pricing",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/prices",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-prices",
+      "title": "Https:  www.lekwasecurityservices.co.za prices",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/rates",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-rates",
+      "title": "Https:  www.lekwasecurityservices.co.za rates",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/packages",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-packages",
+      "title": "Https:  www.lekwasecurityservices.co.za packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/packages-and-pricing",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-packages-and-pricing",
+      "title": "Https:  www.lekwasecurityservices.co.za packages and pricing",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/pricing-packages",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-pricing-packages",
+      "title": "Https:  www.lekwasecurityservices.co.za pricing packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/photo-packages",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-photo-packages",
+      "title": "Https:  www.lekwasecurityservices.co.za photo packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/photography-packages",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-photography-packages",
+      "title": "Https:  www.lekwasecurityservices.co.za photography packages",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/session-rates",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-session-rates",
+      "title": "Https:  www.lekwasecurityservices.co.za session rates",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/session-pricing",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-session-pricing",
+      "title": "Https:  www.lekwasecurityservices.co.za session pricing",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/investment",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-investment",
+      "title": "Https:  www.lekwasecurityservices.co.za investment",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/invest",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-invest",
+      "title": "Https:  www.lekwasecurityservices.co.za invest",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/portfolio",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-portfolio",
+      "title": "Https:  www.lekwasecurityservices.co.za portfolio",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/gallery",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-gallery",
+      "title": "Https:  www.lekwasecurityservices.co.za gallery",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/our-work",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-our-work",
+      "title": "Https:  www.lekwasecurityservices.co.za our work",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/images",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-images",
+      "title": "Https:  www.lekwasecurityservices.co.za images",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/photos",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-photos",
+      "title": "Https:  www.lekwasecurityservices.co.za photos",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/work",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-work",
+      "title": "Https:  www.lekwasecurityservices.co.za work",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/projects",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-projects",
+      "title": "Https:  www.lekwasecurityservices.co.za projects",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/showcase",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-showcase",
+      "title": "Https:  www.lekwasecurityservices.co.za showcase",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/collection",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-collection",
+      "title": "Https:  www.lekwasecurityservices.co.za collection",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/lookbook",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-lookbook",
+      "title": "Https:  www.lekwasecurityservices.co.za lookbook",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/my-portfolio",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-my-portfolio",
+      "title": "Https:  www.lekwasecurityservices.co.za my portfolio",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/my-work",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-my-work",
+      "title": "Https:  www.lekwasecurityservices.co.za my work",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/my-gallery",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-my-gallery",
+      "title": "Https:  www.lekwasecurityservices.co.za my gallery",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/menu",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-menu",
+      "title": "Https:  www.lekwasecurityservices.co.za menu",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/treatments",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-treatments",
+      "title": "Https:  www.lekwasecurityservices.co.za treatments",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/offerings",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-offerings",
+      "title": "Https:  www.lekwasecurityservices.co.za offerings",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/case-studies",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-case-studies",
+      "title": "Https:  www.lekwasecurityservices.co.za case studies",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/completed-projects",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-completed-projects",
+      "title": "Https:  www.lekwasecurityservices.co.za completed projects",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/blog",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-blog",
+      "title": "Https:  www.lekwasecurityservices.co.za blog",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/news",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-news",
+      "title": "Https:  www.lekwasecurityservices.co.za news",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/stories",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-stories",
+      "title": "Https:  www.lekwasecurityservices.co.za stories",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/articles",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-articles",
+      "title": "Https:  www.lekwasecurityservices.co.za articles",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/posts",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-posts",
+      "title": "Https:  www.lekwasecurityservices.co.za posts",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/updates",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-updates",
+      "title": "Https:  www.lekwasecurityservices.co.za updates",
+      "images": []
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/About-us/",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-About-us",
+      "title": "Https:  www.lekwasecurityservices.co.za About us",
+      "images": [
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309016",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309016",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_1200x674_fit.jpg?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_2400x1350_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/css/__old_image__"
+      ]
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/Services/",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-Services",
+      "title": "Https:  www.lekwasecurityservices.co.za Services",
+      "images": [
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309017",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/320c29334fd86b932bd999c69c34f89f_fit.png?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/e6b83df75b5278869e5894c27f8f8a53_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/532dede8e46a04d6c5e1360ee4f08cfd_1202x800_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/cbc17ffc9459f5a7453a75f713298dc1_960x602_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/82e3160b77d53285d2d273350e0bf836_960x568_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/87f6c292b3937847401fc14e898f0a9c_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/ef26f77e3a21850baaa7fec1a37af58f_960x1440_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/66ae4acb7efc37966bf077414fac070f_960x540_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/57d3bb2975f37259aefb1c3f8c095275_960x1400_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c4c6e4d70669a8385bc3e0294ace6c71_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/5a4fc26abce41c5a0581533f27769c32_960x540_fit.jpg"
+      ]
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/Contacts/",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-Contacts",
+      "title": "Https:  www.lekwasecurityservices.co.za Contacts",
+      "images": [
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/2aca91a54d009fb5b8681e9f0d29d8f7_fit.png?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309019"
+      ]
+    },
+    {
+      "pageUrl": "https://www.lekwasecurityservices.co.za/Study-Courses/",
+      "pageSlug": "https:--www.lekwasecurityservices.co.za-Study-Courses",
+      "title": "Https:  www.lekwasecurityservices.co.za Study Courses",
+      "images": [
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_230x230_fit.jpg?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/c74384b0fe9b079864480a1b3ded01f7_fit.jpg?ts=1773309019",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/2aca91a54d009fb5b8681e9f0d29d8f7_fit.png?ts=1773309020",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/950ea77ad03f1398cf9599ffb9d98899_fit.png?ts=1773309020",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/16d2e18bf296ce1b7bfcf7620ee650ab_960x540_fit.jpg",
+        "https://www.lekwasecurityservices.co.za/gallery_gen/cbc17ffc9459f5a7453a75f713298dc1_960x602_fit.jpg"
+      ]
+    }
+  ],
+  "createdAt": "2026-08-12T13:27:28.559Z",
+  "buildSlug": "lekwa-security-services-lephalale-msq4j5t8",
+  "buildMode": "TRIAL",
+  "industry": "Security",
+  "motto": "Your Vigilant Partner in Security.",
+  "history": "Established to fill a critical need for professional, responsive security services in Lephalale, Lekwa Security Services has grown under John Mashigo's leadership by focusing on reliability, advanced technology, and building strong community trust.",
+  "specializations": [
+    "Rapid Armed Response",
+    "Commercial & Industrial Site Security",
+    "Drone-Based Surveillance & Patrols",
+    "24/7 Security Monitoring and Response"
+  ],
+  "locations": [],
+  "hasWhatsApp": true
+}

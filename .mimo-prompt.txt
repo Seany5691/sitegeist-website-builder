@@ -1,0 +1,113 @@
+You are building a complete Next.js 14 website for lekwa_security_services.
+
+BOILERPLATE FILES ARE ALREADY CREATED:
+- package.json (with all dependencies)
+- next.config.js
+- tsconfig.json
+- tailwind.config.ts
+- postcss.config.js
+- app/globals.css (with CSS variables)
+- app/layout.tsx (with fonts, metadata, JSON-LD)
+
+A DASHBOARD HAS BEEN DEPLOYED TO public/dashboard/:
+- Dashboard files are in public/dashboard/ (index.html, assets/)
+- Dashboard is configured for this business with login credentials
+- Login: Username = "Lekwa Security Services", Password = "LekwaSecurityServices@2026!"
+- DO NOT modify the public/dashboard folder
+
+YOU NEED TO CREATE:
+- app/page.tsx (homepage with all sections)
+- app/dashboard/page.tsx (redirects to /dashboard/index.html - DO NOT add to navigation)
+- components/Header.tsx (DO NOT include Dashboard in navigation)
+- components/Hero.tsx
+- components/Services.tsx
+- components/Gallery.tsx (with category cards, NOT flat gallery)
+- components/Testimonials.tsx
+- components/Faq.tsx
+- components/Contact.tsx
+- components/Footer.tsx
+- components/WhatsAppWidget.tsx
+- app/pricing/page.tsx (pricing page with all packages)
+- app/blog/page.tsx (blog listing page)
+- app/services/page.tsx (services page)
+
+CRITICAL RULES (MUST FOLLOW - these cause build failures if ignored):
+
+1. "use client" DIRECTIVE:
+   - EVERY component file that uses framer-motion MUST start with "use client"
+   - EVERY component file that uses useState, useEffect, useRef, or any React hook MUST start with "use client"
+   - app/page.tsx MUST start with "use client" if it uses any interactive components
+   - Pattern: Add "use client" as the FIRST line of every .tsx component file
+
+2. NEVER import from next/document:
+   - NEVER import Html, Head, Main, NextScript from 'next/document'
+   - These are ONLY for pages/_document (which we don't use in App Router)
+   - The layout.tsx already handles the HTML structure
+
+3. FRAMER MOTION IMPORTS:
+   - Always import: import { motion, AnimatePresence } from 'framer-motion'
+   - Always add "use client" at top of file
+   - Use motion.div, motion.section, etc. (not just div)
+
+4. NEXT.JS IMAGE COMPONENT:
+   - Import: import Image from 'next/image'
+   - Add "use client" if using Image with event handlers
+   - Use unoptimized={true} for external URLs
+
+5. NO ERROR PAGES:
+   - Do NOT create app/error.tsx, app/404.tsx, app/500.tsx
+   - Do NOT create pages/_error.tsx, pages/404.tsx, pages/500.tsx
+   - Next.js handles error pages automatically
+
+6. APP ROUTER ONLY:
+   - All pages go in app/ directory (NOT pages/)
+   - Use app/page.tsx, app/about/page.tsx, etc.
+   - Use layout.tsx for shared layout (already created)
+
+7. DASHBOARD ROUTE (MANDATORY BUT HIDDEN):
+   - Create app/dashboard/page.tsx that redirects to /dashboard/index.html
+   - DO NOT add Dashboard to navigation menu
+   - Dashboard is only accessible by typing /dashboard in the URL
+   - Dashboard is already built in public/dashboard/
+   - Dashboard reads from site-config.json and image-map.json
+   - Dashboard is adaptive - only shows sections with data
+
+INSTRUCTIONS:
+- Read prompt.md for ALL design specifications and content
+- Read site-config.json for business data, services, testimonials
+- Read image-map.json for gallery structure (categories with images)
+- Create ONLY the custom components and pages listed above
+- Use the existing boilerplate as-is (don't modify it)
+- Make it beautiful, professional, and UNIQUE
+
+GALLERY STRUCTURE:
+- Read image-map.json - it contains categories with images
+- Each category should be a separate gallery folder/card
+- When user clicks a category card, show all images from that category
+- Images must be displayed in the EXACT order from image-map.json
+- Do NOT show all images underneath the category cards - ONLY show the cards
+
+AFTER BUILDING ALL COMPONENTS:
+1. Create public/site-config.json with ALL website data:
+   - businessName, city, ownerName, phone, email, address
+   - services (with titles, descriptions, prices)
+   - blog posts (with titles, excerpts, dates)
+   - testimonials (with names, text, ratings)
+   - pricing (with packages, prices, descriptions)
+   - social links (facebook, instagram, twitter)
+   - business hours
+   - logo URL
+
+2. Create public/image-map.json with ALL gallery data:
+   - Categories with their images
+   - Each category has: name, url, images array
+   - Images in EXACT order from original website
+
+3. Create public/seo.json with SEO data:
+   - title, description, keywords
+   - openGraph, twitter cards
+   - jsonLd structured data
+
+4. Copy these files to public/ folder so the dashboard can access them.
+
+START by reading prompt.md and creating app/page.tsx.

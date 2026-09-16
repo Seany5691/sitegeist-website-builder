@@ -1,0 +1,16 @@
+{
+  "title": "Klerksdorp Engineering | Professional Services in North West",
+  "description": "Get premium services from Klerksdorp Engineering in North West. Managed by Gideon Crouwkamp.",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Klerksdorp Engineering",
+    "description": "Klerksdorp Engineering in North West.",
+    "telephone": "0180112453",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "North West",
+      "addressCountry": "ZA"
+    }
+  }
+}
