@@ -3,7 +3,7 @@
 import { useSiteData } from '@/lib/use-site-data'
 import { AnimateOnScroll } from '@/components/AnimateOnScroll'
 
-export default function AboutLayered() {
+export default function AboutSplit() {
   const { config } = useSiteData()
   const about = config?.about || {}
   const pc = config?.pageContent || {}
@@ -14,44 +14,27 @@ export default function AboutLayered() {
   const imageUrl = about.imageUrl || ''
 
   return (
-    <section className="section-padding" style={{ background: 'var(--color-bg)' }}>
+    <section id="about" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Layered images */}
           <AnimateOnScroll>
             <div className="relative">
-              {/* Background image (offset) */}
-              <div className="absolute top-8 left-8 w-full aspect-[4/5] rounded-2xl overflow-hidden opacity-30"
-                style={{ background: `linear-gradient(135deg, var(--color-primary), var(--color-secondary))` }}>
-                {imageUrl && (
-                  <img src={imageUrl} alt="" className="w-full h-full object-cover" />
-                )}
-              </div>
-
-              {/* Main image */}
-              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl img-vignette">
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden img-vignette hover-zoom">
                 {imageUrl ? (
-                  <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+                  <img src={imageUrl} alt={title} className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
                 ) : (
                   <div className="w-full h-full" style={{ background: `linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 20%, var(--color-bg)), color-mix(in srgb, var(--color-accent) 15%, var(--color-bg)))` }} />
                 )}
               </div>
-
-              {/* Tagline badge */}
               {tagline && (
-                <div className="absolute -bottom-4 -right-4 rounded-2xl p-5 shadow-xl max-w-[200px] z-10"
+                <div className="absolute -bottom-4 -right-4 rounded-2xl p-5 shadow-xl max-w-[200px]"
                   style={{ background: 'var(--color-accent)', color: 'var(--color-primary)' }}>
                   <p className="text-sm font-bold italic" style={{ fontFamily: 'var(--font-heading)' }}>&ldquo;{tagline}&rdquo;</p>
                 </div>
               )}
-
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -left-4 w-20 h-20 rounded-full -z-10"
-                style={{ background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)' }} />
             </div>
           </AnimateOnScroll>
 
-          {/* Content */}
           <AnimateOnScroll delay={150}>
             <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>About Us</span>
             <h2 className="text-3xl sm:text-4xl font-bold mt-3 mb-6"

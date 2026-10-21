@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase'
+import {
+  enqueueBuild,
+  getQueueState,
+  formatDuration,
+  type BuildJob,
+} from '@/lib/build-queue'
+import { initBuildQueueRunner } from '@/lib/run-trial-build'
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────
 
 interface BuildTrialBody {
   trialWebsiteId: string
@@ -16,9 +23,12 @@ interface BuildTrialBody {
   industry?: string
   serviceAreas?: string[]
   contactId?: string
+  /** Resume from Phase 2 only (skip scrape) — folder already has site-config */
+  phase2?: boolean
+  businessFolder?: string
 }
 
-// ── Helper: Update build status in Supabase ────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────
 
 async function updateBuildStatus(
   trialWebsiteId: string,
@@ -36,29 +46,13 @@ async function updateBuildStatus(
   }
 }
 
-// ── Helper: Write timeline entry ───────────────────────────────────────────
-
-async function writeTimelineEntry(
-  contactId: string,
-  eventType: string,
-  eventTitle: string,
-  eventDetail?: string
-) {
-  const supabase = createClient()
-  const { error } = await supabase.from('timeline_entries').insert({
-    contact_id: contactId,
-    event_type: eventType,
-    event_title: eventTitle,
-    event_detail: eventDetail || null,
-    source_app: 'Website Builder',
-  })
-
-  if (error) {
-    console.error(`[BuildTrial] Failed to write timeline entry:`, error.message)
-  }
+function baseUrlFromRequest(request: NextRequest): string {
+  const envUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.BUILDER_BASE_URL
+  if (envUrl) return envUrl.replace(/\/$/, '')
+  return request.nextUrl.origin
 }
 
-// ── POST /api/build-trial ──────────────────────────────────────────────────
+// ── POST /api/build-trial  (enqueue only — queue builds one at a time) ────
 
 export async function POST(request: NextRequest) {
   let body: BuildTrialBody
@@ -78,167 +72,141 @@ export async function POST(request: NextRequest) {
     ownerName,
     city,
     whatsappNumber,
-    existingWebsiteUrl,
-    facebookUrl,
-    instagramUrl,
-    googleMapsUrl,
-    industry,
-    serviceAreas,
-    contactId,
   } = body
 
-  if (!trialWebsiteId || !businessName || !ownerName || !whatsappNumber) {
+  if (!trialWebsiteId || !businessName || !whatsappNumber) {
     return NextResponse.json(
-      { success: false, error: 'Missing required fields: trialWebsiteId, businessName, ownerName, whatsappNumber.' },
+      {
+        success: false,
+        error: 'Missing required fields: trialWebsiteId, businessName, whatsappNumber.',
+      },
       { status: 400 }
     )
   }
 
-  // Build the base URL for internal API calls
-  const host = request.headers.get('host') || 'localhost:3001'
-  const protocol = request.headers.get('x-forwarded-proto') || 'http'
-  const baseUrl = `${protocol}://${host}`
-
-  console.log(`[BuildTrial] Starting full build pipeline for: ${businessName} (trial: ${trialWebsiteId})`)
-
-  // ── Step 1: Mark as scraping ─────────────────────────────────────────────
-
-  await updateBuildStatus(trialWebsiteId, 'scraping')
-  if (contactId) {
-    await writeTimelineEntry(contactId, 'build_started', 'Website build started', `Scraping data for ${businessName}...`)
-  }
-
-  // ── Step 2: Call /api/build-site (scrape + generate config) ──────────────
-
-  let buildSiteResult: Record<string, unknown> | null = null
-  let buildSiteError: string | null = null
-
-  try {
-    console.log('[BuildTrial] Phase 1: Scraping and generating config...')
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 600000) // 10 minute timeout for scraping
-    
-    const buildSiteRes = await fetch(`${baseUrl}/api/build-site`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: controller.signal,
-      body: JSON.stringify({
-        businessName,
-        ownerName,
-        city,
-        whatsappNumber,
-        existingWebsiteUrl: existingWebsiteUrl || undefined,
-        facebookUrl: facebookUrl || undefined,
-        instagramUrl: instagramUrl || undefined,
-        googleMapsUrl: googleMapsUrl || undefined,
-        industry: industry || undefined,
-        buildMode: 'TRIAL',
-        serviceAreas: serviceAreas || undefined,
-      }),
-    })
-    
-    clearTimeout(timeout)
-
-    if (!buildSiteRes.ok) {
-      const errText = await buildSiteRes.text()
-      buildSiteError = `build-site returned ${buildSiteRes.status}: ${errText}`
-    } else {
-      buildSiteResult = await buildSiteRes.json()
-      if (buildSiteResult && !buildSiteResult.success) {
-        buildSiteError = (buildSiteResult.error as string) || 'build-site failed'
-      }
-    }
-  } catch (err) {
-    buildSiteError = `Failed to reach build-site: ${err instanceof Error ? err.message : 'Unknown error'}`
-  }
-
-  if (buildSiteError) {
-    console.error(`[BuildTrial] Phase 1 failed: ${buildSiteError}`)
-    await updateBuildStatus(trialWebsiteId, 'failed', { error_message: buildSiteError })
-    if (contactId) {
-      await writeTimelineEntry(contactId, 'build_failed', 'Website build failed', buildSiteError)
-    }
-    return NextResponse.json({ success: false, error: buildSiteError }, { status: 500 })
-  }
-
-  const buildSlug = buildSiteResult?.buildSlug as string
-  const buildFolder = buildSiteResult?.buildFolder as string
-  const config = buildSiteResult?.config
-
-  console.log(`[BuildTrial] Phase 1 complete. Slug: ${buildSlug}`)
-
-  // Update DB with config results
   const supabase = createClient()
-  await supabase
+  const baseUrl = baseUrlFromRequest(request)
+
+  // Register queue runner
+  initBuildQueueRunner(baseUrl)
+
+  // Load the full trial row so Start Build never drops GeistTrack fields
+  // (maps_url, socials, service areas, contact_id) even if the client sent a
+  // partial body.
+  const { data: trialRow } = await supabase
     .from('trial_websites')
-    .update({
-      build_status: 'generating',
-      build_slug: buildSlug,
-      build_folder: buildFolder,
-      site_config: config || null,
-    })
+    .select('*')
     .eq('id', trialWebsiteId)
+    .maybeSingle()
 
-  // ── Step 3: Call /api/build-website (boilerplate + MiMo CLI) ─────────────
+  const merged = {
+    businessName: body.businessName || trialRow?.business_name || businessName,
+    ownerName: body.ownerName || trialRow?.owner_name || '',
+    city: body.city || trialRow?.city || '',
+    whatsappNumber: body.whatsappNumber || trialRow?.phone_number || whatsappNumber,
+    existingWebsiteUrl:
+      body.existingWebsiteUrl || trialRow?.existing_website_url || undefined,
+    facebookUrl: body.facebookUrl || trialRow?.facebook_url || undefined,
+    instagramUrl: body.instagramUrl || trialRow?.instagram_url || undefined,
+    googleMapsUrl: body.googleMapsUrl || trialRow?.maps_url || undefined,
+    industry: body.industry || trialRow?.industry || undefined,
+    serviceAreas:
+      body.serviceAreas ||
+      (Array.isArray(trialRow?.service_areas) ? trialRow.service_areas : undefined),
+    contactId: body.contactId || trialRow?.contact_id || undefined,
+    businessFolder:
+      (body as any).businessFolder?.split(/[/\\]/).pop() ||
+      (body as any).buildFolder?.split(/[/\\]/).pop() ||
+      (body as any).buildSlug ||
+      trialRow?.build_folder?.split(/[/\\]/).pop() ||
+      trialRow?.build_slug ||
+      undefined,
+  }
 
-  await updateBuildStatus(trialWebsiteId, 'building')
+  // Phase 2 auto-detect: existing site-config means skip scrape
+  let skipScrape = body.phase2 === true
+  if (!skipScrape && merged.businessFolder) {
+    const path = await import('path')
+    const { promises: fsp } = await import('fs')
+    const websitesFolder =
+      process.env.WEBSITES_FOLDER || path.join(process.cwd(), '..', 'Websites')
+    const folder = merged.businessFolder
+    try {
+      await fsp.access(path.join(websitesFolder, folder, 'site-config.json'))
+      skipScrape = true
+    } catch {
+      try {
+        await fsp.access(path.join(websitesFolder, folder, 'public', 'site-config.json'))
+        skipScrape = true
+      } catch {}
+    }
+  }
 
-  // Extract business folder name from build path
-  const businessFolder = buildFolder ? buildFolder.split(/[/\\]/).pop() : buildSlug
+  // Mark this job as queued
+  await updateBuildStatus(trialWebsiteId, 'queued')
 
-  try {
-    console.log(`[BuildTrial] Phase 2: Building website for folder: ${businessFolder}`)
-    const buildWebsiteController = new AbortController()
-    const buildWebsiteTimeout = setTimeout(() => buildWebsiteController.abort(), 120000) // 2 minute timeout
-    
-    const buildWebsiteRes = await fetch(`${baseUrl}/api/build-website`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: buildWebsiteController.signal,
-      body: JSON.stringify({
-        businessFolder,
-        trialWebsiteId,
-      }),
+  if (merged.contactId) {
+    await supabase.from('timeline_entries').insert({
+      contact_id: merged.contactId,
+      event_type: 'build_progress',
+      event_title: skipScrape ? 'Phase 2 build queued' : 'Website build queued',
+      event_detail: skipScrape
+        ? `Phase 2 queued for ${merged.businessName} (skip scrape — existing files). Builds run one at a time.`
+        : `Queued for ${merged.businessName}. Builds run one at a time — you will get an email when it is live.`,
+      source_app: 'Website Builder',
     })
-    
-    clearTimeout(buildWebsiteTimeout)
-
-    if (!buildWebsiteRes.ok) {
-      const errText = await buildWebsiteRes.text()
-      const errorMsg = `build-website returned ${buildWebsiteRes.status}: ${errText}`
-      await updateBuildStatus(trialWebsiteId, 'failed', { error_message: errorMsg })
-      if (contactId) {
-        await writeTimelineEntry(contactId, 'build_failed', 'Website build failed', errorMsg)
-      }
-      return NextResponse.json({ success: false, error: errorMsg }, { status: 500 })
-    }
-  } catch (err) {
-    const errorMsg = `Failed to reach build-website: ${err instanceof Error ? err.message : 'Unknown error'}`
-    await updateBuildStatus(trialWebsiteId, 'failed', { error_message: errorMsg })
-    if (contactId) {
-      await writeTimelineEntry(contactId, 'build_failed', 'Website build failed', errorMsg)
-    }
-    return NextResponse.json({ success: false, error: errorMsg }, { status: 500 })
   }
 
-  // ── Step 4: Return success (build continues in background) ───────────────
-
-  console.log(`[BuildTrial] Build pipeline launched. MiMo Code CLI is building in background.`)
-
-  if (contactId) {
-    await writeTimelineEntry(
-      contactId,
-      'build_progress',
-      'Website generation in progress',
-      `Config generated. MiMo Code CLI is now building the website for ${businessName}.`
-    )
+  const job: BuildJob = {
+    trialWebsiteId,
+    businessFolder:
+      merged.businessFolder ||
+      merged.businessName.toLowerCase().replace(/[^a-z0-9]+/g, '_'),
+    businessName: merged.businessName,
+    ownerName: merged.ownerName,
+    city: merged.city,
+    whatsappNumber: merged.whatsappNumber,
+    existingWebsiteUrl: merged.existingWebsiteUrl,
+    facebookUrl: merged.facebookUrl,
+    instagramUrl: merged.instagramUrl,
+    googleMapsUrl: merged.googleMapsUrl,
+    industry: merged.industry,
+    serviceAreas: merged.serviceAreas,
+    contactId: merged.contactId,
+    enqueuedAt: Date.now(),
+    skipScrape,
   }
+
+  // Enqueue THIS job only. Explicit Start Build = user intent.
+  // Do not auto-resume other pending/queued rows — those stay for manual Start Build.
+  const position = enqueueBuild(job)
+  const queue = getQueueState()
+
+  console.log(
+    `[BuildTrial] Queued ${merged.businessName} (${trialWebsiteId})${skipScrape ? ' [PHASE 2]' : ''} — position ${position}, active=${queue.active}`
+  )
 
   return NextResponse.json({
     success: true,
-    message: `Build pipeline launched for ${businessName}. Website is being generated in the background.`,
-    trialWebsiteId,
-    buildSlug,
-    buildFolder,
+    queued: true,
+    phase2: skipScrape,
+    position,
+    message: queue.active
+      ? `${merged.businessName} added to the build queue (position ${position}). One site builds at a time — next starts only after this one fully completes.`
+      : skipScrape
+        ? `${merged.businessName} Phase 2 build started (skip scrape — using existing files).`
+        : `${merged.businessName} build started (queue was empty).`,
+    queue,
+  })
+}
+
+// ── GET /api/build-trial  (queue status) ─────────────────────────────────
+
+export async function GET() {
+  initBuildQueueRunner('http://localhost:3000')
+  return NextResponse.json({
+    success: true,
+    queue: getQueueState(),
+    formatDuration: formatDuration(0), // smoke: "0s" — timing helper is in use
   })
 }

@@ -38,8 +38,8 @@ export default function ServicesIconGrid() {
   return (
     <section id="services" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimateOnScroll className="text-center mb-16">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>
+        <AnimateOnScroll className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>
             What We Offer
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
@@ -53,12 +53,26 @@ export default function ServicesIconGrid() {
           )}
         </AnimateOnScroll>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className={
+          services.length <= 3
+            ? 'flex flex-wrap justify-center gap-8'
+            : 'grid sm:grid-cols-2 lg:grid-cols-4 gap-8'
+        }>
           {services.map((service: any, i: number) => (
             <AnimateOnScroll key={i} delay={i * 100}>
-              <div className="text-center group">
-                <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-5 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
-                  style={{ background: 'var(--color-primary)', boxShadow: '0 8px 24px color-mix(in srgb, var(--color-primary) 25%, transparent)' }}>
+              <div className="bg-white rounded-3xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 text-center group relative overflow-hidden">
+                {/* Decorative accent blob */}
+                <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-5 group-hover:opacity-10 transition-opacity duration-500"
+                     style={{ background: 'var(--color-primary-cta)' }} />
+                
+                {/* Numbered badge */}
+                <div className="absolute top-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white shadow-lg"
+                     style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))' }}>
+                  {i + 1}
+                </div>
+                
+                <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
+                  style={{ background: 'var(--color-primary-cta)', boxShadow: '0 8px 24px color-mix(in srgb, var(--color-primary) 25%, transparent)' }}>
                   <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d={iconPaths[service.icon] || iconPaths[Object.keys(iconPaths)[i % Object.keys(iconPaths).length]] || iconPaths.Star} />
                   </svg>
@@ -70,6 +84,13 @@ export default function ServicesIconGrid() {
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--color-muted)' }}>
                   {service.description}
                 </p>
+                
+                {service.priceTag && (
+                  <div className="mt-4 px-3 py-1.5 rounded-full text-xs font-bold inline-block shadow-lg"
+                       style={{ background: 'var(--color-primary-cta)', color: 'white' }}>
+                    {service.priceTag}
+                  </div>
+                )}
               </div>
             </AnimateOnScroll>
           ))}

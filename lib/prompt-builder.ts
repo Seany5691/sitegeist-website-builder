@@ -1,6 +1,7 @@
 import { MasterSiteConfig, FeatureFlags, IndustryArchetype } from '@/types/site-config'
 import { generateDesignSeed, getDesignSeedInstructions, DesignSeed, getArchetypeConstraintKey } from './design-seed'
 import { generateCreativeBrief } from './creative-brief'
+import { resolveArchetypeFromIndustry } from './industry-map'
 import { 
   getIndustryTemplate, 
   getIndustryStyle, 
@@ -17,6 +18,13 @@ import {
   ColorPalette,
   TypographyOption
 } from './industry-templates'
+// Phase 9 Enhancement Imports (GAP 28-55)
+import { validatePromptData, generateValidationReport, applyPromptFallbacks } from './prompt-builder-validator'
+import { buildServiceInstructions } from './prompt-helpers/service-enhancer'
+import { buildTypographySection } from './prompt-helpers/typography-specs'
+import { buildResponsiveSpecifications } from './prompt-helpers/responsive-specs'
+import { buildAccessibilitySpecifications } from './prompt-helpers/accessibility-specs'
+import { buildMicroInteractionSpecifications } from './prompt-helpers/micro-interactions'
 
 export interface PromptBuilderOptions {
   buildMode: 'TRIAL' | 'PRODUCTION'
@@ -52,6 +60,52 @@ export function normalizePhoneNumber(phone: string): string {
   const clean = phone.replace(/[^0-9]/g, '')
   if (clean.startsWith('0')) return '27' + clean.slice(1)
   return clean
+}
+
+// ============================================
+// Industry-aware stock image hints
+// Keeps Unsplash imagery relevant to the trade
+// ============================================
+
+function getIndustryStockImageHints(archetypeId: string): string {
+  const map: Record<string, string> = {
+    trades: `- Use Unsplash photos of: construction sites, tools, pipes, concrete, hard hats, industrial work, building exteriors
+- Example: https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80 (construction)
+- Example: https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1920&q=80 (engineer/tools)`,
+    medical: `- Use Unsplash photos of: clinics, medical staff, stethoscopes, clean modern healthcare interiors, caring professionals
+- Example: https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80 (clinic)
+- Example: https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1920&q=80 (doctor)`,
+    restaurant: `- Use Unsplash photos of: restaurant interiors, plated food, chefs cooking, warm dining ambiance
+- Example: https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80 (restaurant)
+- Example: https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80 (dining)`,
+    bakery: `- Use Unsplash photos of: bread, cakes, bakery interiors, ovens, flour, pastry displays
+- Example: https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1920&q=80 (bakery)`,
+    beauty: `- Use Unsplash photos of: salon interiors, hair styling, spa treatments, beauty products, relaxing atmosphere
+- Example: https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&q=80 (salon)`,
+    automotive: `- Use Unsplash photos of: cars, garages, mechanics, engines, workshops, auto repair
+- Example: https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=80 (mechanic)`,
+    realestate: `- Use Unsplash photos of: modern homes, property exteriors, keys, real estate agents, architecture
+- Example: https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80 (house)`,
+    legal: `- Use Unsplash photos of: law books, courthouses, professional office, scales of justice, business meetings
+- Example: https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&q=80 (law)`,
+    finance: `- Use Unsplash photos of: office buildings, financial charts, professional meetings, calculators, handshake
+- Example: https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=80 (finance)`,
+    security: `- Use Unsplash photos of: security systems, cameras, guards, secure facilities, night security
+- Example: https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1920&q=80 (security)`,
+    education: `- Use Unsplash photos of: classrooms, students, books, campus, learning environments
+- Example: https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80 (campus)`,
+    hospitality: `- Use Unsplash photos of: hotels, lobbies, travel, hospitality staff, comfortable rooms
+- Example: https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80 (hotel)`,
+    retail: `- Use Unsplash photos of: retail stores, products, shopping, storefronts, merchandising
+- Example: https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80 (store)`,
+    photography: `- Use Unsplash photos of: cameras, photo studios, creative workspaces, portraits, editing
+- Example: https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1920&q=80 (camera)`,
+    general: `- Use Unsplash photos of: professional business environments, modern offices, team collaboration
+- Example: https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80 (office)`,
+    nonprofit: `- Use Unsplash photos of: community, volunteers, helping hands, diverse people, warmth
+- Example: https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1920&q=80 (community)`,
+  }
+  return map[archetypeId] || map.general
 }
 
 // ============================================
@@ -290,6 +344,20 @@ export function detectIndustry(
   url?: string,
   industry?: string
 ): IndustryArchetype {
+  const findArchetype = (id: string) =>
+    INDUSTRY_ARCHETYPES.find(a => a.id === id) || INDUSTRY_ARCHETYPES.find(a => a.id === 'general')!
+
+  // ── 1. Industry-as-truth ──────────────────────────────────────────────────
+  // The lead scraper only produces a closed set of labels. When the form/Excel
+  // industry is present it ALWAYS wins — never keyword-guess over it.
+  if (industry && industry.trim()) {
+    const mappedId = resolveArchetypeFromIndustry(industry)
+    if (mappedId) {
+      return findArchetype(mappedId)
+    }
+  }
+
+  // ── 2. Keyword detection (only when industry is blank / unknown) ──────────
   const nameLower = businessName.toLowerCase()
   const titleLower = (seoTitle || '').toLowerCase()
   const descLower = (seoDescription || '').toLowerCase()
@@ -298,20 +366,38 @@ export function detectIndustry(
   const industryLower = (industry || '').toLowerCase()
   const allText = `${nameLower} ${titleLower} ${descLower} ${servicesText} ${urlLower} ${industryLower}`
 
+  // Short trap-words that appear in normal business copy ("foundations",
+  // "commission", "paid"). Require a word-boundary match for these.
+  const TRAP_KEYWORDS = new Set(['foundation', 'aid', 'mission', 'relief', 'outreach', 'welfare', 'feeding'])
+  const wordHit = (text: string, keyword: string) => {
+    if (TRAP_KEYWORDS.has(keyword)) {
+      const re = new RegExp(`\\b${keyword}(s)?\\b`, 'i')
+      return re.test(text)
+    }
+    return text.includes(keyword)
+  }
+
   const scores: Array<{ archetype: IndustryArchetype; score: number }> = []
 
   for (const archetype of INDUSTRY_ARCHETYPES) {
     if (archetype.id === 'general') continue
-    
+    if (archetype.id === 'nonprofit') {
+      // Nonprofit needs stronger signals than a single incidental word
+      const strong = ['non-profit', 'nonprofit', 'charity', 'ngo', 'npo', 'pbo', 'donate', 'donation', 'volunteer', 'food bank', 'orphanage', 'soup kitchen', 'ministry', 'church']
+      const strongHits = strong.filter(k => allText.includes(k)).length
+      if (strongHits >= 2) scores.push({ archetype, score: strongHits * 5 })
+      continue
+    }
+
     let score = 0
     for (const keyword of archetype.keywords) {
       const keywordLower = keyword.toLowerCase()
-      if (nameLower.includes(keywordLower)) score += 10
-      if (titleLower.includes(keywordLower)) score += 5
-      if (urlLower.includes(keywordLower)) score += 3
-      if (servicesText.includes(keywordLower)) score += 3
-      if (descLower.includes(keywordLower)) score += 2
-      if (allText.includes(keywordLower) && score === 0) score += 1
+      if (wordHit(nameLower, keywordLower)) score += 10
+      if (wordHit(titleLower, keywordLower)) score += 5
+      if (wordHit(urlLower, keywordLower)) score += 3
+      if (wordHit(servicesText, keywordLower)) score += 3
+      if (wordHit(descLower, keywordLower)) score += 2
+      if (wordHit(allText, keywordLower) && score === 0) score += 1
     }
     if (score > 0) scores.push({ archetype, score })
   }
@@ -445,7 +531,24 @@ function buildDynamicSectionOrder(siteConfig: MasterSiteConfig, designSeed: Desi
 // Main Prompt Generator
 // ============================================
 export function generateMiMoPrompt(options: PromptBuilderOptions): string {
-  const { buildMode, siteConfig, websitesFolder = 'C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites' } = options
+  const { buildMode, siteConfig: rawSiteConfig, websitesFolder = 'C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites' } = options
+
+  // PHASE 9 ENHANCEMENT: GAP 28 - Pre-Prompt Data Validation
+  console.log('🔍 Validating site configuration...')
+  const validationResult = validatePromptData(rawSiteConfig)
+  console.log(generateValidationReport(validationResult))
+
+  // Block if critical errors
+  if (!validationResult.isValid) {
+    const criticalErrors = validationResult.errors.filter(e => e.severity === 'critical')
+    throw new Error(
+      `Cannot generate prompt: ${criticalErrors.length} critical validation error(s). ` +
+      `Fix these fields: ${criticalErrors.map(e => e.field).join(', ')}`
+    )
+  }
+
+  // Apply smart fallbacks for missing non-critical data
+  const siteConfig = applyPromptFallbacks(rawSiteConfig)
   const { businessName, seo, services, gallery, theme, legacyUrls, contact, pageMediaMap, features, geo, testimonials, faq, socialLinks, team, businessHours } = siteConfig
 
   // 1. Detect Industry
@@ -453,11 +556,11 @@ export function generateMiMoPrompt(options: PromptBuilderOptions): string {
   let archetype: IndustryArchetype
 
   if (providedIndustry) {
-    const industryLower = providedIndustry.toLowerCase()
-    archetype = INDUSTRY_ARCHETYPES.find(a =>
-      a.name.toLowerCase().includes(industryLower) ||
-      a.keywords.some(k => industryLower.includes(k))
-    ) || INDUSTRY_ARCHETYPES.find(a => a.id === 'general')!
+    // Closed-map truth first, then name/keyword fallback for unknown labels
+    const mappedId = resolveArchetypeFromIndustry(providedIndustry)
+    archetype = mappedId
+      ? (INDUSTRY_ARCHETYPES.find(a => a.id === mappedId) || INDUSTRY_ARCHETYPES.find(a => a.id === 'general')!)
+      : detectIndustry(businessName, seo?.title, seo?.description, services, legacyUrls?.discovered?.[0], providedIndustry)
   } else {
     archetype = detectIndustry(
       businessName,
@@ -599,27 +702,81 @@ CRITICAL RULES (MUST FOLLOW - BUILD WILL FAIL IF IGNORED)
 
 WARNING: These rules are MANDATORY. Ignoring them will cause build failures and waste AI tokens.
 
+=== RULE 0: STATS CONSISTENCY + MAPS URL + CONTRAST + GRID (CRITICAL) ===
+
+STATS — all numbers must be identical on every page:
+- Write stats ONLY to site-config.json as an array: "stats": [{"value":"15+","label":"Years Serving"}, ...]
+- Use 3-4 stats consistent with the business story. NEVER invent different numbers on different pages.
+- Do NOT hardcode fallbacks like "500+" or "1000+". If no stats, hide the section.
+- Format values cleanly: "15+" not "15+ ", "Under 1 hour" not "374min".
+
+MAPS URL — the map MUST render:
+- Store the iframe-safe embed form in site-config.json as "mapEmbedUrl".
+- If no maps URL, show address + Get Directions link instead of an empty map box.
+
+CONTRAST (WCAG AA):
+- Small text (eyebrows, labels, links) must use --safe-eyebrow (amber-700) NOT --color-accent.
+- CTA buttons: white text on --color-primary-cta (deepened orange). Never bright accent on light bg for text.
+
+HOURS:
+- When opens === closes (e.g. "Emergency only"), show the value ONCE. Never "Emergency only · Emergency only".
+
+GALLERY GRID:
+- Use centered flex-wrap or balanced grid. No single orphan tile in the last row.
+
+ABOUT / BODY COPY:
+- Left-align multi-line paragraphs. Add hierarchy (subheads, pull-quotes). Never a wall of centred text.
+
+HERO MOBILE:
+- Avoid dead empty bands. Use min-h-[80vh] on mobile rather than full screen when content is short.
+
+PAGE COMPOSITION — each page must have a distinct purpose:
+- Home: hero, services, portfolio, testimonials, CTA, contact
+- About: hero, story, team/owner, stats, values, CTA — NOT a copy of home
+- Services: hero, all services, process optional, FAQ, CTA — NOT a copy of home
+- Contact: hero, form, details, map, short FAQ — NOT a copy of home
+Do NOT repeat the same section stack on every page.
+
 === RULE 1: FRAMER MOTION SSR SAFETY (CRITICAL — #1 BUILD KILLER) ===
 
-framer-motion CANNOT run on the server. If ANY component using motion.* is rendered during 
-Next.js static generation, the build crashes with: TypeError: Cannot read properties of null (reading 'useContext')
+framer-motion components are client components ("use client") and render fine in the App Router.
 
 THIS IS NON-NEGOTIABLE. Follow this EXACT pattern:
 
-RULE 1A — ALL framer-motion components MUST be wrapped with dynamic import (ssr: false):
+RULE 1A — Use STATIC imports for all section components. Do NOT use dynamic(() => import(...), { ssr: false }).
+    ssr:false causes BAILOUT_TO_CLIENT_SIDE_RENDERING and blank pages if a chunk fails to load.
 
-In app/page.tsx and any other page file that imports animated components, use this EXACT pattern:
+In app/page.tsx use this EXACT pattern:
 
     'use client'
-    import dynamic from 'next/dynamic'
 
-    const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
-    const Services = dynamic(() => import('@/components/Services'), { ssr: false })
-    const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
-    const Testimonials = dynamic(() => import('@/components/Testimonials'), { ssr: false })
-    const Faq = dynamic(() => import('@/components/Faq'), { ssr: false })
-    const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
-    const About = dynamic(() => import('@/components/About'), { ssr: false })
+    import Header from '@/components/Header'
+    import Footer from '@/components/Footer'
+    import WhatsAppWidget from '@/components/WhatsAppWidget'
+    import ScrollToTop from '@/components/ScrollToTop'
+    import SectionRenderer from '@/components/SectionRenderer'
+    import FeatureHost from '@/components/features/FeatureHost'
+    import WhatsAppGate from '@/components/WhatsAppGate'
+
+    export default function Home() {
+      return (
+        <>
+          <FeatureHost placement="top-banner" />
+          <Header />
+          <FeatureHost placement="header" />
+          <main>
+            <SectionRenderer />
+            <FeatureHost placement="inline" />
+          </main>
+          <Footer />
+          <FeatureHost placement="footer" />
+          <FeatureHost placement="floating" />
+          <FeatureHost placement="modal" />
+          <WhatsAppGate><WhatsAppWidget /></WhatsAppGate>
+          <ScrollToTop />
+        </>
+      )
+    }
 
 RULE 1B — Every component that uses framer-motion MUST also have "use client" as line 1:
 
@@ -627,49 +784,21 @@ RULE 1B — Every component that uses framer-motion MUST also have "use client" 
     import { motion } from 'framer-motion'
     // ... component code
 
-RULE 1C — NEVER use regular static imports for animated components in page files. 
-    BAD:  import Hero from '@/components/Hero'
-    GOOD: const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+RULE 1C — NEVER use dynamic(..., { ssr: false }) in page files.
+    BAD:  const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+    GOOD: import Hero from '@/components/Hero'
 
-RULE 1D — app/page.tsx MUST use this EXACT pattern (copy it verbatim):
+RULE 1D — app/page.tsx MUST use the static-import pattern in Rule 1A. Boilerplate already has a correct starting file — prefer keeping it.
 
-    'use client'
-    import dynamic from 'next/dynamic'
-
-    const Header = dynamic(() => import('@/components/Header'), { ssr: false })
-    const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
-    const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
-    const Testimonials = dynamic(() => import('@/components/Testimonials'), { ssr: false })
-    const Faq = dynamic(() => import('@/components/Faq'), { ssr: false })
-    const About = dynamic(() => import('@/components/About'), { ssr: false })
-    const Services = dynamic(() => import('@/components/Services'), { ssr: false })
-    const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
-    const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
-    const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
-
-    export default function Home() {
-      return (
-        <>
-          <Header />
-          <main>
-            <Hero />
-            {/* Add/remove sections based on design seed section order */}
-          </main>
-          <Footer />
-          <WhatsAppWidget />
-        </>
-      )
-    }
-
-RULE 1E — Sub-pages (about, services, portfolio, contact) MUST also use dynamic imports:
+RULE 1E — Sub-pages (about, services, portfolio, contact) MUST also use static imports:
 
     import type { Metadata } from 'next'
-    import dynamic from 'next/dynamic'
-
-    const Header = dynamic(() => import('@/components/Header'), { ssr: false })
-    const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
-    const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
-    const PageContent = dynamic(() => import('./PageContent'), { ssr: false })
+    import Header from '@/components/Header'
+    import Footer from '@/components/Footer'
+    import WhatsAppWidget from '@/components/WhatsAppWidget'
+    import ScrollToTop from '@/components/ScrollToTop'
+    import PageHero from '@/components/PageHero'
+    import PageContent from './view'
 
     export const metadata: Metadata = { ... }
 
@@ -680,6 +809,7 @@ RULE 1E — Sub-pages (about, services, portfolio, contact) MUST also use dynami
           <main className="pt-20"><PageContent /></main>
           <Footer />
           <WhatsAppWidget />
+          <ScrollToTop />
         </>
       )
     }
@@ -746,21 +876,29 @@ The next.config.js already has unoptimized: true and remotePatterns: ** so exter
 
 === RULE 8: API ROUTES (ALREADY CREATED — DO NOT MODIFY) ===
 
-app/api/save-config/route.ts and app/api/upload/route.ts are ALREADY generated by the boilerplate.
-Do NOT create or modify these files — they already work correctly.
-- save-config handles both siteConfig and imageMap
-- upload saves files to public/uploads/ and returns the URL
+The following API routes are ALREADY generated and tested. Do NOT create or modify them:
+- app/api/site-data/route.ts — single source of truth (force-dynamic, Cache-Control: no-store)
+- app/api/blob-urls/route.ts — legacy blob URL endpoint (also force-dynamic)
+- app/api/save-config/route.ts — auth-protected config save to Vercel Blob
+- app/api/upload/route.ts — auth-protected image upload to Vercel Blob
+- app/api/contact/route.ts — contact form → Resend email delivery
+- app/api/auth/[...nextauth]/route.ts — NextAuth handler
+NEVER create app/api/debug/** — it leaks secrets.
 
 === RULE 9: COMPONENTS MUST FETCH DATA AT RUNTIME (CRITICAL — DASHBOARD WILL NOT WORK WITHOUT THIS) ===
 
-lib/use-site-data.ts is ALREADY generated by the boilerplate. Do NOT create or modify it.
-It exports useSiteData() which fetches /site-config.json and /image-map.json at runtime.
+lib/use-site-data.ts is ALREADY generated. Do NOT create or modify it.
+It exports useSiteData() which fetches /api/site-data at runtime (shared in-flight request,
+no-store, cache-busted). Falls back to /site-config.json + /image-map.json if the API fails.
+
+lib/blob-storage.ts is ALSO already generated. Do NOT create or modify it.
+Dashboard saves go through it (Vercel Blob in production, filesystem locally).
 
 components/AnimateOnScroll.tsx is ALSO already generated. Do NOT create or modify it.
 It exports AnimateOnScroll and useScrollAnimation.
 
-The dashboard saves changes to public/site-config.json and public/image-map.json.
-For those changes to appear on the actual website, components MUST fetch from these files at runtime.
+The dashboard saves changes through /api/save-config to Blob (or public/*.json locally).
+For those changes to appear on the actual website, components MUST fetch at runtime via useSiteData().
 NEVER hardcode services, testimonials, gallery images, or other data in components.
 
 Import and use the pre-built hook in components:
@@ -861,13 +999,11 @@ ARCHETYPE: ${archetype.name}
 DESIGN STYLE: ${industryStyle?.name || 'Modern'}
 DESIGN MOOD: ${industryColorPalette?.mood || archetype.colorPsychology.mood}
 
-TYPOGRAPHY SYSTEM:
-- Heading Font: ${industryTypography?.heading || archetype.typography.heading} - ${industryTypography?.description || archetype.typography.description}
-- Body Font: ${industryTypography?.body || archetype.typography.body}
-- Font Weight: ${industryTypography?.weight || 'bold'}
-- Letter Spacing: ${industryTypography?.spacing || 'normal'}
-- Apply via next/font/google in app/layout.tsx
-- Type Scale: 12px, 14px, 16px, 20px, 24px, 32px, 48px, 64px, 96px
+
+${buildTypographySection(
+  industryTypography?.heading || archetype.typography.heading,
+  industryTypography?.body || archetype.typography.body
+)}
 
 COLOR PALETTE (${industryColorPalette?.name || 'Default'}):
 - Primary: ${industryColorPalette?.primary || theme?.palette?.primary || '#0ea5e9'} (buttons, CTAs, active states)
@@ -960,8 +1096,7 @@ When header is transparent over hero image:
 
 HERO IMAGE FALLBACK (MANDATORY):
 ${siteConfig.hero?.heroImageUrl ? `- Use this hero image: ${siteConfig.hero.heroImageUrl}` : `- No hero image was scraped. Use a stock image from Unsplash that matches the ${archetype.name} industry.
-- Example for bakery/food: https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1920&q=80
-- Example for services: https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80
+${getIndustryStockImageHints(archetype.id)}
 - Use as background-image with a dark overlay for text readability:
   <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(...)' }} />
   <div className="absolute inset-0 bg-black/50" />
@@ -978,8 +1113,11 @@ When header is transparent over hero image:
 6. CONTENT SECTIONS (REAL DATA FROM WEBSITE)
 ==================================================
 
+${services && services.length > 0 ? buildServiceInstructions(services, archetype) : `
 SERVICES:
-${services?.map((s, i) => `${i + 1}. ${s.title}: ${s.description}${s.priceTag ? ` [${s.priceTag}]` : ''}`).join('\n') || '- Generate relevant services for ' + archetype.name}
+- Generate relevant services for ${archetype.name} industry
+- Use ${archetype.conversionCTAs[0] || 'Get a Quote'} as primary CTA
+`}
 
 ${galleryInstructions}
 
@@ -1111,23 +1249,19 @@ FAQPAGE SCHEMA (MANDATORY):
   ]
 }
 
-LLMS.TXT FILE (MANDATORY):
-- Create a file at /llms.txt with a clean summary of the business
-- This file helps AI models understand the site content, offerings, and location
-- Format:
-  # ${businessName}
-  
-  ## About
-  [Brief description of the business]
-  
-  ## Services
-  [List of services offered]
-  
-  ## Location
-  [City, suburbs served, service area]
-  
-  ## Contact
-  [Phone, email, website]
+LLMS.TXT — AUTO-GENERATED (DO NOT CREATE):
+- /llms.txt and /llms-full.txt are served automatically by app/llms.txt/route.ts and
+  app/llms-full.txt/route.ts from public/site-config.json. Do NOT write these files manually.
+- Instead, keep site-config.json fields complete and accurate (businessName, services,
+  businessHours, contact, geo.serviceAreas) so the generated summaries are rich.
+
+AI-READABLE SEMANTIC HTML (MANDATORY):
+- Exactly one <h1> per page; logical heading order (h1 -> h2 -> h3), never skip levels.
+- Use semantic landmarks: <header>, <nav>, <main>, <footer>. Wrap page content in <main>.
+- Every image MUST have a descriptive alt attribute (skip alt="" only for pure decoration).
+- Keep the business Name / Address / Phone (NAP) strings IDENTICAL everywhere they appear
+  (hero, contact section, footer, JSON-LD). Single source of truth is site-config.json.
+- Internal linking: every page links back to / and /contact; service sections link to /contact.
 
 EXPLICIT SERVICE BOUNDARIES (MANDATORY):
 - Specify specific suburbs or travel policies
@@ -1278,25 +1412,35 @@ INTERACTIVE MICRO-INTERACTIONS & ELEVATION:
 ALL components are ALREADY created and copied into the project:
   components/Hero.tsx, Services.tsx, Gallery.tsx, Testimonials.tsx,
   Faq.tsx, Contact.tsx, About.tsx, Footer.tsx, Header.tsx, WhatsAppWidget.tsx,
-  AnimateOnScroll.tsx
+  AnimateOnScroll.tsx, PageHero.tsx, VideoEmbed.tsx, ScrollToTop.tsx, Toast.tsx, _Lightbox.tsx
 
 These components are PRE-BUILT and read all content from site-config.json via useSiteData().
 They use CSS variables for colors, so they automatically adapt to your design seed.
 DO NOT modify, recreate, or overwrite these component files. They work as-is.
 
+GALLERY MODE PROP (REQUIRED):
+- Homepage: <Gallery mode="home" />  (limited preview honouring siteConfig.gallerySettings)
+- Portfolio page: <Gallery mode="full" />  (all images, category filters, lightbox)
+Never omit the mode prop.
+
+PAGE HERO (inner pages):
+- Every sub-page starts with <PageHero page="about|services|portfolio|contact" fallbackTitle="..." fallbackSubtitle="..." fallbackImage="..." />
+- Use generateMetadata via buildPageMetadata from '@/lib/page-meta'
+
 YOUR ONLY JOBS:
-1. Create app/page.tsx (with dynamic imports — see Rule 1D)
+1. Create app/page.tsx (with dynamic imports — see Rule 1D). Boilerplate already has a correct starting file — prefer keeping it.
 2. Create sub-pages (app/about/page.tsx, app/services/page.tsx, etc.) with dynamic imports
 3. Write ALL copywriting into public/site-config.json (see Section 12)
 4. Assign images to public/image-map.json (see Section 12)
 5. Set colors/fonts in tailwind.config.ts and globals.css
-6. Create public/seo.json and public/llms.txt
+6. Create public/seo.json (llms.txt is auto-generated — do not write it manually)
 
 ANIMATION GUIDANCE:
 ${industryAnimationGuidance || 'Smooth fade-ins, gentle parallax, elegant hover effects'}
 
 SPACING GUIDANCE:
-${industrySpacingGuidance || 'Comfortable sections (80-112px padding), professional density'}
+Section padding is LOCKED to .section-padding (3.25rem / 4.25rem / 5.25rem mobile/md/lg).
+Section headers use mb-12 (not mb-16). Do not increase section padding.
 
 TRUST SIGNALS:
 ${industryTrustSignals.map(s => `- ${s}`).join('\n') || '- Client testimonials\n- Years of experience\n- Certifications'}
@@ -1315,6 +1459,17 @@ Components are PRE-BUILT. Your job is to:
 5. Create SEO data files
 
 DO NOT write component code. Components read from site-config.json automatically.
+
+HERO IMAGE (MANDATORY — BUILD FAILS WITHOUT IT):
+- site-config.json MUST have hero.heroImageUrl set to a real working image URL
+  (Unsplash https://images.unsplash.com/... or /uploads/... local path)
+- Components already render it as the hero background. Never leave it empty.
+- Verify the URL returns HTTP 200 before saving.
+
+STOP WHEN DONE:
+- After "npm run build" succeeds and public/site-config.json + image-map.json exist, STOP.
+- Do NOT run long smoke tests, playwright, or infinite dev servers.
+- The builder runs QA, deploy, and notifications automatically after you exit.
 
 ==================================================
 12. DASHBOARD INTEGRATION (MANDATORY)
@@ -1432,7 +1587,7 @@ After building all components, you MUST create these files:
      "jsonLd": { "@context": "https://schema.org", "@type": "LocalBusiness", ... }
    }
 
-4. CREATE public/llms.txt with a clean summary of the business.
+4. llms.txt is auto-generated from site-config.json — do NOT create it manually.
 
 5. Add FAQPage schema markup to the FAQ section:
    - This allows search engines and AI agents to digest Q&A programmatically
@@ -1462,6 +1617,55 @@ After building all components, you MUST create these files:
       - The dashboard can then assign it to gallery/portfolio items or hero images
 
 The dashboard template is already in public/dashboard/ - do NOT modify it.
+
+${buildResponsiveSpecifications()}
+
+${buildAccessibilitySpecifications()}
+
+${buildMicroInteractionSpecifications()}
+
+==================================================
+FINAL VERIFICATION CHECKLIST
+==================================================
+
+Before delivering, verify ALL of the following:
+
+PHASE 9 ENHANCEMENTS CHECKLIST:
+□ Data validation passed (no critical errors)
+□ Services have icons, images, CTAs, features, pricing
+□ Typography: Fonts load with display: 'swap'
+□ Typography: Line-height 1.6 on body text
+□ Typography: Responsive type scale applied (clamp or Tailwind)
+□ Responsive: Mobile-first approach (stack vertically < 768px)
+□ Responsive: Tablet-specific layouts (2-column grid)
+□ Responsive: Touch targets minimum 44x44px
+□ Responsive: No horizontal scroll on mobile
+□ Responsive: Viewport meta tag with maximum-scale=5
+□ Responsive: Safe area insets for notched devices
+□ Responsive: Images have srcset and sizes attributes
+□ Accessibility: ARIA landmarks (header, main, footer, nav)
+□ Accessibility: Keyboard navigation (Tab, Enter, Escape work)
+□ Accessibility: Focus visible on all interactive elements
+□ Accessibility: Screen reader text for icon buttons
+□ Accessibility: Color contrast meets WCAG AA (4.5:1 minimum)
+□ Accessibility: Alt text descriptive (not "image" or filename)
+□ Accessibility: Form errors announced with role="alert"
+□ Micro-interactions: Hover effects 150-300ms with ease-out
+□ Micro-interactions: Toasts positioned top-right (desktop) / bottom-center (mobile)
+□ Micro-interactions: Toast auto-dismiss timing correct (3s success, 7s error)
+
+GENERAL CHECKLIST:
+□ All page files use STATIC imports (no dynamic(..., { ssr: false }))
+□ No imports from 'next/document'
+□ No error pages created (404.tsx, error.tsx, etc.)
+□ All images have stock images OR local paths
+□ All text content in site-config.json (zero hardcoded copywriting)
+□ Business hours populated in site-config.json
+□ page:Content schema properties populated
+□ FAQPage schema markup added
+□ site-config.json complete (drives auto-generated llms.txt)
+□ Service boundaries specified
+□ Dashboard integration tested
 
 This must be indistinguishable from a $10,000 custom design. Execute now.`
 }
@@ -1573,6 +1777,13 @@ function buildGalleryInstructions(siteConfig: MasterSiteConfig): string {
   lines.push('- Hover effect: scale + overlay with caption')
   lines.push('- Click to open lightbox with keyboard navigation')
   lines.push('- Category filter tabs at the top')
+  lines.push('')
+  lines.push('**HOMEPAGE GALLERY LIMIT:**')
+  lines.push('- On the HOME PAGE (app/page.tsx), limit gallery to 12-16 images maximum')
+  lines.push('- Add a "See All Photos" or "View Full Portfolio" button below the gallery')
+  lines.push('- This button should link to /portfolio page where ALL images are shown')
+  lines.push('- Use slice(0, 16) or similar to limit images on homepage')
+  lines.push('- Full /portfolio page should show unlimited images with category filters')
 
   // Stock image fallback for clean builds (no scraped images)
   const hasNoImages = (!gallery || gallery.length === 0) && (!pageMediaMap || pageMediaMap.length === 0)
@@ -1764,11 +1975,11 @@ export function generateBuildInstructions(options: PromptBuilderOptions): BuildI
   let archetype: IndustryArchetype
 
   if (providedIndustry) {
-    const industryLower = providedIndustry.toLowerCase()
-    archetype = INDUSTRY_ARCHETYPES.find(a =>
-      a.name.toLowerCase().includes(industryLower) ||
-      a.keywords.some(k => industryLower.includes(k))
-    ) || INDUSTRY_ARCHETYPES.find(a => a.id === 'general')!
+    // Closed-map truth first, then name/keyword fallback for unknown labels
+    const mappedId = resolveArchetypeFromIndustry(providedIndustry)
+    archetype = mappedId
+      ? (INDUSTRY_ARCHETYPES.find(a => a.id === mappedId) || INDUSTRY_ARCHETYPES.find(a => a.id === 'general')!)
+      : detectIndustry(businessName, seo?.title, seo?.description, services, legacyUrls?.discovered?.[0], providedIndustry)
   } else {
     archetype = detectIndustry(
       businessName,
@@ -1924,7 +2135,7 @@ YOUR TASKS (in order)
 5. Write ALL copywriting into public/site-config.json
 6. Assign images to public/image-map.json
 7. Read .build-instructions/content-guide.md BEFORE writing copy
-8. Create public/seo.json and public/llms.txt
+8. Create public/seo.json (llms.txt is auto-generated — do not write it manually)
 9. Set colors/fonts in tailwind.config.ts and globals.css
 
 Components are PRE-BUILT. DO NOT modify, recreate, or overwrite component files.
@@ -1941,65 +2152,69 @@ These rules prevent build failures. Read this file BEFORE writing any code.
 
 ## Rule 1: Framer Motion SSR Safety (CRITICAL)
 
-framer-motion CANNOT run on the server. If ANY component using motion.* is rendered during 
-Next.js static generation, the build crashes.
+framer-motion components are client components ("use client"). Use STATIC imports.
 
-### Rule 1A — Dynamic imports for animated components:
+### Rule 1A — Static imports for all section components (NO dynamic/ssr:false):
 
 \`\`\`tsx
 'use client'
-import dynamic from 'next/dynamic'
 
-const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
-const Services = dynamic(() => import('@/components/Services'), { ssr: false })
-const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
-const Testimonials = dynamic(() => import('@/components/Testimonials'), { ssr: false })
-const Faq = dynamic(() => import('@/components/Faq'), { ssr: false })
-const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
-const About = dynamic(() => import('@/components/About'), { ssr: false })
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import WhatsAppWidget from '@/components/WhatsAppWidget'
+import ScrollToTop from '@/components/ScrollToTop'
+import SectionRenderer from '@/components/SectionRenderer'
+import FeatureHost from '@/components/features/FeatureHost'
+import WhatsAppGate from '@/components/WhatsAppGate'
 \`\`\`
 
 ### Rule 1B — "use client" on every animated component
 
-### Rule 1C — NEVER use static imports for animated components
+### Rule 1C — NEVER use dynamic(..., { ssr: false }) in page files
 
-### Rule 1D — app/page.tsx MUST use this pattern:
+### Rule 1D — app/page.tsx MUST use this pattern (Section Registry composition):
+
+The homepage does NOT hardcode sections. \`SectionRenderer\` reads the Section
+Registry at runtime and renders whatever the client has switched on in the
+dashboard. \`FeatureHost\` mounts the premium feature widgets into placement slots.
 
 \`\`\`tsx
 'use client'
-import dynamic from 'next/dynamic'
-
-const Header = dynamic(() => import('@/components/Header'), { ssr: false })
-const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
-const Services = dynamic(() => import('@/components/Services'), { ssr: false })
-const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
-const Testimonials = dynamic(() => import('@/components/Testimonials'), { ssr: false })
-const Faq = dynamic(() => import('@/components/Faq'), { ssr: false })
-const About = dynamic(() => import('@/components/About'), { ssr: false })
-const CtaBanner = dynamic(() => import('@/components/CtaBanner'), { ssr: false })
-const PricingTable = dynamic(() => import('@/components/PricingTable'), { ssr: false })
-const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
-const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
-const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
-const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import WhatsAppWidget from '@/components/WhatsAppWidget'
+import ScrollToTop from '@/components/ScrollToTop'
+import SectionRenderer from '@/components/SectionRenderer'
+import FeatureHost from '@/components/features/FeatureHost'
+import WhatsAppGate from '@/components/WhatsAppGate'
 
 export default function Home() {
   return (
     <>
+      <FeatureHost placement="top-banner" />
       <Header />
+      <FeatureHost placement="header" />
       <main>
-        {/* Arrange sections based on design seed section order */}
-        <Hero />
-        {/* ... other sections ... */}
-        <Contact />
+        <SectionRenderer />
+        <FeatureHost placement="inline" />
       </main>
       <Footer />
-      <WhatsAppWidget />
+      <FeatureHost placement="footer" />
+      <FeatureHost placement="floating" />
+      <FeatureHost placement="modal" />
+      <WhatsAppGate><WhatsAppWidget /></WhatsAppGate>
       <ScrollToTop />
     </>
   )
 }
 \`\`\`
+
+CRITICAL — every \`FeatureHost\` placement slot must stay mounted. The slots are
+\`top-banner\`, \`header\`, \`inline\`, \`footer\`, \`floating\`, \`modal\`. If you drop
+one, every feature assigned to that slot silently renders nothing.
+
+NEVER list sections individually in app/page.tsx. NEVER reorder them there —
+the client reorders from the dashboard via \`controls.sectionOrder\`.
 
 ## Rule 2: NEVER import from next/document
 
@@ -2021,6 +2236,69 @@ All pages go in app/ directory (NOT pages/).
 When no scraped images exist, use Unsplash stock images. NEVER use gradient placeholders.
 
 ## Rule 8: API Routes are ALREADY created — DO NOT modify
+
+These routes already exist and are managed by the platform:
+- app/api/contact/route.ts (Resend lead delivery + Supabase logging)
+- app/api/leads/route.ts (dashboard lead list / mark-read)
+- app/api/leads/[id]/redeliver/route.ts (redeliver to inbox)
+- app/api/leads/test/route.ts (send test lead)
+- app/api/geo-audit/route.ts (pre-launch GEO checklist)
+- app/api/save-config, app/api/upload, app/api/site-data, app/api/auth/*
+DO NOT modify, recreate, or overwrite these files.
+
+## Rule 8B: Platform SEO / GEO files are ALREADY created — DO NOT modify
+
+These files are auto-generated and serve AI/search crawlers:
+- app/robots.ts (search + AI crawler allowlist)
+- app/sitemap.ts (dynamic XML sitemap)
+- app/llms.txt/route.ts and app/llms-full.txt/route.ts (AI-readable business summary)
+- app/opengraph-image.tsx (branded social preview)
+- app/rss.xml/route.ts (RSS feed)
+- app/layout.tsx JSON-LD scripts (LocalBusiness / FAQPage / Service / speakable)
+DO NOT modify, recreate, or overwrite these files. To change what they contain,
+edit public/site-config.json only.
+
+## Rule 8C: Platform library files are ALREADY created — DO NOT modify
+
+- lib/leads.ts, lib/supabase-server.ts, lib/email-html.ts (lead pipeline)
+- lib/schema.ts, lib/schema-types.ts (JSON-LD builders)
+- lib/robots-ua-list.ts, lib/geo-audit.ts, lib/page-meta.ts
+- lib/site-url.ts, lib/view-tracker.ts, lib/logo-engine.ts
+DO NOT modify, recreate, or overwrite these files.
+
+## Rule 8D: Full Control System is ALREADY created — DO NOT modify
+
+The site's section list is driven at RUNTIME by the Section Registry. The client
+switches sections on/off from the dashboard. Nothing is hardcoded in page.tsx.
+
+DO NOT modify or recreate:
+- lib/section-registry.ts, lib/feature-registry.ts, lib/control-flags.ts
+- components/SectionRenderer.tsx, components/PageHero.tsx
+- components/WhatsAppGate.tsx, components/VideoEmbed.tsx
+- components/features/FeatureHost.tsx and every components/features/*.tsx
+- components/TeamSection.tsx, TeamPage.tsx, BlogStrip.tsx, BlogPage.tsx
+- components/ReviewsPage.tsx, AreasPage.tsx, PrivacyContent.tsx
+- components/StatsBar.tsx, ProcessSteps.tsx, BeforeAfter.tsx, LatestWork.tsx
+- components/TrustBadges.tsx, PartnersStrip.tsx, AreasServed.tsx
+- components/LocationMap.tsx, BusinessHours.tsx, AwardsPress.tsx
+- components/SocialFeed.tsx, NewsletterBlock.tsx
+- components/PricingTable.tsx, CtaBanner.tsx, VslPlayer.tsx
+
+CRITICAL RULES:
+1. app/page.tsx renders <SectionRenderer /> + <FeatureHost placement="..." /> —
+   do NOT hardcode section lists. See Rule 1D for the exact file.
+2. app/team, app/blog, app/reviews, app/faq, app/areas, app/privacy already
+   exist. Do NOT recreate them.
+3. site-config.json "controls" drives what is visible (controls.sections,
+   controls.pages, controls.features, controls.sectionOrder). Do NOT edit it to
+   force sections on — the client controls that from the dashboard.
+4. If a section is switched off, the site re-flows automatically. Never leave
+   placeholder markup for a hidden section.
+5. You write ONLY the design-variant components: Hero, Services, Gallery,
+   Testimonials, Faq, About, Contact, Header, Footer. Pick the variant that
+   matches this business's archetype and write it to the canonical flat path
+   (e.g. components/Hero.tsx). Everything else in the control system is
+   platform-owned and already shipped.
 
 ## Rule 9: Components MUST fetch data at runtime
 
@@ -2219,7 +2497,16 @@ These make every website look generic. NEVER use them:
 
 - Lazy loading for below-fold images
 - Descriptive alt text with local context
-- WebP format preferred`
+- WebP format preferred
+
+---
+
+${services && services.length > 0 ? buildServiceInstructions(services, archetype) : `
+## SERVICES
+
+Generate relevant services for ${archetype.name} industry.
+Use "${archetype.conversionCTAs[0] || 'Get a Quote'}" as primary CTA.
+`}`
 
   // ============================================
   // FILE 5: Data Schemas
@@ -2358,24 +2645,15 @@ Each category MUST include a "thumbnail" field.
 }
 \`\`\`
 
-## public/llms.txt
+## public/llms.txt — AUTO-GENERATED (do not create this file)
 
-\`\`\`
-# ${businessName}
-
-## About
-[Brief description]
-
-## Services
-[List of services]
-
-## Location
-${siteConfig.city}
-
-## Contact
-Phone: ${normalizedPhone}
-Email: ${contact?.email || ''}
-\`\`\`
+Served dynamically from site-config.json at /llms.txt and /llms-full.txt.
+Ensure these site-config fields are complete so the generated summaries are rich:
+- businessName, seo.description, city, history
+- services[] (title + description)
+- businessHours[]
+- contact.phone / contact.email / contact.address
+- geo.serviceAreas[]
 
 ## FAQPage Schema (add to FAQ section)
 
@@ -2397,7 +2675,7 @@ Email: ${contact?.email || ''}
 \`\`\``
 
   // ============================================
-  // FILE 6: Visual Standards
+  // FILE 6: Visual Standards (PHASE 9 ENHANCED)
   // ============================================
   const visualStandards = `# Visual Standards
 
@@ -2441,7 +2719,27 @@ When header is transparent over hero:
 - Hero images: Dark gradient overlay for text readability
 - Gallery images: Subtle hover scale (1.05x) with overlay
 - Service images: Consistent aspect ratios
-- All images: Descriptive alt text`
+- All images: Descriptive alt text
+
+---
+
+${buildTypographySection(
+  industryTypography?.heading || archetype.typography.heading,
+  industryTypography?.body || archetype.typography.body
+)}
+
+---
+
+${buildResponsiveSpecifications()}
+
+---
+
+${buildAccessibilitySpecifications()}
+
+---
+
+${buildMicroInteractionSpecifications()}
+`
 
   return {
     shortPrompt,

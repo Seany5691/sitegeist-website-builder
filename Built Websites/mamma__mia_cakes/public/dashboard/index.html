@@ -97,6 +97,14 @@
           <i class="fas fa-cog"></i>
           <span>Settings</span>
         </a>
+        <a href="#" class="nav-item" data-section="team">
+          <i class="fas fa-users"></i>
+          <span>Team</span>
+        </a>
+        <a href="#" class="nav-item" data-section="faq">
+          <i class="fas fa-question-circle"></i>
+          <span>FAQ</span>
+        </a>
         <a href="#" class="nav-item" data-section="design-system">
           <i class="fas fa-palette"></i>
           <span>Design System</span>
@@ -361,9 +369,14 @@
         <section id="testimonials" class="section">
           <div class="section-header">
             <h2>Testimonials</h2>
-            <button class="primary-btn" onclick="openTestimonialEditor()">
-              <i class="fas fa-plus"></i><span>Add Testimonial</span>
-            </button>
+            <div class="section-header-actions">
+              <button class="reset-btn" onclick="resetSection('testimonials')">
+                <i class="fas fa-undo"></i> Reset to Default
+              </button>
+              <button class="primary-btn" onclick="openTestimonialEditor()">
+                <i class="fas fa-plus"></i><span>Add Testimonial</span>
+              </button>
+            </div>
           </div>
           <p class="help-text">Drag the grip handle to reorder testimonials.</p>
           <div id="testimonialsList" class="testimonials-list"></div>
@@ -567,6 +580,13 @@
               </button>
             </div>
             <div class="settings-card">
+              <h3>Business Hours</h3>
+              <div id="businessHoursList" class="business-hours-list"></div>
+              <button class="secondary-btn" onclick="saveBusinessHours()">
+                <i class="fas fa-save"></i> Save Business Hours
+              </button>
+            </div>
+            <div class="settings-card">
               <h3>Social Media</h3>
               <div class="editor-field">
                 <label><i class="fab fa-facebook"></i> Facebook</label>
@@ -585,6 +605,40 @@
               </button>
             </div>
           </div>
+        </section>
+
+        <!-- ============== TEAM MEMBERS ============== -->
+        <section id="team" class="section">
+          <div class="section-header">
+            <h2>Team Members</h2>
+            <div class="section-header-actions">
+              <button class="reset-btn" onclick="resetSection('team')">
+                <i class="fas fa-undo"></i> Reset to Default
+              </button>
+              <button class="primary-btn" onclick="openTeamEditor()">
+                <i class="fas fa-plus"></i><span>Add Team Member</span>
+              </button>
+            </div>
+          </div>
+          <p class="help-text">Drag the grip handle to reorder team members.</p>
+          <div id="teamList" class="team-list"></div>
+        </section>
+
+        <!-- ============== FAQ ============== -->
+        <section id="faq" class="section">
+          <div class="section-header">
+            <h2>FAQ Items</h2>
+            <div class="section-header-actions">
+              <button class="reset-btn" onclick="resetSection('faq')">
+                <i class="fas fa-undo"></i> Reset to Default
+              </button>
+              <button class="primary-btn" onclick="openFaqEditor()">
+                <i class="fas fa-plus"></i><span>Add FAQ Item</span>
+              </button>
+            </div>
+          </div>
+          <p class="help-text">Drag the grip handle to reorder FAQ items.</p>
+          <div id="faqList" class="faq-list"></div>
         </section>
 
         <!-- ============== DESIGN SYSTEM ============== -->
@@ -712,6 +766,7 @@
         <div class="form-group"><label>Service Name</label><input type="text" id="serviceTitle" placeholder="e.g., Wedding Photography"></div>
         <div class="form-group"><label>Description</label><textarea id="serviceDescription" rows="4" placeholder="Describe this service"></textarea></div>
         <div class="form-group"><label>Price (optional)</label><input type="text" id="servicePrice" placeholder="e.g., R5000"></div>
+        <div class="form-group"><label>Image URL (optional)</label><input type="url" id="serviceImageUrl" placeholder="https://example.com/image.jpg"><div id="serviceImagePreview" style="margin-top:8px"></div></div>
       </div>
       <div class="modal-footer">
         <button class="secondary-btn" onclick="closeServiceEditor()">Cancel</button>
@@ -791,6 +846,46 @@
       <div class="modal-body">
         <p class="help-text">Click an image to set it as the category thumbnail.</p>
         <div id="thumbnailPickerGrid" class="folder-image-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Member Editor Modal -->
+  <div id="teamEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeTeamEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="teamEditorTitle">New Team Member</h3>
+        <button class="modal-close" onclick="closeTeamEditor()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Name</label><input type="text" id="teamName" placeholder="Full name"></div>
+        <div class="form-group"><label>Position/Title</label><input type="text" id="teamPosition" placeholder="e.g., Head Chef"></div>
+        <div class="form-group"><label>Bio</label><textarea id="teamBio" rows="4" placeholder="Brief description"></textarea></div>
+        <div class="form-group"><label>Image URL (optional)</label><input type="text" id="teamImageUrl" placeholder="https://example.com/photo.jpg"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeTeamEditor()">Cancel</button>
+        <button class="primary-btn" id="teamEditorSubmit"><i class="fas fa-save"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Editor Modal -->
+  <div id="faqEditorModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeFaqEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="faqEditorTitle">New FAQ Item</h3>
+        <button class="modal-close" onclick="closeFaqEditor()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Question</label><input type="text" id="faqQuestion" placeholder="What is your question?"></div>
+        <div class="form-group"><label>Answer</label><textarea id="faqAnswer" rows="5" placeholder="Provide a detailed answer"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeFaqEditor()">Cancel</button>
+        <button class="primary-btn" id="faqEditorSubmit"><i class="fas fa-save"></i> Save</button>
       </div>
     </div>
   </div>

@@ -274,6 +274,41 @@ export default function WebsiteBuilderDashboard() {
     specificImageUrls: '',
   })
 
+  // Client-uploaded logo — outranks scraped/generated logos
+  const [uploadedLogo, setUploadedLogo] = useState<{
+    url: string
+    storedName: string
+    name: string
+    size: number
+    width: number | null
+    height: number | null
+    isSvg: boolean
+    transparent: boolean
+  } | null>(null)
+  const [logoUploading, setLogoUploading] = useState(false)
+  const [logoError, setLogoError] = useState<string | null>(null)
+
+  const handleLogoFile = async (file: File | undefined | null) => {
+    if (!file) return
+    setLogoError(null)
+    setLogoUploading(true)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await fetch('/api/upload-logo', { method: 'POST', body: fd })
+      const json = await res.json().catch(() => ({}))
+      if (!res.ok || !json.success) {
+        setLogoError(json.message || 'Upload failed.')
+        return
+      }
+      setUploadedLogo(json)
+    } catch {
+      setLogoError('Upload failed. Try again.')
+    } finally {
+      setLogoUploading(false)
+    }
+  }
+
   const [features, setFeatures] = useState<FeatureFlags>({ ...DEFAULT_FEATURES })
   const [autoDetectedFeatures, setAutoDetectedFeatures] = useState<Set<keyof FeatureFlags>>(new Set())
   const [isLoading, setIsLoading] = useState(false)
@@ -285,6 +320,127 @@ export default function WebsiteBuilderDashboard() {
   const [activeTab, setActiveTab] = useState<'config' | 'prompt' | 'seo' | 'design' | 'rules' | 'content'>('config')
   const [selectedPaletteId, setSelectedPaletteId] = useState<string | null>(null)
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(FEATURE_GROUPS.map(g => g.name)))
+
+  // Prefill from ?trialId=... or direct query params (Send to Dashboard)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    const trialId = params.get('trialId')
+    const hasDirect =
+      params.get('businessName') ||
+      params.get('googleMapsUrl') ||
+      params.get('whatsappNumber') ||
+      params.get('ownerName')
+
+    const apply = (data: Record<string, string>) => {
+      setFormData(prev => ({
+        ...prev,
+        businessName: data.businessName || prev.businessName,
+        ownerName: data.ownerName || prev.ownerName,
+        city: data.city || prev.city,
+        whatsappNumber: data.whatsappNumber || prev.whatsappNumber,
+        email: data.email || prev.email,
+        existingWebsiteUrl: data.existingWebsiteUrl || prev.existingWebsiteUrl,
+        googleMapsUrl: data.googleMapsUrl || prev.googleMapsUrl,
+        facebookUrl: data.facebookUrl || prev.facebookUrl,
+        instagramUrl: data.instagramUrl || prev.instagramUrl,
+        industry: data.industry || prev.industry,
+        serviceAreas: data.serviceAreas || prev.serviceAreas,
+      }))
+    }
+
+    const loadEmailFromContact = async (contactId: string) => {
+      try {
+        const { createClient } = await import('@/lib/supabase')
+        const supabase = createClient()
+        const { data: contact } = await supabase
+          .from('contacts')
+          .select('email')
+          .eq('id', contactId)
+          .maybeSingle()
+        return contact?.email || ''
+      } catch {
+        return ''
+      }
+    }
+
+    if (hasDirect) {
+      apply({
+        businessName: params.get('businessName') || '',
+        ownerName: params.get('ownerName') || '',
+        city: params.get('city') || '',
+        whatsappNumber: params.get('whatsappNumber') || '',
+        email: params.get('email') || '',
+        existingWebsiteUrl: params.get('existingWebsiteUrl') || '',
+        googleMapsUrl: params.get('googleMapsUrl') || '',
+        facebookUrl: params.get('facebookUrl') || '',
+        instagramUrl: params.get('instagramUrl') || '',
+        industry: params.get('industry') || '',
+        serviceAreas: params.get('serviceAreas') || '',
+      })
+      // Email may live only on the contact — fill it in async if missing
+      if (!params.get('email') && params.get('trialId')) {
+        ;(async () => {
+          const { createClient } = await import('@/lib/supabase')
+          const supabase = createClient()
+          const { data: trial } = await supabase
+            .from('trial_websites')
+            .select('contact_id')
+            .eq('id', params.get('trialId'))
+            .maybeSingle()
+          if (trial?.contact_id) {
+            const email = await loadEmailFromContact(trial.contact_id)
+            if (email) setFormData(prev => ({ ...prev, email }))
+          }
+        })()
+      }
+      return
+    }
+
+    if (!trialId) return
+
+    // Load the full trial row so nothing from GeistTrack is dropped
+    ;(async () => {
+      try {
+        const { createClient } = await import('@/lib/supabase')
+        const supabase = createClient()
+        const { data } = await supabase
+          .from('trial_websites')
+          .select('*')
+          .eq('id', trialId)
+          .maybeSingle()
+        if (data) {
+          // Email lives on the contact, not always on trial_websites
+          let email = data.email || ''
+          if (!email && data.contact_id) {
+            try {
+              const { data: contact } = await supabase
+                .from('contacts')
+                .select('email')
+                .eq('id', data.contact_id)
+                .maybeSingle()
+              email = contact?.email || ''
+            } catch {}
+          }
+          apply({
+            businessName: data.business_name || '',
+            ownerName: data.owner_name || '',
+            city: data.city || '',
+            whatsappNumber: data.phone_number || '',
+            email,
+            existingWebsiteUrl: data.existing_website_url || '',
+            googleMapsUrl: data.maps_url || '',
+            facebookUrl: data.facebook_url || '',
+            instagramUrl: data.instagram_url || '',
+            industry: data.industry || '',
+            serviceAreas: Array.isArray(data.service_areas) ? data.service_areas.join(', ') : '',
+          })
+        }
+      } catch (err) {
+        console.warn('Failed to load trial prefill:', err)
+      }
+    })()
+  }, [])
 
   // Simulate progress steps during loading
   // Realistic progress phases based on what data is available
@@ -353,6 +509,9 @@ export default function WebsiteBuilderDashboard() {
           ...formData,
           serviceAreas,
           features,
+          uploadedLogo: uploadedLogo
+            ? { storedName: uploadedLogo.storedName, name: uploadedLogo.name }
+            : null,
         }),
       })
 
@@ -466,6 +625,95 @@ export default function WebsiteBuilderDashboard() {
                       placeholder="e.g., Pretoria Auto Repairs"
                       className="w-full bg-zinc-800/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
                     />
+                  </div>
+
+                  {/* ── Logo upload ─────────────────────────────────────── */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-white/70 flex items-center gap-2">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                      Business Logo <span className="text-white/30">(optional — beats scraped &amp; generated)</span>
+                    </label>
+
+                    {!uploadedLogo ? (
+                      <label
+                        className="block bg-zinc-800/50 border border-dashed border-white/15 rounded-lg px-4 py-5 text-center cursor-pointer hover:border-cyan-500/50 hover:bg-zinc-800/70 transition-all"
+                        onDragOver={(e) => { e.preventDefault() }}
+                        onDrop={(e) => {
+                          e.preventDefault()
+                          handleLogoFile(e.dataTransfer.files?.[0])
+                        }}
+                      >
+                        <input
+                          type="file"
+                          accept=".svg,.png,.webp,.jpg,.jpeg,image/svg+xml,image/png,image/webp,image/jpeg"
+                          className="hidden"
+                          onChange={(e) => handleLogoFile(e.target.files?.[0])}
+                        />
+                        <div className="flex flex-col items-center gap-2">
+                          <svg className="w-7 h-7 text-white/35" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                          <span className="text-sm text-white/55">
+                            {logoUploading ? 'Uploading…' : 'Drop your logo here, or click to browse'}
+                          </span>
+                          <span className="text-xs text-white/30">SVG, PNG, WebP or JPG · up to 4 MB · PNG/SVG with transparency works best</span>
+                        </div>
+                      </label>
+                    ) : (
+                      <div className="bg-zinc-800/50 border border-white/10 rounded-lg p-3">
+                        <div className="flex items-start gap-3">
+                          <div className="flex gap-2 shrink-0">
+                            <div className="w-16 h-16 rounded-lg overflow-hidden border border-white/10 bg-white flex items-center justify-center">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={uploadedLogo.url} alt="Logo preview" className="max-w-full max-h-full object-contain" />
+                            </div>
+                            <div className="w-16 h-16 rounded-lg overflow-hidden border border-white/10 bg-zinc-900 flex items-center justify-center">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={uploadedLogo.url} alt="Logo preview on dark" className="max-w-full max-h-full object-contain" />
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-white truncate">{uploadedLogo.name}</p>
+                            <p className="text-xs text-white/45">
+                              {uploadedLogo.width && uploadedLogo.height
+                                ? `${uploadedLogo.width}×${uploadedLogo.height} · `
+                                : ''}
+                              {(uploadedLogo.size / 1024).toFixed(0)} KB
+                              {uploadedLogo.isSvg ? ' · SVG' : uploadedLogo.transparent ? ' · transparency' : ' · JPG (no transparency)'}
+                            </p>
+                            {!uploadedLogo.transparent && !uploadedLogo.isSvg && (
+                              <p className="text-xs text-amber-400/80 mt-1">Tip: PNG or SVG with a transparent background looks better in the header.</p>
+                            )}
+                            {uploadedLogo.width && uploadedLogo.width < 256 && !uploadedLogo.isSvg && (
+                              <p className="text-xs text-amber-400/80 mt-1">Small image — may look soft on high-res screens.</p>
+                            )}
+                            <div className="flex gap-2 mt-2">
+                              <label className="text-xs px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 cursor-pointer transition-colors text-white/80">
+                                Replace
+                                <input
+                                  type="file"
+                                  accept=".svg,.png,.webp,.jpg,.jpeg"
+                                  className="hidden"
+                                  onChange={(e) => handleLogoFile(e.target.files?.[0])}
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => { setUploadedLogo(null); setLogoError(null) }}
+                                className="text-xs px-2.5 py-1 rounded-md bg-white/5 hover:bg-red-500/20 hover:text-red-300 transition-colors text-white/70"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {logoError && (
+                      <p className="text-xs text-red-400">{logoError}</p>
+                    )}
+                    <p className="text-xs text-white/35">
+                      Without a logo we use the one scraped from the website, or generate one for you.
+                    </p>
                   </div>
 
                   <div className="space-y-2">

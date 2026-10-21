@@ -3,12 +3,14 @@
 import { useSiteData } from '@/lib/use-site-data'
 import { useEffect, useState } from 'react'
 
-export default function HeroCard() {
+export default function HeroCard({ pageId = 'home' }: { pageId?: string }) {
   const { config } = useSiteData()
   const [mounted, setMounted] = useState(false)
   useEffect(() => { setMounted(true) }, [])
 
-  const hero = config?.hero || {}
+  const baseHero = config?.hero || {}
+  const pageHero = config?.pageHeroes?.[pageId] || {}
+  const hero = { ...baseHero, ...pageHero }
   const headline = hero.headline || 'Welcome'
   const subheadline = hero.subheadline || ''
   const badge = hero.badge || ''
@@ -29,12 +31,13 @@ export default function HeroCard() {
       )}
 
       {/* Floating Card */}
-      <div className={`relative z-10 max-w-2xl mx-4 sm:mx-auto hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-        <div className="rounded-2xl p-8 sm:p-12 shadow-2xl backdrop-blur-xl border"
+      <div className={`relative z-10 max-w-2xl mx-4 sm:mx-auto hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+        style={{ transitionDelay: '0.2s' }}>
+        <div className="card hover-lift rounded-2xl p-8 sm:p-12 shadow-2xl backdrop-blur-xl border"
           style={{ background: 'color-mix(in srgb, var(--color-bg) 92%, transparent)', borderColor: 'color-mix(in srgb, var(--color-text) 10%, transparent)' }}>
           {badge && (
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 uppercase tracking-wider"
-              style={{ background: 'color-mix(in srgb, var(--color-accent) 15%, transparent)', color: 'var(--color-accent)' }}>
+              style={{ background: 'color-mix(in srgb, var(--color-accent) 15%, transparent)', color: 'var(--safe-eyebrow)' }}>
               {badge}
             </span>
           )}
@@ -51,11 +54,11 @@ export default function HeroCard() {
           )}
 
           <div className="flex flex-wrap gap-3">
-            <a href={ctaLink} className="btn btn-md btn-primary">
+            <a href={ctaLink} className="btn btn-md btn-primary press-scale">
               {ctaText}
             </a>
             {config?.contact?.phone && (
-              <a href={`tel:${config.contact.phone}`} className="btn btn-md btn-ghost">
+              <a href={`tel:${config.contact.phone}`} className="btn btn-md btn-ghost press-scale">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                 Call
               </a>

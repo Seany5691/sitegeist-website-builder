@@ -1,385 +1,665 @@
 /**
- * LLM-as-Judge Scoring
- * Uses MiMo API directly to evaluate website visual quality after build.
- * Implements hard floor (< 6.5 = auto re-roll, max 2 attempts) and soft band (6.5-7.5 = review).
- * Includes detailed logging and bias detection.
+ * LLM-as-Judge Scoring — Design Brain loop, rubric v1
+ *
+ * Scores every enabled page, section, feature state, and viewport.
+ * Returns per-dimension FIX LISTS (executable by MiMo), not vague feedback.
+ *
+ * Design score is the GATE. Image authenticity (stock photos) NEVER blocks it.
+ * Uniqueness is tracked separately and always climbs.
+ *
+ * See DESIGN-BRAIN.md for rules, stages, and the fix-log format.
  */
 
 import { promises as fs } from 'fs'
 import path from 'path'
 
+export const JUDGE_RUBRIC_VERSION = 'v1'
+export const JUDGE_STAGE = 1
+
+export interface JudgeFix {
+  /** File to edit, e.g. components/Hero.tsx */
+  file: string
+  /** What is wrong */
+  issue: string
+  /** Exact change to make */
+  change: string
+  /** Which dimension this moves */
+  dimension: string
+  impact: 'high' | 'medium' | 'low'
+}
+
+export interface JudgeBreakdown {
+  visualHierarchy: number
+  whitespace: number
+  contrast: number
+  layoutCraft: number
+  states: number
+  consistency: number
+  responsive: number
+  a11y: number
+  imageQuality: number
+  imageAuthenticity: number
+  distinctiveness: number
+  brandFit: number
+  memorability: number
+}
+
+export interface JudgeCoverage {
+  pagesJudged: string[]
+  sectionsJudged: string[]
+  featuresJudged: string[]
+  viewports: string[]
+  /** Anything enabled but NOT judged — must be empty for a valid run */
+  missing: string[]
+}
+
 export interface JudgeResult {
+  /** Design score — the gate. Excludes image authenticity. */
   score: number
-  breakdown: {
-    visualHierarchy: number
-    whitespace: number
-    contrast: number
-    imageQuality: number
-    uniqueness: number
-    overall: number
-  }
+  /** Full weighted score including images */
+  rawScore: number
+  breakdown: JudgeBreakdown
+  /** Executable fixes to reach 8.5+, highest impact first */
+  priorityFixes: JudgeFix[]
+  /** Uniqueness ideas — never blocked by stock images */
+  uniquenessSuggestions: string[]
+  /** Checklist to reach the current stage target */
+  targetChecklist: string[]
   feedback: string
-  recommendation: 'pass' | 'review' | 'reroll'
+  recommendation: 'pass' | 'review' | 'fix' | 'reroll'
   attempt: number
-  lowDimensions: string[]  // Dimensions scoring below 6
+  lowDimensions: string[]
+  coverage: JudgeCoverage
+  stockImageNotes: string[]
+  rubricVersion: string
+  stage: number
 }
-
-// Bias tracking — stores scores by archetype for pattern detection
-interface BiasTracker {
-  [archetype: string]: {
-    count: number
-    avgScores: {
-      visualHierarchy: number
-      whitespace: number
-      contrast: number
-      imageQuality: number
-      uniqueness: number
-    }
-    lowDimensionCounts: {
-      visualHierarchy: number
-      whitespace: number
-      contrast: number
-      imageQuality: number
-      uniqueness: number
-    }
-  }
-}
-
-const biasTracker: BiasTracker = {}
 
 export interface JudgeConfig {
   projectDir: string
   businessName: string
   archetype: string
-  maxAttempts: number
-  hardFloor: number      // Score below this = auto re-roll
-  softBandLow: number    // Score in soft band = optional human review
-  softBandHigh: number
+  /** Brand personality for uniqueness scoring: warm/premium/urgent/family/technical */
+  brandPersonality?: string
+  maxAttempts?: number
+  /** Stage target — default 8.5 */
+  targetScore?: number
+  hardFloor?: number
 }
 
-const DEFAULT_CONFIG: Partial<JudgeConfig> = {
-  maxAttempts: 2,
-  hardFloor: 6.5,
-  softBandLow: 6.5,
-  softBandHigh: 7.5,
+// ── Rubric v1 ────────────────────────────────────────────────────────────────
+// Design dimensions ARE the gate. Image authenticity is informational only.
+
+const SCORING_RUBRIC = `You are a world-class web design critic and art director.
+Evaluate this website like you would review work from a top design agency.
+The bar is: "this should look like it cost R100,000 to build."
+
+Score each dimension 1-10.
+
+=== DESIGN DIMENSIONS (these are the quality gate) ===
+
+1. visualHierarchy — Is the eye drawn to what matters? Clear heading scale? Hero → services → CTA flow?
+2. whitespace — Breathing room, vertical rhythm, balance. Premium sites are generous with space.
+3. contrast — Text readable? CTAs pop? Meets WCAG AA? Premium = confident contrast.
+4. layoutCraft — Grid, alignment, component consistency, card quality, spacing tokens.
+5. states — Hover/focus/error/success/empty handled? Forms feel finished?
+6. consistency — Same type, color, spacing, card style on EVERY page. Not just homepage.
+7. responsive — Would this work at 390px, 768px, 1440px? Type overflow? Tap targets?
+8. a11y — Labels on all inputs, aria on icon buttons, keyboard nav, alt text, focus visible.
+
+=== IMAGE DIMENSIONS (NOT part of the gate) ===
+
+9. imageQuality — Resolution, crop, cohesion, relevance. (Stock photos may be generic — score them but know they will be replaced.)
+10. imageAuthenticity — 1-3 if stock/Unsplash. 8-10 if real business photos. LOW IS ACCEPTABLE.
+
+=== UNIQUENESS DIMENSIONS (tracked separately) ===
+
+11. distinctiveness — Custom design or obvious template? 10 = unforgettable, 1 = generic.
+12. brandFit — Does it match THIS business personality? (e.g. emergency plumber ≠ luxury spa)
+13. memorability — One visual moment you remember after closing the tab.
+
+=== STOCK IMAGE RULE ===
+Stock/Unsplash photos are EXPECTED at this stage. They will be replaced with client photos later.
+NEVER let imageAuthenticity drag down the design gate. Report it in stockImageNotes, not as a blocker.
+
+=== OUTPUT FORMAT (MARKDOWN — use this EXACT structure) ===
+
+## SCORES
+visualHierarchy: <1-10>
+whitespace: <1-10>
+contrast: <1-10>
+layoutCraft: <1-10>
+states: <1-10>
+consistency: <1-10>
+responsive: <1-10>
+a11y: <1-10>
+imageQuality: <1-10>
+imageAuthenticity: <1-10>
+distinctiveness: <1-10>
+brandFit: <1-10>
+memorability: <1-10>
+overall: <weighted average of dims 1-8>
+
+## FEEDBACK
+3-4 sentences on what is strong and what holds this site back.
+
+## PRIORITY FIXES
+1. [high] components/Hero.tsx
+ISSUE: CTA button has weak contrast against the hero overlay
+CHANGE: Change button to accent orange with white 700-weight text, add shadow, ensure 4.5:1 contrast
+
+2. [medium] app/globals.css
+ISSUE: Section padding is uneven between sections
+CHANGE: Set .section-padding to consistent 96px desktop / 64px mobile
+
+(list 3-8 fixes, highest impact first)
+
+## TARGET CHECKLIST
+- All CTA buttons pass 4.5:1 contrast
+- Form has persistent labels and error states
+(list concrete items to reach 8.5+)
+
+## UNIQUENESS
+- Use a copper-pipe SVG motif that runs down the page connecting sections
+- Add a thermal-imaging before/after slider in the hero
+(specific visual ideas for THIS trade)
+
+## STOCK IMAGE NOTES
+- Replace generic technician stock with real job photos
+(where stock images are and what real photos to use instead)
+
+RULES:
+- impact is one of: high, medium, low
+- Be SPECIFIC. Name the exact element and exact change.
+- Do NOT list stock photos as a design fix.
+- No JSON. Markdown only.`
+
+export interface JudgeBreakdownFull extends JudgeBreakdown {
+  overall: number
 }
 
-const SCORING_RUBRIC = `You are a professional web design critic. Evaluate this website on 5 dimensions, each scored 1-10:
-
-1. VISUAL HIERARCHY (1-10)
-- Is the eye drawn to the most important elements first?
-- Are headings clearly distinguished from body text?
-- Is there a clear visual flow from hero → services → gallery → CTA?
-
-2. WHITESPACE & SPACING (1-10)
-- Is there enough breathing room between sections?
-- Does the layout feel balanced, not cramped or empty?
-- Are gaps consistent and intentional?
-
-3. CONTRAST & READABILITY (1-10)
-- Is text readable against backgrounds?
-- Do CTAs stand out from surrounding content?
-- Is there sufficient color contrast for accessibility?
-
-4. IMAGE QUALITY & TREATMENT (1-10)
-- Are images high-resolution and relevant?
-- Do they feel cohesive (similar treatment, filters, sizing)?
-- Are hero images impactful and gallery images well-organized?
-
-5. UNIQUENESS & BRAND FIT (1-10)
-- Does this feel like a custom design, not a generic template?
-- Does the visual style match the industry archetype?
-- Would a client be impressed showing this to their customers?
-
-RESPOND IN THIS EXACT JSON FORMAT (no other text):
-{
-  "visualHierarchy": <score>,
-  "whitespace": <score>,
-  "contrast": <score>,
-  "imageQuality": <score>,
-  "uniqueness": <score>,
-  "overall": <weighted average>,
-  "feedback": "<2-3 sentences of specific, actionable feedback>"
-}`
+// Keep backward-compatible name
+export type { JudgeResult as JudgeResultLegacy }
 
 export async function judgeWebsite(config: JudgeConfig): Promise<JudgeResult> {
-  const fullConfig = { ...DEFAULT_CONFIG, ...config }
-  const { projectDir, businessName, archetype, hardFloor, softBandLow, softBandHigh } = fullConfig
+  const projectDir = config.projectDir
+  const businessName = config.businessName
+  const archetype = config.archetype
+  const targetScore = config.targetScore ?? 8.5
+  const brandPersonality = config.brandPersonality || 'professional'
 
   console.log(`\n${'='.repeat(60)}`)
   console.log(`[LLM Judge] Evaluating: ${businessName} (${archetype})`)
-  console.log(`${'='.repeat(60)}`)
+  console.log(`[LLM Judge] Rubric ${JUDGE_RUBRIC_VERSION} | Stage ${JUDGE_STAGE} | Target ${targetScore}`)
+  console.log(`[LLM Judge] Brand personality: ${brandPersonality}`)
 
-  // Take screenshots first
-  const screenshots = await captureScreenshots(projectDir)
+  // ── 1. Capture screenshots (multi-viewport + interactive states) ─────────
+  const capture = await captureJudgeEvidence(projectDir)
+  const screenshots = capture.screenshots
 
   if (screenshots.length === 0) {
-    console.log(`[LLM Judge] No screenshots captured — skipping visual scoring`)
-    return {
-      score: 0,
-      breakdown: { visualHierarchy: 0, whitespace: 0, contrast: 0, imageQuality: 0, uniqueness: 0, overall: 0 },
-      feedback: 'Could not capture screenshots — Playwright may not be available',
-      recommendation: 'pass',
-      attempt: 1,
-      lowDimensions: [],
-    }
+    console.log('[LLM Judge] No screenshots captured — skipping visual scoring')
+    return emptyResult('Could not capture screenshots — Playwright may not be available', {
+      pagesJudged: [],
+      sectionsJudged: [],
+      featuresJudged: [],
+      viewports: [],
+      missing: ['ALL — no screenshots'],
+    })
   }
 
-  console.log(`[LLM Judge] Captured ${screenshots.length} screenshots: ${screenshots.map(s => path.basename(s)).join(', ')}`)
+  console.log(
+    `[LLM Judge] Captured ${screenshots.length} screenshots across ${capture.viewports.length} viewports`
+  )
 
-  // Build the judge prompt
-  const judgePrompt = buildJudgePrompt(businessName, archetype, screenshots)
-
-  // Call MiMo CLI for scoring
-  const scoreResult = await callMiMoJudge(judgePrompt, projectDir)
+  // ── 2. Judge (send real images to vision model) ──────────────────────────
+  const judgePrompt = buildJudgePrompt(businessName, archetype, brandPersonality, capture)
+  const scoreResult = await callMiMoJudge(judgePrompt, screenshots)
 
   if (!scoreResult) {
-    console.log(`[LLM Judge] MiMo call failed — skipping visual scoring`)
-    return {
-      score: 0,
-      breakdown: { visualHierarchy: 0, whitespace: 0, contrast: 0, imageQuality: 0, uniqueness: 0, overall: 0 },
-      feedback: 'LLM judge call failed — skipping visual scoring',
-      recommendation: 'pass',
-      attempt: 1,
-      lowDimensions: [],
-    }
+    console.log('[LLM Judge] MiMo call failed — skipping visual scoring')
+    return emptyResult('LLM judge call failed — skipping visual scoring', {
+      pagesJudged: capture.pages,
+      sectionsJudged: [],
+      featuresJudged: capture.states,
+      viewports: capture.viewports.map(String),
+      missing: ['judge-call-failed'],
+    })
   }
 
-  // Identify low-scoring dimensions (below 6)
+  // ── 3. Compute design score (GATE — excludes image authenticity) ────────
+  const b = scoreResult
+  const designDims: Array<keyof JudgeBreakdown> = [
+    'visualHierarchy',
+    'whitespace',
+    'contrast',
+    'layoutCraft',
+    'states',
+    'consistency',
+    'responsive',
+    'a11y',
+  ]
+  const designSum = designDims.reduce((s, d) => s + (Number(b[d]) || 0), 0)
+  const designScore = Math.round((designSum / designDims.length) * 10) / 10
+
+  // Raw includes images (informational)
+  const rawDims = [...designDims, 'imageQuality', 'imageAuthenticity']
+  const rawSum = rawDims.reduce((s, d) => s + (Number(b[d as keyof typeof b]) || 0), 0)
+  const rawScore = Math.round((rawSum / rawDims.length) * 10) / 10
+
   const lowDimensions: string[] = []
-  const dimensionNames = ['visualHierarchy', 'whitespace', 'contrast', 'imageQuality', 'uniqueness'] as const
-  for (const dim of dimensionNames) {
-    if (scoreResult[dim] < 6) {
-      lowDimensions.push(`${dim}: ${scoreResult[dim]}/10`)
-    }
+  for (const d of designDims) {
+    const v = Number(b[d]) || 0
+    if (v < 6) lowDimensions.push(`${d}: ${v}/10`)
   }
 
-  // Determine recommendation
-  let recommendation: 'pass' | 'review' | 'reroll' = 'pass'
-  if (scoreResult.overall < hardFloor) {
-    recommendation = 'reroll'
-  } else if (scoreResult.overall >= softBandLow && scoreResult.overall < softBandHigh) {
-    recommendation = 'review'
-  }
+  // Recommendation: design score is the gate. Stock images never block.
+  let recommendation: JudgeResult['recommendation'] = 'pass'
+  if (designScore < 6.5) recommendation = 'fix'
+  else if (designScore < targetScore) recommendation = 'review'
+  if (designScore < 5) recommendation = 'reroll'
 
-  // Log detailed results
-  console.log(`\n[LLM Judge] SCORE BREAKDOWN:`)
-  console.log(`  Visual Hierarchy:  ${scoreResult.visualHierarchy}/10 ${scoreResult.visualHierarchy < 6 ? '⚠️  LOW' : ''}`)
-  console.log(`  Whitespace:        ${scoreResult.whitespace}/10 ${scoreResult.whitespace < 6 ? '⚠️  LOW' : ''}`)
-  console.log(`  Contrast:          ${scoreResult.contrast}/10 ${scoreResult.contrast < 6 ? '⚠️  LOW' : ''}`)
-  console.log(`  Image Quality:     ${scoreResult.imageQuality}/10 ${scoreResult.imageQuality < 6 ? '⚠️  LOW' : ''}`)
-  console.log(`  Uniqueness:        ${scoreResult.uniqueness}/10 ${scoreResult.uniqueness < 6 ? '⚠️  LOW' : ''}`)
-  console.log(`  ─────────────────────────────`)
-  console.log(`  OVERALL:           ${scoreResult.overall}/10`)
-  console.log(`\n[LLM Judge] RECOMMENDATION: ${recommendation.toUpperCase()}`)
-  console.log(`[LLM Judge] FEEDBACK: ${scoreResult.feedback}`)
-
-  if (lowDimensions.length > 0) {
-    console.log(`\n[LLM Judge] LOW DIMENSIONS (below 6):`)
-    for (const dim of lowDimensions) {
-      console.log(`  • ${dim}`)
-    }
-  }
-
-  // Track bias by archetype
-  trackBias(archetype, scoreResult)
-
-  return {
-    score: scoreResult.overall,
+  const result: JudgeResult = {
+    score: designScore,
+    rawScore,
     breakdown: {
-      visualHierarchy: scoreResult.visualHierarchy,
-      whitespace: scoreResult.whitespace,
-      contrast: scoreResult.contrast,
-      imageQuality: scoreResult.imageQuality,
-      uniqueness: scoreResult.uniqueness,
-      overall: scoreResult.overall,
+      visualHierarchy: b.visualHierarchy || 0,
+      whitespace: b.whitespace || 0,
+      contrast: b.contrast || 0,
+      layoutCraft: b.layoutCraft || 0,
+      states: b.states || 0,
+      consistency: b.consistency || 0,
+      responsive: b.responsive || 0,
+      a11y: b.a11y || 0,
+      imageQuality: b.imageQuality || 0,
+      imageAuthenticity: b.imageAuthenticity || 0,
+      distinctiveness: b.distinctiveness || 0,
+      brandFit: b.brandFit || 0,
+      memorability: b.memorability || 0,
     },
-    feedback: scoreResult.feedback,
+    priorityFixes: normalizeFixes(b.priorityFixes),
+    uniquenessSuggestions: Array.isArray(b.uniquenessSuggestions)
+      ? b.uniquenessSuggestions.slice(0, 8)
+      : [],
+    targetChecklist: Array.isArray(b.targetChecklist) ? b.targetChecklist.slice(0, 10) : [],
+    feedback: b.feedback || '',
     recommendation,
     attempt: 1,
     lowDimensions,
+    coverage: normalizeCoverage(b.coverage, capture),
+    stockImageNotes: Array.isArray(b.stockImageNotes) ? b.stockImageNotes : [],
+    rubricVersion: JUDGE_RUBRIC_VERSION,
+    stage: JUDGE_STAGE,
+  }
+
+  console.log(`\n[LLM Judge] DESIGN SCORE: ${result.score}/10 (raw ${result.rawScore})`)
+  console.log('[LLM Judge] BREAKDOWN (design):')
+  for (const d of designDims) {
+    console.log(`  ${d}: ${result.breakdown[d]}/10`)
+  }
+  console.log(`[LLM Judge] RECOMMENDATION: ${recommendation.toUpperCase()}`)
+  console.log(`[LLM Judge] PRIORITY FIXES: ${result.priorityFixes.length}`)
+  result.priorityFixes.slice(0, 5).forEach((f, i) => {
+    console.log(`  ${i + 1}. [${f.impact}] ${f.file} — ${f.issue}`)
+  })
+  if (result.stockImageNotes.length > 0) {
+    console.log(`[LLM Judge] STOCK IMAGE NOTES (non-blocking): ${result.stockImageNotes.length}`)
+  }
+  if (result.uniquenessSuggestions.length > 0) {
+    console.log(`[LLM Judge] UNIQUENESS IDEAS: ${result.uniquenessSuggestions.length}`)
+  }
+  if (result.coverage.missing.length > 0) {
+    console.log(`[LLM Judge] ⚠ COVERAGE GAPS: ${result.coverage.missing.join(', ')}`)
+  }
+
+  return result
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function emptyResult(feedback: string, coverage: JudgeCoverage): JudgeResult {
+  return {
+    score: 0,
+    rawScore: 0,
+    breakdown: {
+      visualHierarchy: 0,
+      whitespace: 0,
+      contrast: 0,
+      layoutCraft: 0,
+      states: 0,
+      consistency: 0,
+      responsive: 0,
+      a11y: 0,
+      imageQuality: 0,
+      imageAuthenticity: 0,
+      distinctiveness: 0,
+      brandFit: 0,
+      memorability: 0,
+    },
+    priorityFixes: [],
+    uniquenessSuggestions: [],
+    targetChecklist: [],
+    feedback,
+    recommendation: 'reroll',
+    attempt: 1,
+    lowDimensions: [],
+    coverage,
+    stockImageNotes: [],
+    rubricVersion: JUDGE_RUBRIC_VERSION,
+    stage: JUDGE_STAGE,
   }
 }
 
-// Track scores by archetype to detect bias
-function trackBias(archetype: string, scores: any) {
-  if (!biasTracker[archetype]) {
-    biasTracker[archetype] = {
-      count: 0,
-      avgScores: { visualHierarchy: 0, whitespace: 0, contrast: 0, imageQuality: 0, uniqueness: 0 },
-      lowDimensionCounts: { visualHierarchy: 0, whitespace: 0, contrast: 0, imageQuality: 0, uniqueness: 0 },
-    }
+function normalizeFixes(raw: any): JudgeFix[] {
+  if (!Array.isArray(raw)) return []
+  return raw
+    .filter((f) => f && (f.file || f.issue || f.change))
+    .slice(0, 12)
+    .map((f) => ({
+      file: String(f.file || 'components/'),
+      issue: String(f.issue || ''),
+      change: String(f.change || ''),
+      dimension: String(f.dimension || ''),
+      impact: (['high', 'medium', 'low'] as const).includes(f.impact) ? f.impact : 'medium',
+    }))
+    .sort((a, b) => {
+      const order: Record<string, number> = { high: 0, medium: 1, low: 2 }
+      return (order[a.impact] ?? 1) - (order[b.impact] ?? 1)
+    })
+}
+
+function normalizeCoverage(raw: any, capture: CaptureEvidence): JudgeCoverage {
+  const base: JudgeCoverage = {
+    pagesJudged: capture.pages,
+    sectionsJudged: capture.sections,
+    featuresJudged: capture.states,
+    viewports: capture.viewports.map(String),
+    missing: [],
   }
-
-  const tracker = biasTracker[archetype]
-  tracker.count++
-
-  // Update running averages
-  const dimensionNames = ['visualHierarchy', 'whitespace', 'contrast', 'imageQuality', 'uniqueness'] as const
-  for (const dim of dimensionNames) {
-    tracker.avgScores[dim] = ((tracker.avgScores[dim] * (tracker.count - 1)) + scores[dim]) / tracker.count
-    if (scores[dim] < 6) {
-      tracker.lowDimensionCounts[dim]++
-    }
-  }
-
-  // Log bias warning if pattern detected
-  if (tracker.count >= 3) {
-    console.log(`\n[LLM Judge] BIAS CHECK (${archetype}, n=${tracker.count}):`)
-    for (const dim of dimensionNames) {
-      const avg = tracker.avgScores[dim].toFixed(1)
-      const lowPct = ((tracker.lowDimensionCounts[dim] / tracker.count) * 100).toFixed(0)
-      if (tracker.lowDimensionCounts[dim] / tracker.count > 0.5) {
-        console.log(`  ⚠️  ${dim}: avg=${avg}, ${lowPct}% below 6 — possible rubric bias for ${archetype}`)
-      }
-    }
+  if (!raw || typeof raw !== 'object') return base
+  return {
+    pagesJudged: Array.isArray(raw.pagesJudged) ? raw.pagesJudged : base.pagesJudged,
+    sectionsJudged: Array.isArray(raw.sectionsJudged) ? raw.sectionsJudged : base.sectionsJudged,
+    featuresJudged: Array.isArray(raw.featuresJudged) ? raw.featuresJudged : base.featuresJudged,
+    viewports: Array.isArray(raw.viewports) ? raw.viewports.map(String) : base.viewports,
+    missing: Array.isArray(raw.missing) ? raw.missing.map(String) : [],
   }
 }
 
-// Export bias report for analysis
-export function getBiasReport(): string {
-  const lines: string[] = ['LLM Judge Bias Report', '']
-
-  for (const [archetype, data] of Object.entries(biasTracker)) {
-    lines.push(`${archetype} (n=${data.count}):`)
-    const dimensionNames = ['visualHierarchy', 'whitespace', 'contrast', 'imageQuality', 'uniqueness'] as const
-    for (const dim of dimensionNames) {
-      const avg = data.avgScores[dim].toFixed(1)
-      const lowPct = ((data.lowDimensionCounts[dim] / data.count) * 100).toFixed(0)
-      lines.push(`  ${dim}: avg=${avg}, ${lowPct}% below 6`)
-    }
-    lines.push('')
-  }
-
-  return lines.join('\n')
+interface CaptureEvidence {
+  screenshots: string[]
+  pages: string[]
+  sections: string[]
+  states: string[]
+  viewports: number[]
 }
 
-function buildJudgePrompt(businessName: string, archetype: string, screenshots: string[]): string {
-  const screenshotList = screenshots.map((s, i) => `Screenshot ${i + 1}: ${path.basename(s)}`).join('\n')
+function buildJudgePrompt(
+  businessName: string,
+  archetype: string,
+  brandPersonality: string,
+  capture: CaptureEvidence
+): string {
+  const fileList = capture.screenshots
+    .map((s, i) => `${i + 1}. ${path.basename(s)}`)
+    .join('\n')
 
-  return `Evaluate the website for "${businessName}" (${archetype} archetype).
+  return `Evaluate the website for "${businessName}".
+Trade/archetype: ${archetype}
+Brand personality to judge fit against: ${brandPersonality}
+Current target design score: 8.5/10
 
-Screenshots captured:
-${screenshotList}
+I am sending ${capture.screenshots.length} screenshots as images below.
+Viewports: ${capture.viewports.join(', ')} (mobile 390 / tablet 768 / desktop 1440)
+Pages: ${capture.pages.join(', ')}
+Interactive states: ${capture.states.join(', ') || '(static pages only)'}
+
+IMPORTANT — FEATURES ARE DISMISSED:
+Popups (newsletter, cookie bar, quote slide-in, modals) have been CLOSED before these screenshots.
+Do NOT penalize the design score for floating widgets (WhatsApp FAB, click-to-call, quote buttons,
+cookie bar) — those are optional client features judged separately. Score the WEBSITE DESIGN:
+layout, typography, spacing, color, hierarchy, consistency, forms, page structure.
+
+Image list (order matches images sent):
+${fileList}
 
 ${SCORING_RUBRIC}`
 }
 
-async function callMiMoJudge(prompt: string, projectDir: string): Promise<any> {
+// ── MiMo API with VISION (real screenshots) ─────────────────────────────────
+
+async function callMiMoJudge(prompt: string, screenshots: string[]): Promise<any> {
   const MIMO_API_URL = 'https://token-plan-sgp.xiaomimimo.com/v1/chat/completions'
   const MIMO_API_KEY = 'tp-s5mjmff9x4qh31pudzb4k45ipyprkgxvmgeyhidxqo28ljg3'
-  const MIMO_MODEL = 'mimo-v2.5'
+  // Judge with the strongest model available — visual critique needs top quality
+  const MIMO_MODEL = 'mimo-v2.6-pro'
+  const MIMO_MODEL_FALLBACK = 'mimo-v2.5'
 
-  try {
-    console.log(`[LLM Judge] Calling MiMo API directly (model: ${MIMO_MODEL})`)
+  const MIMO_PREPAID_API_URL =
+    process.env.MIMO_PREPAID_URL || 'https://api.xiaomimimo.com/v1/chat/completions'
+  const MIMO_PREPAID_API_KEY = process.env.MIMO_PREPAID_API_KEY || ''
+  const MIMO_PREPAID_MODEL = process.env.MIMO_PREPAID_MODEL || 'mimo-v2.5'
 
-    const response = await fetch(MIMO_API_URL, {
+  // Build vision message content: text + images
+  const content: any[] = [{ type: 'text', text: prompt }]
+  // Cap images to keep request size sane
+  const imagePaths = screenshots.slice(0, 8)
+  for (const p of imagePaths) {
+    try {
+      const buf = await fs.readFile(p)
+      const b64 = buf.toString('base64')
+      content.push({
+        type: 'image_url',
+        image_url: { url: `data:image/png;base64,${b64}` },
+      })
+    } catch {}
+  }
+
+  console.log(`[LLM Judge] Sending ${imagePaths.length} images + prompt to judge model`)
+
+  const tryCall = async (label: string, url: string, key: string, model: string) => {
+    console.log(`[LLM Judge] [${label}] Calling ${model}`)
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${MIMO_API_KEY}`,
+        Authorization: `Bearer ${key}`,
       },
       body: JSON.stringify({
-        model: MIMO_MODEL,
+        model,
         messages: [
-          { role: 'system', content: 'You are a professional web design critic. Respond only with valid JSON.' },
-          { role: 'user', content: prompt },
+          {
+            role: 'system',
+            content:
+              'You are a world-class web design critic and art director. You evaluate real website screenshots. Respond in the MARKDOWN format requested. Do NOT use JSON.',
+          },
+          { role: 'user', content },
         ],
         temperature: 0.3,
-        max_tokens: 2000,
+        max_tokens: 3000,
       }),
     })
-
     if (!response.ok) {
       const errorText = await response.text()
-      console.warn(`[LLM Judge] MiMo API error: ${response.status} - ${errorText}`)
+      throw new Error(`${label} ${response.status}: ${errorText.slice(0, 200)}`)
+    }
+    const data = await response.json()
+    const text = data.choices?.[0]?.message?.content
+    const reasoning = data.choices?.[0]?.message?.reasoning_content
+    const contentOut = Array.isArray(text)
+      ? text.map((p: any) => p.text || '').join('')
+      : text || (reasoning || '')
+    // Risk-filter / refusal responses have no JSON — signal caller to fall back
+    if (/high risk|rejected|refused|cannot assist/i.test(contentOut) && !contentOut.includes('{')) {
+      console.warn(`[LLM Judge] ${label} refused the request: ${contentOut.slice(0, 120)}`)
       return null
     }
-
-    const data = await response.json()
-    const content = data.choices?.[0]?.message?.content || ''
-
-    console.log(`[LLM Judge] MiMo response received (${content.length} chars)`)
-
-    // Parse JSON from the response
-    const result = parseJudgeResponse(content)
-    return result
-  } catch (err) {
-    console.warn(`[LLM Judge] MiMo API call failed: ${err}`)
-    return null
+    console.log(`[LLM Judge] ✓ ${label} responded (${contentOut.length} chars)`)
+    // Save raw output so we can diagnose parse failures
+    try {
+      const debugDir = path.join(process.cwd(), 'logs')
+      await fs.mkdir(debugDir, { recursive: true })
+      await fs.writeFile(
+        path.join(debugDir, 'judge-raw-output.txt'),
+        contentOut.slice(0, 12000),
+        'utf-8'
+      )
+    } catch {}
+    return parseJudgeResponse(contentOut)
   }
+
+  // Primary: MiMo 2.6 Pro (best vision judge)
+  try {
+    const r = await tryCall('MiMo 2.6 Pro', MIMO_API_URL, MIMO_API_KEY, MIMO_MODEL)
+    if (r) return r
+  } catch (err) {
+    console.warn(`[LLM Judge] MiMo 2.6 Pro failed: ${err}`)
+  }
+
+  // Secondary: MiMo 2.5 (same endpoint, fallback model)
+  try {
+    const r = await tryCall('MiMo 2.5', MIMO_API_URL, MIMO_API_KEY, MIMO_MODEL_FALLBACK)
+    if (r) return r
+  } catch (err) {
+    console.warn(`[LLM Judge] MiMo 2.5 failed: ${err}`)
+  }
+
+  // Secondary
+  if (MIMO_PREPAID_API_KEY) {
+    try {
+      const r = await tryCall('MiMo Prepaid', MIMO_PREPAID_API_URL, MIMO_PREPAID_API_KEY, MIMO_PREPAID_MODEL)
+      if (r) return r
+    } catch (err) {
+      console.warn(`[LLM Judge] MiMo Prepaid failed: ${err}`)
+    }
+  }
+
+  return null
 }
 
+﻿/** Parse judge output — MARKDOWN format (see SCORING_RUBRIC). */
 function parseJudgeResponse(output: string): any {
-  // Try to find JSON in the output
-  const jsonMatch = output.match(/\{[\s\S]*"visualHierarchy"[\s\S]*\}/)
-  if (!jsonMatch) {
-    console.warn('[LLM Judge] Could not find JSON in MiMo output')
-    return null
-  }
-
   try {
-    const parsed = JSON.parse(jsonMatch[0])
+    const text = output.trim()
+    const result: any = {}
 
-    // Validate required fields
-    const required = ['visualHierarchy', 'whitespace', 'contrast', 'imageQuality', 'uniqueness', 'overall']
-    for (const field of required) {
-      if (typeof parsed[field] !== 'number') {
-        console.warn(`[LLM Judge] Missing or invalid field: ${field}`)
-        return null
+    const scoresSection = text.match(/##\s*SCORES([\s\S]*?)(?=##\s|$)/i)
+    if (scoresSection) {
+      const s = scoresSection[1]
+      const keys = [
+        'visualHierarchy', 'whitespace', 'contrast', 'layoutCraft', 'states',
+        'consistency', 'responsive', 'a11y', 'imageQuality', 'imageAuthenticity',
+        'distinctiveness', 'brandFit', 'memorability', 'overall',
+      ]
+      for (const key of keys) {
+        const m = s.match(new RegExp(key + '\\s*[:=]\\s*([0-9]+(?:\\.[0-9]+)?)', 'i'))
+        if (m) result[key] = Number(m[1])
       }
     }
 
-    // Clamp scores to 1-10
-    for (const field of required) {
-      parsed[field] = Math.max(1, Math.min(10, parsed[field]))
-    }
+    const fbSection = text.match(/##\s*FEEDBACK([\s\S]*?)(?=##\s|$)/i)
+    if (fbSection) result.feedback = fbSection[1].trim()
 
-    // Ensure feedback exists
-    if (!parsed.feedback) {
-      parsed.feedback = 'No specific feedback provided'
+    const fixes: any[] = []
+    const fixesSection = text.match(/##\s*PRIORITY\s*FIXES([\s\S]*?)(?=##\s|$)/i)
+    if (fixesSection) {
+      const lines = fixesSection[1].split('\n')
+      let current: any = null
+      for (const line of lines) {
+        const heading = line.match(/^\s*\d+\.\s*\[(high|medium|low)\]\s*(.+?)\s*$/i)
+        if (heading) {
+          if (current && (current.file || current.issue || current.change)) {
+            if (!current.impact) current.impact = 'medium'
+            fixes.push(current)
+          }
+          current = { impact: heading[1].toLowerCase(), file: heading[2].trim(), issue: '', change: '', dimension: '' }
+          continue
+        }
+        const issue = line.match(/^\s*ISSUE:\s*(.+)$/i)
+        if (issue && current) { current.issue = issue[1].trim(); continue }
+        const change = line.match(/^\s*CHANGE:\s*(.+)$/i)
+        if (change && current) { current.change = change[1].trim(); continue }
+        const dim = line.match(/^\s*(?:DIMENSION|AREA):\s*(.+)$/i)
+        if (dim && current) { current.dimension = dim[1].trim(); continue }
+      }
+      if (current && (current.file || current.issue || current.change)) {
+        if (!current.impact) current.impact = 'medium'
+        fixes.push(current)
+      }
     }
+    result.priorityFixes = fixes
 
-    return parsed
+    result.targetChecklist = extractMdList(text, 'TARGET\\s*CHECKLIST')
+    result.uniquenessSuggestions = extractMdList(text, 'UNIQUENESS')
+    result.stockImageNotes = extractMdList(text, 'STOCK\\s*IMAGE\\s*NOTES')
+
+    const hasScores = result.visualHierarchy != null || result.whitespace != null
+    if (!hasScores && fixes.length === 0) {
+      console.warn('[LLM Judge] Markdown parse found nothing:', text.slice(0, 200))
+      return null
+    }
+    console.log('[LLM Judge] Markdown parsed: scores=' + hasScores + ', fixes=' + fixes.length + ', uniqueness=' + (result.uniquenessSuggestions || []).length)
+    return result
   } catch (err) {
-    console.warn(`[LLM Judge] Failed to parse JSON: ${err}`)
+    console.warn('[LLM Judge] Failed to parse markdown: ' + err)
     return null
   }
 }
 
-async function captureScreenshots(projectDir: string): Promise<string[]> {
-  const screenshotDir = path.join(projectDir, 'screenshots')
+function extractMdList(text: string, headingPattern: string): string[] {
+  const section = text.match(new RegExp('##\\s*' + headingPattern + '([\\s\\S]*?)(?=##\\s|$)', 'i'))
+  if (!section) return []
+  return section[1].split('\n').map((l) => l.replace(/^[\s]*[-*•]\s+/, '').trim()).filter((l) => l.length > 0 && !l.startsWith('##'))
+}
+
+function repairJson(raw: string): string {
+  let s = raw
+  // Escape raw newlines / tabs inside strings
+  s = s.replace(/[\u0000-\u001f]/g, (c) => (c === '\n' ? '\\n' : c === '\r' ? '\\r' : c === '\t' ? '\\t' : ' '))
+  // Remove trailing commas before } or ]
+  s = s.replace(/,\s*([\]}])/g, '$1')
+  // Fix unescaped internal double quotes in strings: ,"key":"val" with " inside
+  // Heuristic: escape " that appears between : " and ", "
+  s = s.replace(/:\s*"([^"]*)"([^"]*)"([^"]*)"(\s*[,}])/g, (_m, a, b, c, d) => `:"${a}\\"${b}\\"${c}"${d}`)
+  return s
+}
+
+// ── Evidence capture: pages + viewports + interactive states ─────────────────
+
+async function captureJudgeEvidence(projectDir: string): Promise<CaptureEvidence> {
+  const screenshotDir = path.join(projectDir, 'screenshots', 'judge')
+  await fs.rm(screenshotDir, { recursive: true, force: true }).catch(() => {})
   await fs.mkdir(screenshotDir, { recursive: true })
 
-  // Try to use Playwright
   let playwright: any
   try {
     playwright = await import('playwright')
   } catch {
     console.warn('[LLM Judge] Playwright not available — skipping screenshot capture')
-    return []
+    return { screenshots: [], pages: [], sections: [], states: [], viewports: [] }
   }
 
-  // Find a random available port (between 49152-65535 to avoid conflicts)
+  const { spawn } = await import('child_process')
   const port = 49152 + Math.floor(Math.random() * (65535 - 49152))
   console.log(`[LLM Judge] Starting built website on port ${port}...`)
 
-  // Start the built website's dev server
-  const { spawn } = await import('child_process')
   let serverProcess: any = null
+  const screenshots: string[] = []
+  const pages: string[] = []
+  const sections: string[] = []
+  const states: string[] = []
 
   try {
     serverProcess = spawn('npx', ['next', 'start', '-p', String(port)], {
       cwd: projectDir,
       stdio: 'pipe',
       shell: true,
+      env: { ...process.env, NODE_ENV: 'production' },
     })
 
-    // Wait for the server to be ready (poll until it responds)
-    const maxWait = 30000
+    const maxWait = 180000
     const startTime = Date.now()
     let ready = false
-
     while (Date.now() - startTime < maxWait) {
       try {
         const response = await fetch(`http://localhost:${port}`)
@@ -387,121 +667,374 @@ async function captureScreenshots(projectDir: string): Promise<string[]> {
           ready = true
           break
         }
-      } catch {
-        // Server not ready yet
-      }
-      await new Promise(resolve => setTimeout(resolve, 500))
+      } catch {}
+      await new Promise((r) => setTimeout(r, 500))
     }
 
     if (!ready) {
       console.warn('[LLM Judge] Built website server did not start in time — skipping screenshots')
-      return []
+      return { screenshots: [], pages: [], sections: [], states: [], viewports: [] }
     }
 
-    console.log(`[LLM Judge] Built website ready on port ${port}`)
+    console.log('[LLM Judge] Built website ready')
 
-    const screenshots: string[] = []
     const browser = await playwright.chromium.launch({ headless: true })
+    const viewports = [
+      { width: 390, height: 844, name: 'mobile' },
+      { width: 768, height: 1024, name: 'tablet' },
+      { width: 1440, height: 900, name: 'desktop' },
+    ]
+
+    // Pages to judge (home + common subpages). 404 = not enabled, skip.
+    const pageList = [
+      { path: '/', name: 'home' },
+      { path: '/about', name: 'about' },
+      { path: '/services', name: 'services' },
+      { path: '/portfolio', name: 'portfolio' },
+      { path: '/contact', name: 'contact' },
+    ]
 
     try {
-      const context = await browser.newContext({
-        viewport: { width: 1440, height: 900 },
-      })
-      const page = await context.newPage()
+      for (const vp of viewports) {
+        const context = await browser.newContext({
+          viewport: { width: vp.width, height: vp.height },
+          deviceScaleFactor: 1,
+        })
+        // Clear localStorage so previous site's dashboard state never bleeds in
+        await context.addInitScript(() => {
+          try {
+            window.localStorage.clear()
+            window.sessionStorage.clear()
+          } catch {}
+        })
+        const page = await context.newPage()
 
-      // Capture key pages
-      const pages = [
-        { path: '/', name: 'homepage' },
-        { path: '/about', name: 'about' },
-        { path: '/services', name: 'services' },
-        { path: '/portfolio', name: 'portfolio' },
-        { path: '/contact', name: 'contact' },
-      ]
+        for (const p of pageList) {
+          try {
+            const resp = await page.goto(`http://localhost:${port}${p.path}`, {
+              waitUntil: 'load',
+              timeout: 30000,
+            })
+            if (resp && resp.status() === 404) continue
 
-      for (const pageConfig of pages) {
-        const url = `http://localhost:${port}${pageConfig.path}`
-        const filepath = path.join(screenshotDir, `${pageConfig.name}-judge.png`)
+            // Close popups / overlays FIRST — features must not pollute design score
+            await dismissOverlays(page)
 
-        try {
-          await page.goto(url, { waitUntil: 'networkidle', timeout: 15000 })
-          await page.waitForTimeout(500)
+            // IMPORTANT: lazy images + scroll animations only appear after
+            // scrolling. Scroll the FULL page first, then return to top,
+            // then screenshot — otherwise the judge sees blank space.
+            await scrollPageFully(page, vp.height)
+            await dismissOverlays(page)
+            await page.waitForTimeout(800)
 
-          // Scroll through the entire page to trigger scroll animations
-          const scrollHeight = await page.evaluate(() => document.body.scrollHeight)
-          const viewportHeight = 900
-          let currentScroll = 0
-          while (currentScroll < scrollHeight) {
-            currentScroll += viewportHeight * 0.7
-            await page.evaluate((y) => window.scrollTo(0, y), currentScroll)
-            await page.waitForTimeout(200)
+            const filepath = path.join(screenshotDir, `${p.name}-${vp.name}.png`)
+            await page.screenshot({ path: filepath, fullPage: true })
+            screenshots.push(filepath)
+            if (!pages.includes(p.name)) pages.push(p.name)
+
+            // Section markers from DOM
+            const sectionIds = await page.evaluate(() =>
+              Array.from(document.querySelectorAll('section[id], main section')).map(
+                (el) => el.id || 'section'
+              )
+            )
+            for (const s of sectionIds.slice(0, 12)) {
+              if (s && !sections.includes(s)) sections.push(s)
+            }
+
+            // Interactive states — home page only
+            if (p.name === 'home' && (vp.name === 'desktop' || vp.name === 'mobile')) {
+              await captureStates(page, screenshotDir, p.name, vp.name, screenshots, states)
+            }
+          } catch (err) {
+            console.warn(`[LLM Judge] page ${p.path} @ ${vp.name} failed: ${err}`)
           }
-          // Scroll back to top for the screenshot
-          await page.evaluate(() => window.scrollTo(0, 0))
-          await page.waitForTimeout(300)
-
-          // Now take full-page screenshot with all animations triggered
-          await page.screenshot({ path: filepath, fullPage: true })
-          screenshots.push(filepath)
-        } catch {
-          // Page may not be available (404, etc.)
         }
-      }
 
-      await context.close()
+        await context.close()
+      }
     } finally {
       await browser.close()
     }
-
-    return screenshots
+  } catch (err) {
+    console.warn('[LLM Judge] capture error:', err)
   } finally {
-    // Always shut down the dev server
     if (serverProcess) {
-      serverProcess.kill()
-      console.log('[LLM Judge] Built website server stopped')
+      try {
+        serverProcess.kill('SIGTERM')
+        console.log('[LLM Judge] Built website server stopped')
+      } catch {}
     }
+  }
+
+  return {
+    screenshots: await compressScreenshots(screenshots),
+    pages,
+    sections,
+    states,
+    viewports: [390, 768, 1440],
   }
 }
 
-// Re-roll logic: if score < hardFloor, rebuild with new design seed
+/**
+ * Full-page PNGs can be 5–10MB each (34MB total) — vision API rejects that.
+ * Resize to max 900px wide, JPEG q=72, and keep only the 8 most informative shots.
+ */
+async function compressScreenshots(paths: string[]): Promise<string[]> {
+  try {
+    const sharp = (await import('sharp')).default
+    const outDir = path.join(path.dirname(paths[0] || '.'), 'compressed')
+    await fs.mkdir(outDir, { recursive: true })
+
+    // Prioritize: home desktop/mobile, then other pages desktop, then states
+    const rank = (p: string) => {
+      const n = path.basename(p).toLowerCase()
+      if (n.startsWith('home-desktop')) return 0
+      if (n.startsWith('home-mobile') && !n.includes('popup') && !n.includes('menu') && !n.includes('form')) return 1
+      if (n.startsWith('services-desktop')) return 2
+      if (n.startsWith('contact-desktop')) return 3
+      if (n.startsWith('about-desktop')) return 4
+      if (n.startsWith('portfolio-desktop')) return 5
+      if (n.includes('contact-form-errors')) return 6
+      if (n.includes('quote-popup')) return 7
+      return 8
+    }
+    const prioritized = [...paths].sort((a, b) => rank(a) - rank(b)).slice(0, 8)
+
+    const compressed: string[] = []
+    for (const p of prioritized) {
+      try {
+        const out = path.join(outDir, path.basename(p).replace(/\.png$/, '.jpg'))
+        await sharp(p)
+          .resize({ width: 800, withoutEnlargement: true })
+          .jpeg({ quality: 70, mozjpeg: true })
+          .toFile(out)
+        compressed.push(out)
+      } catch {
+        compressed.push(p)
+      }
+    }
+    const total = await Promise.all(compressed.map(async (f) => (await fs.stat(f)).size))
+    console.log(
+      `[LLM Judge] Compressed ${compressed.length} screenshots (${Math.round(
+        total.reduce((a, b) => a + b, 0) / 1024
+      )}KB total)`
+    )
+    return compressed
+  } catch (err) {
+    console.warn('[LLM Judge] compress failed, using originals:', err)
+    return paths.slice(0, 8)
+  }
+}
+
+/**
+ * Close popups / cookie bars / modals before screenshotting.
+ * Features are judged separately — they must not pollute the design score.
+ */
+async function dismissOverlays(page: any) {
+  try {
+    // Click common close / accept buttons
+    const closeSelectors = [
+      'button:has-text("Accept")',
+      'button:has-text("Accept All")',
+      'button:has-text("Got it")',
+      'button:has-text("Close")',
+      'button:has-text("No thanks")',
+      'button:has-text("Maybe later")',
+      'button:has-text("×")',
+      'button:has-text("X")',
+      '[aria-label="Close"]',
+      '[aria-label="close"]',
+      '[data-close]',
+      '.cookie-bar button',
+      '.newsletter-popup button[aria-label="Close"]',
+      '.modal-close',
+      '.modal-overlay',
+    ]
+    for (const sel of closeSelectors) {
+      try {
+        const el = page.locator(sel).first()
+        if (await el.count()) {
+          await el.click({ timeout: 800 })
+          await page.waitForTimeout(150)
+        }
+      } catch {}
+    }
+    // Press Escape to close any remaining modal
+    await page.keyboard.press('Escape')
+    await page.waitForTimeout(150)
+    // Hide anything still floating that blocks content (newsletter, cookie, quote slide-in)
+    await page.evaluate(() => {
+      const hide = (sel: string) => {
+        document.querySelectorAll(sel).forEach((el) => {
+          ;(el as HTMLElement).style.display = 'none'
+        })
+      }
+      hide('[class*="newsletter-popup"]')
+      hide('[class*="cookie-bar"]')
+      hide('[class*="cookieBar"]')
+      hide('[class*="modal"][class*="open"]')
+      hide('[class*="modal"][class*="show"]')
+      hide('[role="dialog"]')
+    })
+  } catch {}
+}
+
+/**
+ * Scroll the entire page so lazy images + scroll-triggered animations load,
+ * then return to top. Without this the judge screenshots blank placeholders
+ * and falsely scores whitespace as "dead space".
+ */
+async function scrollPageFully(page: any, viewportHeight: number) {
+  const step = Math.max(300, Math.floor(viewportHeight * 0.7))
+  // Read page height without async evaluate helpers (avoids __name bug)
+  let prevHeight = 0
+  for (let i = 0; i < 40; i++) {
+    const h = await page.evaluate(() => document.body.scrollHeight)
+    if (h > prevHeight) prevHeight = h
+    const y = i * step
+    if (y > prevHeight + viewportHeight) break
+    await page.mouse.wheel(0, step)
+    await page.waitForTimeout(220)
+  }
+  // Extra settle at bottom for last lazy images
+  await page.waitForTimeout(600)
+  // Back to top
+  await page.mouse.wheel(0, -prevHeight - viewportHeight * 2)
+  await page.waitForTimeout(500)
+  // Nudge to absolute top
+  await page.keyboard.press('Home')
+  await page.waitForTimeout(400)
+}
+
+/** Capture open states of interactive features when present */
+async function captureStates(
+  page: any,
+  screenshotDir: string,
+  pageName: string,
+  vpName: string,
+  screenshots: string[],
+  states: string[]
+) {
+  const stateShots: Array<{ name: string; action: () => Promise<boolean> }> = [
+    {
+      name: 'quote-popup',
+      action: async () => {
+        const btn = page.locator('button, a').filter({ hasText: /quote/i }).first()
+        if (await btn.count()) {
+          await btn.click({ timeout: 2000 }).catch(() => {})
+          await page.waitForTimeout(800)
+          return true
+        }
+        return false
+      },
+    },
+    {
+      name: 'mobile-menu',
+      action: async () => {
+        if (vpName !== 'mobile') return false
+        const burger = page.locator('button[aria-label*="menu" i], button:has(svg)').first()
+        if (await burger.count()) {
+          await burger.click({ timeout: 2000 }).catch(() => {})
+          await page.waitForTimeout(500)
+          return true
+        }
+        return false
+      },
+    },
+    {
+      name: 'contact-form-errors',
+      action: async () => {
+        const submit = page.locator('form button[type="submit"]').first()
+        if (await submit.count()) {
+          await submit.click({ timeout: 2000 }).catch(() => {})
+          await page.waitForTimeout(500)
+          return true
+        }
+        return false
+      },
+    },
+  ]
+
+  for (const s of stateShots) {
+    try {
+      const ok: boolean = await s.action()
+      if (ok) {
+        const filepath = path.join(screenshotDir, `${pageName}-${vpName}-${s.name}.png`)
+        await page.screenshot({ path: filepath, fullPage: false }).catch(() => {})
+        screenshots.push(filepath)
+        states.push(s.name)
+        // Dismiss / reload for next state
+        await page.goto(page.url().split('?')[0], { waitUntil: 'domcontentloaded' }).catch(() => {})
+        await page.waitForTimeout(400)
+      }
+    } catch {}
+  }
+}
+
+// ── Backward-compatible helpers used by run-phase3 / build-website ───────────
+
 export async function judgeWithReroll(
   baseConfig: JudgeConfig,
-  rebuildFn: (newSeedId: string) => Promise<void>
+  rerollFn?: (seedId: string) => string
 ): Promise<JudgeResult> {
-  const maxAttempts = baseConfig.maxAttempts || 2
+  const maxAttempts = baseConfig.maxAttempts || 1
+  const target = baseConfig.targetScore ?? 8.5
   let lastResult: JudgeResult | null = null
-
-  console.log(`\n${'#'.repeat(60)}`)
-  console.log(`[LLM Judge] Starting evaluation with re-roll (max ${maxAttempts} attempts)`)
-  console.log(`[LLM Judge] Hard floor: ${baseConfig.hardFloor || 6.5} | Soft band: ${baseConfig.softBandLow || 6.5}-${baseConfig.softBandHigh || 7.5}`)
-  console.log(`${'#'.repeat(60)}`)
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     console.log(`\n[LLM Judge] ── Attempt ${attempt}/${maxAttempts} ──`)
-
     const result = await judgeWebsite({ ...baseConfig })
-    result.attempt = attempt
     lastResult = result
 
-    if (result.recommendation !== 'reroll') {
-      console.log(`\n[LLM Judge] ✓ Score ${result.score}/10 is acceptable — ${result.recommendation}`)
+    if (result.score >= target) {
+      console.log(`\n[LLM Judge] ✓ Score ${result.score} >= ${target} — PASS`)
       return result
     }
 
-    if (attempt < maxAttempts) {
-      console.log(`\n[LLM Judge] ✗ Score ${result.score}/10 below ${baseConfig.hardFloor || 6.5} — re-rolling`)
-      if (result.lowDimensions.length > 0) {
-        console.log(`[LLM Judge] Focus areas for improvement: ${result.lowDimensions.join(', ')}`)
-      }
-      const newSeedId = `${baseConfig.businessName}-reroll-${attempt}`
-      console.log(`[LLM Judge] New design seed: ${newSeedId}`)
-      await rebuildFn(newSeedId)
+    console.log(`\n[LLM Judge] ✗ Score ${result.score} < ${target} — ${result.recommendation}`)
+    if (attempt < maxAttempts && rerollFn) {
+      const seedId = `fix-${Date.now()}`
+      console.log(`[LLM Judge] Focus: ${result.lowDimensions.join(', ')}`)
+      console.log(`[LLM Judge] New design seed: ${rerollFn(seedId)}`)
     }
   }
 
-  // All attempts exhausted
-  console.log(`\n[LLM Judge] Max attempts reached — final score: ${lastResult?.score}/10`)
-  if (lastResult?.lowDimensions.length) {
-    console.log(`[LLM Judge] Persistent issues: ${lastResult.lowDimensions.join(', ')}`)
-  }
   return lastResult!
+}
+
+/** Build a human-readable fix log entry for DESIGN-BRAIN.md */
+export function formatFixLogEntry(params: {
+  site: string
+  trade: string
+  archetype: string
+  templates: string[]
+  scoreBefore: number
+  scoreAfter: number
+  fixes: JudgeFix[]
+  uniquenessNotes: string[]
+  passNumber: number
+}): string {
+  const lines = [
+    `### ${new Date().toISOString().slice(0, 10)} — ${params.site} — Pass ${params.passNumber}`,
+    `- **Trade:** ${params.trade}`,
+    `- **Archetype:** ${params.archetype}`,
+    `- **Templates touched:** ${params.templates.join(', ') || '(none)'}`,
+    `- **Score before → after:** ${params.scoreBefore} → ${params.scoreAfter} (design score)`,
+    `- **Rubric:** ${JUDGE_RUBRIC_VERSION}`,
+    `- **Fixes applied:**`,
+  ]
+  params.fixes.forEach((f, i) => {
+    lines.push(
+      `  ${i + 1}. ${f.file} — ${f.issue} → ${f.change} | ${f.dimension} | impact: ${f.impact}`
+    )
+  })
+  if (params.uniquenessNotes.length > 0) {
+    lines.push(`- **Uniqueness notes:**`)
+    params.uniquenessNotes.forEach((n) => lines.push(`  - ${n}`))
+  }
+  lines.push(`- **Regressions checked:** dashboard / forms / leads`)
+  lines.push(`- **Template upgrade needed:** review ${params.templates.join(', ') || 'n/a'}`)
+  lines.push('')
+  return lines.join('\n')
 }

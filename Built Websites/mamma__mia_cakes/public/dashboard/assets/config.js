@@ -26,9 +26,9 @@ const DASHBOARD_CONFIG = {
   
   // SEO
   seo: {
-    title: "Mamma & Mia Cakes | Custom Bakery in North West",
-    description: "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
-    keywords: "custom cakes North West, bakery North West, cupcakes Klerksdorp, wedding cakes Potchefstroom, order cakes online North West",
+    title: "Mamma & Mia Cakes & Catering | Bakery North West",
+    description: "Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.",
+    keywords: "bakery North West, custom cakes North West, catering North West, fresh bread North West, wedding cakes",
   },
   
   // Analytics
@@ -38,9 +38,9 @@ const DASHBOARD_CONFIG = {
   
   // Theme
   theme: {
-    primary: "#0ea5e9",
-    secondary: "#6366f1",
-    accent: "#f59e0b",
+    primary: "#3C1414",
+    secondary: "#6B3A2E",
+    accent: "#FFD700",
   },
   
   // Data file paths (absolute paths — Next.js serves public/ at root)

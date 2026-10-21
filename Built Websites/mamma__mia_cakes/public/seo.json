@@ -1,49 +1,40 @@
 {
-  "title": "Mamma & Mia Cakes | Custom Bakery in North West",
-  "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
+  "title": "Mamma & Mia Cakes & Catering | Bakery North West",
+  "description": "Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.",
   "keywords": [
-    "custom cakes North West",
     "bakery North West",
-    "cupcakes Klerksdorp",
-    "wedding cakes Potchefstroom",
-    "order cakes online North West",
-    "birthday cakes North West",
-    "dessert catering North West",
-    "Lety Gibbon baker"
+    "custom cakes North West",
+    "catering North West",
+    "fresh bread North West",
+    "wedding cakes",
+    "celebration cakes",
+    "artisan bakery",
+    "corporate catering",
+    "daily bakery counter",
+    "cake consultation"
   ],
   "openGraph": {
-    "title": "Mamma & Mia Cakes | Custom Bakery in North West",
-    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
-    "type": "website",
-    "locale": "en_ZA"
+    "title": "Mamma & Mia Cakes & Catering | Bakery North West",
+    "description": "Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.",
+    "type": "website"
   },
   "twitter": {
     "card": "summary_large_image",
-    "title": "Mamma & Mia Cakes | Custom Bakery in North West",
-    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration."
+    "title": "Mamma & Mia Cakes & Catering | Bakery North West",
+    "description": "Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order."
   },
   "jsonLd": {
     "@context": "https://schema.org",
-    "@type": "Bakery",
+    "@type": "LocalBusiness",
     "name": "Mamma & Mia Cakes And Catering",
-    "description": "Custom cakes, cupcakes, and dessert catering in North West, South Africa. Fresh daily by Lety Gibbon using family recipes and local ingredients.",
-    "telephone": "+27721565654",
-    "url": "",
+    "description": "Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.",
+    "telephone": "27721565654",
+    "email": "",
     "address": {
       "@type": "PostalAddress",
-      "addressRegion": "North West",
+      "streetAddress": "North West",
+      "addressLocality": "North West",
       "addressCountry": "ZA"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": -26.8,
-      "longitude": "26.6"
-    },
-    "openingHoursSpecification": [
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "17:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" }
-    ],
-    "servesCuisine": "Bakery",
-    "priceRange": "R180-R2000"
+    }
   }
 }

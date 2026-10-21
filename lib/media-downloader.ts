@@ -318,11 +318,19 @@ export async function downloadAndLocalizeMedia(config: MasterSiteConfig): Promis
 
   const fallbackImage = await ensurePlaceholderExists()
 
-  // 1. Download logo
-  if (config.brandAssets?.logoUrl) {
+  // 1. Download logo — skipped when a client-uploaded logo is the source of truth.
+  //    Precedence contract: uploaded > scraped > generated. Never overwrite an upload.
+  const logoSource = config.brandAssets?.logoSource
+  if (logoSource === 'uploaded') {
+    console.log(`[Media Downloader] Logo source is 'uploaded' (${config.brandAssets?.logoName || 'client file'}) — keeping it, ignoring scraped candidates.`)
+  } else if (config.brandAssets?.logoUrl) {
     const localLogoPath = await downloadLogo(config.brandAssets.logoUrl, clientPath, downloadCache, baseUrl, fallbackImage, manifest)
     if (localLogoPath) {
-      updatedConfig.brandAssets = { ...updatedConfig.brandAssets, logoUrl: localLogoPath }
+      updatedConfig.brandAssets = {
+        ...updatedConfig.brandAssets,
+        logoUrl: localLogoPath,
+        logoSource: logoSource || 'scraped',
+      }
       updatedConfig.hero = updatedConfig.hero || {}
       updatedConfig.hero.logoUrl = localLogoPath
       console.log(`[Media Downloader] Logo: ${localLogoPath}`)

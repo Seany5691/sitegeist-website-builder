@@ -4,6 +4,16 @@ import path from 'path'
 
 const WEBSITES_FOLDER = 'C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites'
 
+/**
+ * Save Custom Dashboard Configuration
+ * 
+ * This endpoint allows users to update their website configuration through
+ * the dashboard interface. It updates the site-config.json file which can
+ * trigger a website rebuild if needed.
+ * 
+ * @param request - Contains businessFolder and updated config data
+ * @returns JSON response with success status
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()

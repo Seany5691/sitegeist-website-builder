@@ -44,7 +44,6 @@ const BUSINESS_TYPE_COLORS: Record<string, { primary: string; secondary: string;
   roofing: { primary: '#475569', secondary: '#64748B', accent: '#EF4444' },
   accounting: { primary: '#1E3A5F', secondary: '#1E40AF', accent: '#D97706' },
   realestate: { primary: '#1A365D', secondary: '#2B6CB0', accent: '#D97706' },
-  restaurant: { primary: '#c0392b', secondary: '#e74c3c', accent: '#f39c12' },
   spa: { primary: '#7C3AED', secondary: '#A78BFA', accent: '#C4B5FD' },
   veterinary: { primary: '#059669', secondary: '#34D399', accent: '#6EE7B7' },
   pharmacy: { primary: '#0077B6', secondary: '#00B4D8', accent: '#22C55E' },

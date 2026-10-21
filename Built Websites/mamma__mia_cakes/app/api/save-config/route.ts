@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeFile } from 'fs/promises'
 import { join } from 'path'
+import { protectRoute } from '@/lib/dashboard-middleware'
 
 export async function POST(request: NextRequest) {
+  // Verify authentication and origin
+  const sessionOrError = await protectRoute(request)
+  if (sessionOrError instanceof NextResponse) {
+    return sessionOrError // Return error response
+  }
+
   try {
     const data = await request.json()
     const publicDir = join(process.cwd(), 'public')

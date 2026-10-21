@@ -10,6 +10,7 @@
  */
 
 import { MasterSiteConfig, ScrapedData, FeatureFlags, IndustryArchetype, GalleryItem } from '@/types/site-config'
+import { toMapEmbedUrl } from '@/lib/utils'
 
 // ============================================
 // STEP 1: Deterministic Data Extraction
@@ -225,8 +226,12 @@ export function extractHardFacts(
   // Extract videos from scraper
   const videos = scrapedData?.videos || []
 
-  // Extract map embed URL from scraper
-  const mapEmbedUrl = scrapedData?.mapEmbedUrl || null
+  // Map embed URL — CRM Maps URL is the source of truth (from Excel/GeistTrack),
+  // scraped embed as fallback. Convert any Google Maps link to embeddable form.
+  const mapEmbedUrl = toMapEmbedUrl({
+    url: scrapedData?.mapEmbedUrl || crmInput.googleMapsUrl || null,
+    address: primaryAddress,
+  }) || null
 
   // Merge structured data team with existing extraction
   const structuredTeam = scrapedData?.structuredData?.team || []
@@ -236,7 +241,7 @@ export function extractHardFacts(
 
   return {
     businessName: crmInput.businessName,
-    ownerName: crmInput.ownerName,
+    ownerName: crmInput.ownerName || '',
     city: crmInput.city,
     whatsappNumber: crmInput.whatsappNumber,
     normalizedPhone,
@@ -734,6 +739,15 @@ export interface CreativeCopy {
   history?: string
   specializations?: string[]
   hasWhatsApp?: boolean
+  additionalSections?: Array<{
+    id: string
+    type: string
+    title: string
+    subtitle?: string
+    content?: string
+    images?: string[]
+    items?: Array<{ title: string; description: string; image?: string }>
+  }>
 }
 
 // Get industry-specific touch section instructions for the copywriter
@@ -1130,7 +1144,6 @@ export function assembleSiteConfig(
     businessHours: facts.businessHours,
     
     // Enhanced data from scraper
-    faq: facts.faqs?.length ? facts.faqs : undefined,
     videos: facts.videos?.length ? facts.videos : undefined,
     mapEmbedUrl: facts.mapEmbedUrl || undefined,
     

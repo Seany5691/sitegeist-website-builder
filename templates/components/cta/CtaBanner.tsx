@@ -15,8 +15,14 @@ export default function CtaBanner() {
   if (!title && !text) return null
 
   return (
-    <section id="cta" style={{ background: 'var(--color-primary)' }}>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+    <section id="cta" className="relative overflow-hidden" style={{ background: 'var(--color-primary)' }}>
+      {/* Decorative shapes */}
+      <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10" 
+        style={{ background: 'radial-gradient(circle, var(--color-primary), transparent)', transform: 'translate(30%, -30%)' }} />
+      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full opacity-10" 
+        style={{ background: 'radial-gradient(circle, var(--color-primary), transparent)', transform: 'translate(-40%, 40%)' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center relative z-10">
         <AnimateOnScroll>
           {title && (
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4"
@@ -29,7 +35,7 @@ export default function CtaBanner() {
               {text}
             </p>
           )}
-          <a href={ctaLink} className="btn btn-lg"
+          <a href={ctaLink} className="btn btn-lg press-scale hover-glow inline-flex items-center gap-2"
             style={{ background: '#fff', color: 'var(--color-primary)' }}>
             {ctaText}
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

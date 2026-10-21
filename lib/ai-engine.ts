@@ -1,12 +1,19 @@
 import { MasterSiteConfig, ScrapedData, GalleryItem, PageMediaGroup, FeatureFlags } from '@/types/site-config'
 import { extractLogoColors, getFinalBrandPalette, ExtractedColors } from './color-extractor'
 
+// Primary: MiMo Token Plan
 const MIMO_API_URL = 'https://token-plan-sgp.xiaomimimo.com/v1/chat/completions'
 const MIMO_API_KEY = 'tp-s5mjmff9x4qh31pudzb4k45ipyprkgxvmgeyhidxqo28ljg3'
 const MIMO_MODEL = 'mimo-v2.5'
 
+// Secondary: MiMo Prepaid (from env)
+const MIMO_PREPAID_API_URL = process.env.MIMO_PREPAID_URL || 'https://api.xiaomimimo.com/v1/chat/completions'
+const MIMO_PREPAID_API_KEY = process.env.MIMO_PREPAID_API_KEY || ''
+const MIMO_PREPAID_MODEL = process.env.MIMO_PREPAID_MODEL || 'mimo-v2.5'
+
+// Tertiary: OpenRouter Fallback
 const FALLBACK_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
-const FALLBACK_MODEL = 'google/gemma-4-31b-it:free'
+const FALLBACK_MODEL = 'meta-llama/llama-3.1-8b-instruct:free'
 
 // UI/Tracking images to EXCLUDE from gallery
 const UI_IMAGE_PATTERNS = [
@@ -609,19 +616,19 @@ export async function generateSiteConfig(
   let aiErrorMsg: string | undefined = undefined
 
   try {
-    // Primary: MiMo 2.5 with retry logic
-    let mimoSuccess = false
+    // Primary: MiMo Token Plan with retry logic
+    let mimoTokenSuccess = false
     let attempts = 0
     const maxAttempts = 2
 
-    while (!mimoSuccess && attempts < maxAttempts) {
+    while (!mimoTokenSuccess && attempts < maxAttempts) {
       attempts++
       try {
         // Use simpler prompt on retry
         const currentSystemPrompt = attempts === 1 ? systemPrompt : buildSimpleSystemPrompt()
         const currentUserPrompt = attempts === 1 ? userPrompt : buildSimpleUserPrompt(crmInput, scrapedData, features)
 
-        console.log(`[AI Engine] Calling MiMo 2.5 (attempt ${attempts}/${maxAttempts})...`)
+        console.log(`[AI Engine] [PRIMARY] Calling MiMo Token Plan (attempt ${attempts}/${maxAttempts})...`)
         if (attempts > 1) {
           console.log(`[AI Engine] Using simplified prompt for retry...`)
         }
@@ -644,7 +651,7 @@ export async function generateSiteConfig(
         })
 
         if (!response.ok) {
-          throw new Error(`MiMo 2.5 failed with status ${response.status}`)
+          throw new Error(`MiMo Token Plan failed with status ${response.status}`)
         }
 
         // Check if response contains valid JSON
@@ -653,31 +660,82 @@ export async function generateSiteConfig(
 
         // Quick validation - check if it looks like JSON
         if (testContent.includes('{') && testContent.includes('}')) {
-          mimoSuccess = true
+          mimoTokenSuccess = true
+          console.log(`[AI Engine] ✓ MiMo Token Plan succeeded`)
           // Re-wrap as response for downstream processing
           response = new Response(JSON.stringify(testData), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
           })
         } else {
-          console.warn(`[AI Engine] MiMo response doesn't look like JSON, retrying...`)
+          console.warn(`[AI Engine] MiMo Token Plan response doesn't look like JSON, retrying...`)
         }
       } catch (error) {
+        console.warn(`[AI Engine] MiMo Token Plan attempt ${attempts} failed:`, error)
         if (attempts >= maxAttempts) {
-          console.warn('[AI Engine] MiMo 2.5 failed after all attempts, trying fallback...')
+          console.warn('[AI Engine] MiMo Token Plan failed after all attempts, trying prepaid fallback...')
         }
       }
     }
 
-    // Fallback: OpenRouter if MiMo failed
-    if (!mimoSuccess) {
+    // Secondary Fallback: MiMo Prepaid if Token Plan failed
+    if (!mimoTokenSuccess && MIMO_PREPAID_API_KEY) {
+      try {
+        console.log(`[AI Engine] [SECONDARY] Calling MiMo Prepaid (${MIMO_PREPAID_MODEL})...`)
+        
+        response = await fetch(MIMO_PREPAID_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${MIMO_PREPAID_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: MIMO_PREPAID_MODEL,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt },
+            ],
+            temperature: 0.7,
+            max_tokens: 8000,
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error(`MiMo Prepaid failed with status ${response.status}`)
+        }
+
+        const testData = await response.json()
+        const testContent = testData.choices?.[0]?.message?.content || ''
+
+        if (testContent.includes('{') && testContent.includes('}')) {
+          console.log(`[AI Engine] ✓ MiMo Prepaid succeeded`)
+          mimoTokenSuccess = true // Set to true to skip OpenRouter
+          response = new Response(JSON.stringify(testData), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+          })
+        } else {
+          console.warn(`[AI Engine] MiMo Prepaid response doesn't look like JSON, trying OpenRouter...`)
+        }
+      } catch (error) {
+        console.warn('[AI Engine] MiMo Prepaid failed:', error)
+        console.warn('[AI Engine] Trying OpenRouter as last resort...')
+      }
+    }
+
+    // Tertiary Fallback: OpenRouter if both MiMo APIs failed
+    if (!mimoTokenSuccess) {
       const fallbackKey = process.env.OPENROUTER_API_KEY
       if (fallbackKey) {
+        console.log(`[AI Engine] [TERTIARY] Calling OpenRouter (${FALLBACK_MODEL})...`)
+        
         response = await fetch(FALLBACK_API_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${fallbackKey}`,
+            'HTTP-Referer': 'https://sitegeist.com',
+            'X-Title': 'SiteSpire Website Builder',
           },
           body: JSON.stringify({
             model: FALLBACK_MODEL,
@@ -689,8 +747,12 @@ export async function generateSiteConfig(
             max_tokens: 8000,
           }),
         })
+
+        if (response.ok) {
+          console.log(`[AI Engine] ✓ OpenRouter succeeded`)
+        }
       } else {
-        throw new Error('No fallback API key available')
+        throw new Error('All AI APIs failed and no OpenRouter key available')
       }
     }
 
@@ -820,9 +882,13 @@ export async function generateSiteConfig(
     bg: finalBg,
   }
 
-  // Logo from scraped data
-  if (scrapedData?.potentialLogos?.[0]) {
+  // Logo from scraped data — never overwrite a client-uploaded logo.
+  // Precedence contract: uploaded > scraped > generated.
+  if (siteConfig.brandAssets?.logoSource === 'uploaded') {
+    console.log(`[AI Engine] Logo source is 'uploaded' (${siteConfig.brandAssets.logoName || 'client file'}) — discarding scraped logo candidates.`)
+  } else if (scrapedData?.potentialLogos?.[0]) {
     siteConfig.brandAssets.logoUrl = scrapedData.potentialLogos[0]
+    siteConfig.brandAssets.logoSource = siteConfig.brandAssets.logoSource || 'scraped'
     siteConfig.hero = siteConfig.hero || {}
     siteConfig.hero.logoUrl = scrapedData.potentialLogos[0]
   }

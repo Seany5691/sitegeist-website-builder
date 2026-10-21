@@ -18,14 +18,24 @@ export default function HeaderTransparent() {
   }, [])
 
   const businessName = config?.businessName || 'Business'
+  const logoUrl = config?.brandAssets?.logoUrl || config?.logoUrl || ''
+  // Header brand display: logo + name, name only, or logo only
+  const logoMode = config?.brandAssets?.logoMode || config?.logoMode || (logoUrl ? 'both' : 'text')
+  const showLogo = !!logoUrl && logoMode !== 'text'
+  const showName = logoMode !== 'logo'
+  const serviceSubpages = config?.serviceSubpages
+  const serviceItems = serviceSubpages?.enabled && Array.isArray(serviceSubpages.items)
+    ? serviceSubpages.items.filter((i: any) => i && (i.slug || i.label))
+    : []
+  const nav = config?.navigation || {}
   const phone = config?.contact?.phone || ''
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/services', label: 'Services' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: nav.home || 'Home' },
+    { href: '/services', label: nav.services || 'Services' },
+    { href: '/portfolio', label: nav.portfolio || 'Portfolio' },
+    { href: '/about', label: nav.about || 'About' },
+    { href: '/contact', label: nav.contact || 'Contact' },
   ]
 
   return (
@@ -38,18 +48,47 @@ export default function HeaderTransparent() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="text-xl font-bold transition-colors duration-300"
             style={{ color: scrolled ? 'var(--color-primary)' : '#fff', fontFamily: 'var(--font-heading)' }}>
-            {businessName}
+            <span className="inline-flex items-center gap-3">
+              {showLogo && (
+                <img src={logoUrl} alt={businessName} className="h-10 w-auto object-contain" />
+              )}
+              {showName && <span>{businessName}</span>}
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map(link => (
-              <Link key={link.href} href={link.href}
-                className="text-sm font-medium transition-colors duration-300 hover:opacity-80 relative"
-                style={{ color: pathname === link.href ? 'var(--color-primary)' : scrolled ? 'var(--color-text)' : 'rgba(255,255,255,0.85)' }}>
-                {link.label}
-                {pathname === link.href && <span className="absolute left-0 right-0 -bottom-1 h-0.5" style={{ background: 'var(--color-primary)' }} />}
-              </Link>
-            ))}
+            {navLinks.map(link => {
+              const isActive = pathname === link.href
+              return (
+                <Link key={link.href} href={link.href}
+                  className="text-sm font-medium transition-all duration-300 hover:opacity-90 relative group py-1"
+                  style={{ 
+                    color: isActive ? 'var(--color-primary)' : scrolled ? 'var(--color-text)' : 'rgba(255,255,255,0.9)',
+                    fontWeight: isActive ? 600 : 500
+                  }}>
+                  {link.label}
+                  {/* Active indicator — animated underline */}
+                  <span 
+                    className="absolute left-0 right-0 -bottom-1 h-0.5 rounded-full transition-all duration-300"
+                    style={{ 
+                      background: 'var(--color-primary-cta)',
+                      transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
+                      opacity: isActive ? 1 : 0
+                    }} 
+                  />
+                  {/* Hover indicator */}
+                  <span 
+                    className="absolute left-0 right-0 -bottom-1 h-0.5 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-30"
+                    style={{ 
+                      background: scrolled ? 'var(--color-text)' : '#fff',
+                      transform: 'scaleX(0)',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scaleX(1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scaleX(0)'}
+                  />
+                </Link>
+              )
+            })}
             {phone && (
               <a href={`tel:${phone}`} className="btn btn-sm"
                 style={{ background: scrolled ? 'var(--color-primary)' : 'rgba(255,255,255,0.15)', color: '#fff', backdropFilter: 'blur(8px)' }}>
@@ -70,15 +109,55 @@ export default function HeaderTransparent() {
         </div>
       </div>
 
-      <div className="md:hidden overflow-hidden transition-all duration-300 glass"
-        style={{ maxHeight: menuOpen ? '400px' : '0', opacity: menuOpen ? 1 : 0, borderTop: menuOpen ? '1px solid color-mix(in srgb, var(--color-text) 10%, transparent)' : 'none' }}>
-        <div className="px-4 py-4 space-y-3">
-          {navLinks.map(link => (
-            <Link key={link.href} href={link.href} className="block py-2 text-sm font-medium"
-              style={{ color: 'var(--color-text)' }} onClick={() => setMenuOpen(false)}>
-              {link.label}
-            </Link>
-          ))}
+      {/* Mobile Menu — Frosted glass with slide animation */}
+      <div 
+        className="md:hidden fixed left-0 right-0 transition-all duration-300 overflow-hidden"
+        style={{ 
+          top: scrolled ? '4rem' : '5rem',
+          maxHeight: menuOpen ? '400px' : '0',
+          opacity: menuOpen ? 1 : 0,
+          background: 'color-mix(in srgb, var(--color-bg) 95%, transparent)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderBottom: menuOpen ? '1px solid color-mix(in srgb, var(--color-text) 10%, transparent)' : 'none',
+          boxShadow: menuOpen ? 'var(--shadow-lg)' : 'none'
+        }}>
+        <div className="px-4 py-4 space-y-2">
+          {navLinks.map((link, i) => {
+            const isActive = pathname === link.href
+            return (
+              <Link 
+                key={link.href} 
+                href={link.href}
+                className="block py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200"
+                style={{ 
+                  color: isActive ? 'var(--color-primary)' : 'var(--color-text)',
+                  background: isActive ? 'color-mix(in srgb, var(--color-primary) 10%, transparent)' : 'transparent',
+                  fontWeight: isActive ? 600 : 500,
+                  transform: menuOpen ? 'translateY(0)' : 'translateY(-10px)',
+                  opacity: menuOpen ? 1 : 0,
+                  transitionDelay: menuOpen ? `${i * 30}ms` : '0ms'
+                }}
+                onClick={() => setMenuOpen(false)}>
+                {link.label}
+              </Link>
+            )
+          })}
+          {phone && (
+            <a 
+              href={`tel:${phone}`}
+              className="block py-3 px-4 text-sm font-medium rounded-lg text-center mt-4"
+              style={{
+                background: 'var(--color-primary-cta)',
+                color: 'var(--color-bg)',
+                transform: menuOpen ? 'translateY(0)' : 'translateY(-10px)',
+                opacity: menuOpen ? 1 : 0,
+                transitionDelay: menuOpen ? `${navLinks.length * 30}ms` : '0ms'
+              }}
+              onClick={() => setMenuOpen(false)}>
+              📞 Call Now
+            </a>
+          )}
         </div>
       </div>
     </header>

@@ -14,8 +14,8 @@ export default function ServicesMinimal() {
   return (
     <section id="services" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimateOnScroll className="mb-16">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>
+        <AnimateOnScroll className="mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>
             What We Offer
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
@@ -34,7 +34,7 @@ export default function ServicesMinimal() {
             <AnimateOnScroll key={i} delay={i * 100}>
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-0.5" style={{ background: 'var(--color-accent)' }} />
+                  <div className="w-8 h-0.5" style={{ background: 'var(--color-primary-cta)' }} />
                   <h3 className="text-xl font-bold"
                     style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
                     {service.title}
@@ -44,7 +44,7 @@ export default function ServicesMinimal() {
                   {service.description}
                 </p>
                 {service.priceTag && (
-                  <div className="pl-11 mt-2 text-sm font-semibold" style={{ color: 'var(--color-accent)' }}>
+                  <div className="pl-11 mt-2 text-sm font-semibold" style={{ color: 'var(--safe-eyebrow)' }}>
                     {service.priceTag}
                   </div>
                 )}

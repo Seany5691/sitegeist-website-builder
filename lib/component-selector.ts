@@ -9,11 +9,33 @@
  * 
  * Every archetype has access to ALL components. The archetype's
  * preferred/excluded lists influence but don't restrict selection.
+ * 
+ * PREMIUM ENFORCER: Certain non-premium components are hard-blocked
+ * to ensure every website achieves 200/100 custom agency feel.
  */
 
 import { IndustryArchetype } from '@/types/site-config'
 import path from 'path'
 import { promises as fs } from 'fs'
+
+// PREMIUM ENFORCEMENT: These components are NEVER allowed
+const BLOCKED_COMPONENTS = {
+  heroes: ['HeroGradient', 'HeroMinimal'],
+  services: ['ServicesMinimal', 'ServicesList', 'ServicesAccordion'],
+  testimonials: ['TestimonialsMinimal', 'TestimonialsGrid'],
+  gallery: ['GalleryMinimal'],
+  contact: ['ContactMinimal', 'ContactCentered'],
+  about: ['AboutMinimal']
+}
+
+const PREMIUM_TIER_1 = {
+  heroes: ['HeroFullscreen', 'HeroSplit', 'HeroOverlapping', 'HeroShowcase', 'HeroFeature'],
+  services: ['ServicesCards', 'ServicesGrid', 'ServicesIconGrid', 'ServicesFeature'],
+  gallery: ['GalleryMasonry', 'GalleryCategories', 'GalleryCinematic', 'GalleryFullscreen'],
+  testimonials: ['TestimonialsFeatured', 'TestimonialsQuote', 'TestimonialsSlider'],
+  about: ['AboutVideo', 'AboutLayered', 'AboutSplit', 'AboutStats'],
+  contact: ['ContactSplit', 'ContactMap', 'ContactCards']
+}
 
 interface ComponentStyle {
   artDirections: string[]
@@ -231,6 +253,7 @@ function scoreComponent(
 
 /**
  * Select the best component from a pool using the scoring algorithm.
+ * PREMIUM ENFORCER: Hard-blocks non-premium components before selection.
  */
 function selectBest(
   pool: string[],
@@ -242,6 +265,23 @@ function selectBest(
   hash: number,
   shift: number = 0
 ): string {
+  // PREMIUM ENFORCER: Determine section type and filter out blocked components FIRST
+  const sectionType = pool[0]?.includes('Hero') ? 'heroes' : 
+                      pool[0]?.includes('Services') ? 'services' :
+                      pool[0]?.includes('Gallery') ? 'gallery' :
+                      pool[0]?.includes('Testimonials') ? 'testimonials' :
+                      pool[0]?.includes('Contact') ? 'contact' :
+                      pool[0]?.includes('About') ? 'about' : 'other'
+  
+  const blocked = (BLOCKED_COMPONENTS as any)[sectionType] || []
+  pool = pool.filter(c => !blocked.includes(c))
+  
+  // PREMIUM ENFORCER: If pool is empty after blocking, use Tier 1 premium components
+  if (pool.length === 0 && (PREMIUM_TIER_1 as any)[sectionType]) {
+    console.warn(`[Premium Enforcer] All components blocked for ${sectionType}, using Tier 1 defaults`)
+    pool = (PREMIUM_TIER_1 as any)[sectionType]
+  }
+  
   // Remove excluded components
   const candidates = pool.filter(c => !excluded.includes(c))
   if (candidates.length === 0) return pool[0]
@@ -380,7 +420,7 @@ export async function selectComponents(
 ): Promise<SelectedComponents> {
   const mappingPath = path.join(process.cwd(), 'templates', 'archetype-map.json')
   const mappingRaw = await fs.readFile(mappingPath, 'utf-8')
-  const mapping: ArchetypeMap = JSON.parse(mappingRaw)
+  const mapping: ArchetypeMap = JSON.parse(mappingRaw.replace(/^\uFEFF/, ''))
 
   const componentStyles = mapping._componentStyles
 
@@ -397,9 +437,10 @@ export async function selectComponents(
   let galleryOverride: string | null = null
   if (categoryCount > 1) {
     galleryOverride = 'GalleryCategories'
-  } else if (imageCount > 50) {
+  } else if (imageCount >= 5) {  // PREMIUM ENFORCER: Lowered from > 50 to >= 5 for premium masonry
     galleryOverride = 'GalleryMasonry'
-  } else if (imageCount > 0 && imageCount < 10) {
+    console.log(`[Premium Enforcer] Forcing GalleryMasonry (${imageCount} images >= 5 threshold)`)
+  } else if (imageCount > 0 && imageCount < 5) {
     galleryOverride = 'GalleryLightbox'
   }
 

@@ -1,39 +1,34 @@
 import type { Metadata } from 'next'
-import { Nunito } from 'next/font/google'
-import { Open_Sans } from 'next/font/google'
+import { Playfair_Display, Lato } from 'next/font/google'
 import './globals.css'
 
-const headingFont = Nunito({
+const headingFont = Playfair_Display({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-heading',
   display: 'swap',
-  fallback: ['Georgia', 'Cambria', 'serif'],
-  adjustFontFallback: false,
-  preload: false,
 })
 
-const bodyFont = Open_Sans({
+const bodyFont = Lato({
   subsets: ['latin'],
+  weight: ['300', '400', '700'],
   variable: '--font-body',
   display: 'swap',
-  fallback: ['system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-  adjustFontFallback: false,
-  preload: false,
 })
 
 export const metadata: Metadata = {
-  title: 'Mamma & Mia Cakes | Custom Bakery in North West',
-  description: 'Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.',
-  keywords: ["custom cakes North West","bakery North West","cupcakes Klerksdorp","wedding cakes Potchefstroom","order cakes online North West"],
+  title: 'Mamma & Mia Cakes & Catering | Bakery North West',
+  description: 'Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.',
+  keywords: ["bakery North West","custom cakes North West","catering North West","fresh bread North West","wedding cakes"],
   openGraph: {
-    title: 'Mamma & Mia Cakes | Custom Bakery in North West',
-    description: 'Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.',
+    title: 'Mamma & Mia Cakes & Catering | Bakery North West',
+    description: 'Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mamma & Mia Cakes | Custom Bakery in North West',
-    description: 'Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.',
+    title: 'Mamma & Mia Cakes & Catering | Bakery North West',
+    description: 'Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.',
   },
 }
 
@@ -52,7 +47,7 @@ export default function RootLayout({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Mamma & Mia Cakes And Catering",
-      "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
+      "description": "Artisan bakery in North West crafting custom cakes, fresh daily pastries, and catering. Family recipes, local ingredients. Call 072 156 5654 to order.",
       "telephone": "27721565654",
       "email": "",
       "address": {
@@ -65,7 +60,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased" data-temperature="neutral" data-art="editorial">
+      <body className="antialiased" data-temperature="neutral" data-art="warm-organic">
         {children}
       </body>
     </html>

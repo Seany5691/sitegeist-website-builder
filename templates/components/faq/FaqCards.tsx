@@ -20,7 +20,7 @@ export default function FaqCards() {
     <section id="faq" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center mb-12">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>{sectionSubtitle}</span>
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>{sectionSubtitle}</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
             style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-text)', letterSpacing: '-0.025em' }}>{sectionTitle}</h2>
         </AnimateOnScroll>
@@ -33,7 +33,15 @@ export default function FaqCards() {
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}>
                 <div className="p-5 flex items-start justify-between gap-3">
                   <h3 className="font-bold" style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>{faq.question}</h3>
-                  <span className="flex-shrink-0 text-lg" style={{ color: 'var(--color-primary)' }}>{openIndex === i ? '−' : '+'}</span>
+                  <span 
+                    className="flex-shrink-0 text-lg transition-transform duration-300" 
+                    style={{ 
+                      color: 'var(--color-primary)',
+                      transform: openIndex === i ? 'rotate(45deg)' : 'rotate(0deg)'
+                    }}
+                  >
+                    +
+                  </span>
                 </div>
                 <div className="overflow-hidden transition-all duration-300"
                   style={{ maxHeight: openIndex === i ? (contentRef.current?.scrollHeight ? contentRef.current.scrollHeight + 'px' : '500px') : '0', opacity: openIndex === i ? 1 : 0 }}>

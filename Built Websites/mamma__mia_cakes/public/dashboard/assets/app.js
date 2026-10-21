@@ -15,9 +15,8 @@ let draggedIndex = null;
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (sessionStorage.getItem('dashboard_auth') === 'true') {
-    showDashboard();
-  }
+  // Check if already authenticated via NextAuth session
+  checkAuth();
 
   document.getElementById('loginForm').addEventListener('submit', handleLogin);
 
@@ -40,26 +39,72 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
-// AUTHENTICATION
+// AUTHENTICATION (NextAuth Integration)
 // ============================================
 
-function handleLogin(e) {
-  e.preventDefault();
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-  const config = window.DASHBOARD_CONFIG;
-  if (username === config.username && password === config.password) {
-    sessionStorage.setItem('dashboard_auth', 'true');
-    showDashboard();
-  } else {
-    const errorEl = document.getElementById('loginError');
-    errorEl.textContent = 'Invalid username or password';
-    errorEl.style.display = 'block';
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/auth/session')
+    const session = await res.json()
+    
+    if (session?.user) {
+      showDashboard()
+      return true
+    }
+    return false
+  } catch (e) {
+    return false
   }
 }
 
-function logout() {
-  sessionStorage.removeItem('dashboard_auth');
+async function handleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errorEl = document.getElementById('loginError');
+  
+  try {
+    // Get CSRF token
+    const csrfRes = await fetch('/api/auth/csrf')
+    const { csrfToken } = await csrfRes.json()
+    
+    // Call NextAuth credentials endpoint
+    const res = await fetch('/api/auth/callback/credentials', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username,
+        password,
+        csrfToken,
+        callbackUrl: '/dashboard',
+        json: true
+      })
+    })
+    
+    if (res.ok) {
+      const data = await res.json()
+      if (data.url || !data.error) {
+        // Success - NextAuth set secure HTTP-only cookie
+        showDashboard()
+        errorEl.style.display = 'none'
+      } else {
+        throw new Error(data.error || 'Authentication failed')
+      }
+    } else {
+      throw new Error('Invalid username or password')
+    }
+  } catch (error) {
+    errorEl.textContent = error.message || 'Login failed. Please try again.'
+    errorEl.style.display = 'block'
+  }
+}
+
+async function logout() {
+  try {
+    await fetch('/api/auth/signout', { method: 'POST' })
+  } catch (e) {
+    console.error('Logout error:', e)
+  }
   document.getElementById('dashboard').classList.add('hidden');
   document.getElementById('loginScreen').classList.remove('hidden');
 }
@@ -67,6 +112,7 @@ function logout() {
 function showDashboard() {
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('dashboard').classList.remove('hidden');
+  sessionStorage.setItem('justLoggedIn', 'true'); // Flag for tutorial
   loadDashboardData();
 }
 
@@ -165,8 +211,51 @@ function updateStats() {
 function setupAdaptiveNavigation() {
   const hasGallery = imageMap?.categories && Object.keys(imageMap.categories).length > 0;
   const hasServices = siteConfig?.services && siteConfig.services.length > 0;
+  const hasPricing = siteConfig?.pricing && siteConfig.pricing.length > 0;
+  const hasTestimonials = siteConfig?.testimonials && siteConfig.testimonials.length > 0;
+  const hasBlog = siteConfig?.blog && siteConfig.blog.length > 0;
+  const hasTeam = siteConfig?.team && siteConfig.team.length > 0;
+  const hasFaq = siteConfig?.faq && siteConfig.faq.length > 0;
+  
+  // Update counts
   document.getElementById('galleryCount').textContent = hasGallery ? Object.values(imageMap.categories).reduce((s, c) => s + (c.images?.length || 0), 0) : '0';
   if (hasServices) document.getElementById('blogCount').textContent = siteConfig.services.length;
+  
+  // Hide/show navigation items based on content availability
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    const section = item.dataset.section;
+    let shouldShow = true;
+    
+    switch(section) {
+      case 'gallery':
+        shouldShow = hasGallery;
+        break;
+      case 'services':
+        shouldShow = hasServices;
+        break;
+      case 'pricing':
+        shouldShow = hasPricing;
+        break;
+      case 'testimonials':
+        shouldShow = hasTestimonials;
+        break;
+      case 'blog':
+        shouldShow = hasBlog;
+        break;
+      case 'team':
+        shouldShow = hasTeam;
+        break;
+      case 'faq':
+        shouldShow = hasFaq;
+        break;
+      // Always show: overview, hero, about, content, seo, settings, design-system
+      default:
+        shouldShow = true;
+    }
+    
+    item.style.display = shouldShow ? 'flex' : 'none';
+  });
 }
 
 // ============================================
@@ -240,6 +329,14 @@ function reorderArray(listId, fromIndex, toIndex) {
     case 'blog':
       arr = siteConfig.blogPosts;
       saveFn = () => { saveSiteConfig(); loadBlogPosts(); };
+      break;
+    case 'team':
+      arr = siteConfig.team;
+      saveFn = () => { saveSiteConfig(); loadTeam(); };
+      break;
+    case 'faq':
+      arr = siteConfig.faq;
+      saveFn = () => { saveSiteConfig(); loadFaq(); };
       break;
     default:
       if (listId.startsWith('folder-')) {
@@ -601,6 +698,18 @@ function resetSection(section) {
       siteConfig.pricing = JSON.parse(JSON.stringify(siteConfigDefaults.pricing || []));
       loadPricing();
       break;
+    case 'testimonials':
+      siteConfig.testimonials = JSON.parse(JSON.stringify(siteConfigDefaults.testimonials || []));
+      loadTestimonials();
+      break;
+    case 'team':
+      siteConfig.team = JSON.parse(JSON.stringify(siteConfigDefaults.team || []));
+      loadTeam();
+      break;
+    case 'faq':
+      siteConfig.faq = JSON.parse(JSON.stringify(siteConfigDefaults.faq || []));
+      loadFaq();
+      break;
     case 'content':
       siteConfig.pageContent = JSON.parse(JSON.stringify(siteConfigDefaults.pageContent || {}));
       loadPageContent();
@@ -638,6 +747,7 @@ function loadServices() {
     item.className = 'service-item draggable-item';
     item.innerHTML = `
       <div class="drag-handle" title="Drag to reorder"><i class="fas fa-grip-vertical"></i></div>
+      ${service.imageUrl ? `<div class="service-thumb" style="width:60px;height:60px;border-radius:8px;overflow:hidden;flex-shrink:0"><img src="${service.imageUrl}" style="width:100%;height:100%;object-fit:cover" /></div>` : ''}
       <div class="service-info" style="flex:1">
         <div class="service-title">${service.title}</div>
         <div class="service-description">${service.description || ''}</div>
@@ -658,6 +768,8 @@ function openServiceEditor() {
   document.getElementById('serviceTitle').value = '';
   document.getElementById('serviceDescription').value = '';
   document.getElementById('servicePrice').value = '';
+  document.getElementById('serviceImageUrl').value = '';
+  document.getElementById('serviceImagePreview').innerHTML = '';
   document.getElementById('serviceEditorTitle').textContent = 'New Service';
   document.getElementById('serviceEditorSubmit').onclick = addService;
 }
@@ -669,6 +781,8 @@ function editService(index) {
   document.getElementById('serviceTitle').value = s.title || '';
   document.getElementById('serviceDescription').value = s.description || '';
   document.getElementById('servicePrice').value = s.priceTag || '';
+  document.getElementById('serviceImageUrl').value = s.imageUrl || '';
+  document.getElementById('serviceImagePreview').innerHTML = s.imageUrl ? `<img src="${s.imageUrl}" style="max-width:200px;border-radius:8px" />` : '';
   document.getElementById('serviceEditorTitle').textContent = 'Edit Service';
   document.getElementById('serviceEditorSubmit').onclick = () => updateService(index);
 }
@@ -677,9 +791,10 @@ function addService() {
   const title = document.getElementById('serviceTitle').value.trim();
   const description = document.getElementById('serviceDescription').value.trim();
   const price = document.getElementById('servicePrice').value.trim();
+  const imageUrl = document.getElementById('serviceImageUrl').value.trim();
   if (!title) { showToast('Enter a service name', 'warning'); return; }
   if (!siteConfig.services) siteConfig.services = [];
-  siteConfig.services.push({ title, description, priceTag: price || undefined, icon: 'Star' });
+  siteConfig.services.push({ title, description, priceTag: price || undefined, icon: 'Star', imageUrl: imageUrl || undefined });
   saveSiteConfig(); loadServices(); closeServiceEditor(); showToast('Service added!');
 }
 
@@ -687,8 +802,9 @@ function updateService(index) {
   const title = document.getElementById('serviceTitle').value.trim();
   const description = document.getElementById('serviceDescription').value.trim();
   const price = document.getElementById('servicePrice').value.trim();
+  const imageUrl = document.getElementById('serviceImageUrl').value.trim();
   if (!title) { showToast('Enter a service name', 'warning'); return; }
-  siteConfig.services[index] = { ...siteConfig.services[index], title, description, priceTag: price || undefined };
+  siteConfig.services[index] = { ...siteConfig.services[index], title, description, priceTag: price || undefined, imageUrl: imageUrl || undefined };
   saveSiteConfig(); loadServices(); closeServiceEditor(); showToast('Service updated!');
 }
 
@@ -939,6 +1055,157 @@ function deleteBlogPost(index) {
 function closeBlogEditor() { document.getElementById('blogEditorModal').classList.add('hidden'); }
 
 // ============================================
+// TEAM MEMBERS MANAGEMENT (with drag)
+// ============================================
+
+function loadTeam() {
+  const list = document.getElementById('teamList');
+  if (!list) return;
+  if (!siteConfig.team) siteConfig.team = [];
+  list.innerHTML = '';
+  siteConfig.team.forEach((member, index) => {
+    const item = document.createElement('div');
+    item.className = 'list-item';
+    item.innerHTML = `
+      <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
+      <div class="list-item-content">
+        <div class="list-item-title">${member.name || 'Unnamed'}</div>
+        <div class="list-item-subtitle">${member.position || ''}</div>
+        ${member.bio ? `<div class="list-item-text">${member.bio.substring(0, 100)}${member.bio.length > 100 ? '...' : ''}</div>` : ''}
+      </div>
+      <div class="list-item-actions">
+        <button class="secondary-btn" onclick="editTeamMember(${index})"><i class="fas fa-edit"></i></button>
+        <button class="danger-btn" onclick="deleteTeamMember(${index})"><i class="fas fa-trash"></i></button>
+      </div>
+    `;
+    makeDraggable(item, 'team', index);
+    list.appendChild(item);
+  });
+}
+
+function openTeamEditor() {
+  document.getElementById('teamEditorModal').classList.remove('hidden');
+  document.getElementById('teamName').value = '';
+  document.getElementById('teamPosition').value = '';
+  document.getElementById('teamBio').value = '';
+  document.getElementById('teamImageUrl').value = '';
+  document.getElementById('teamEditorTitle').textContent = 'New Team Member';
+  document.getElementById('teamEditorSubmit').onclick = addTeamMember;
+}
+
+function editTeamMember(index) {
+  const member = siteConfig.team[index];
+  if (!member) return;
+  document.getElementById('teamEditorModal').classList.remove('hidden');
+  document.getElementById('teamName').value = member.name || '';
+  document.getElementById('teamPosition').value = member.position || '';
+  document.getElementById('teamBio').value = member.bio || '';
+  document.getElementById('teamImageUrl').value = member.imageUrl || '';
+  document.getElementById('teamEditorTitle').textContent = 'Edit Team Member';
+  document.getElementById('teamEditorSubmit').onclick = () => updateTeamMember(index);
+}
+
+function addTeamMember() {
+  const name = document.getElementById('teamName').value.trim();
+  const position = document.getElementById('teamPosition').value.trim();
+  const bio = document.getElementById('teamBio').value.trim();
+  const imageUrl = document.getElementById('teamImageUrl').value.trim();
+  if (!name) { showToast('Enter a name', 'warning'); return; }
+  if (!siteConfig.team) siteConfig.team = [];
+  siteConfig.team.push({ name, position, bio, imageUrl });
+  saveSiteConfig(); loadTeam(); closeTeamEditor(); showToast('Team member added!');
+}
+
+function updateTeamMember(index) {
+  const name = document.getElementById('teamName').value.trim();
+  const position = document.getElementById('teamPosition').value.trim();
+  const bio = document.getElementById('teamBio').value.trim();
+  const imageUrl = document.getElementById('teamImageUrl').value.trim();
+  if (!name) { showToast('Enter a name', 'warning'); return; }
+  siteConfig.team[index] = { name, position, bio, imageUrl };
+  saveSiteConfig(); loadTeam(); closeTeamEditor(); showToast('Team member updated!');
+}
+
+function deleteTeamMember(index) {
+  if (!confirm('Delete this team member?')) return;
+  siteConfig.team.splice(index, 1);
+  saveSiteConfig(); loadTeam(); showToast('Team member deleted!');
+}
+
+function closeTeamEditor() { document.getElementById('teamEditorModal').classList.add('hidden'); }
+
+// ============================================
+// FAQ MANAGEMENT (with drag)
+// ============================================
+
+function loadFaq() {
+  const list = document.getElementById('faqList');
+  if (!list) return;
+  if (!siteConfig.faq) siteConfig.faq = [];
+  list.innerHTML = '';
+  siteConfig.faq.forEach((item, index) => {
+    const listItem = document.createElement('div');
+    listItem.className = 'list-item';
+    listItem.innerHTML = `
+      <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
+      <div class="list-item-content">
+        <div class="list-item-title">${item.question || 'No question'}</div>
+        <div class="list-item-text">${item.answer ? item.answer.substring(0, 150) + (item.answer.length > 150 ? '...' : '') : ''}</div>
+      </div>
+      <div class="list-item-actions">
+        <button class="secondary-btn" onclick="editFaqItem(${index})"><i class="fas fa-edit"></i></button>
+        <button class="danger-btn" onclick="deleteFaqItem(${index})"><i class="fas fa-trash"></i></button>
+      </div>
+    `;
+    makeDraggable(listItem, 'faq', index);
+    list.appendChild(listItem);
+  });
+}
+
+function openFaqEditor() {
+  document.getElementById('faqEditorModal').classList.remove('hidden');
+  document.getElementById('faqQuestion').value = '';
+  document.getElementById('faqAnswer').value = '';
+  document.getElementById('faqEditorTitle').textContent = 'New FAQ Item';
+  document.getElementById('faqEditorSubmit').onclick = addFaqItem;
+}
+
+function editFaqItem(index) {
+  const item = siteConfig.faq[index];
+  if (!item) return;
+  document.getElementById('faqEditorModal').classList.remove('hidden');
+  document.getElementById('faqQuestion').value = item.question || '';
+  document.getElementById('faqAnswer').value = item.answer || '';
+  document.getElementById('faqEditorTitle').textContent = 'Edit FAQ Item';
+  document.getElementById('faqEditorSubmit').onclick = () => updateFaqItem(index);
+}
+
+function addFaqItem() {
+  const question = document.getElementById('faqQuestion').value.trim();
+  const answer = document.getElementById('faqAnswer').value.trim();
+  if (!question || !answer) { showToast('Enter both question and answer', 'warning'); return; }
+  if (!siteConfig.faq) siteConfig.faq = [];
+  siteConfig.faq.push({ question, answer });
+  saveSiteConfig(); loadFaq(); closeFaqEditor(); showToast('FAQ item added!');
+}
+
+function updateFaqItem(index) {
+  const question = document.getElementById('faqQuestion').value.trim();
+  const answer = document.getElementById('faqAnswer').value.trim();
+  if (!question || !answer) { showToast('Enter both question and answer', 'warning'); return; }
+  siteConfig.faq[index] = { question, answer };
+  saveSiteConfig(); loadFaq(); closeFaqEditor(); showToast('FAQ item updated!');
+}
+
+function deleteFaqItem(index) {
+  if (!confirm('Delete this FAQ item?')) return;
+  siteConfig.faq.splice(index, 1);
+  saveSiteConfig(); loadFaq(); showToast('FAQ item deleted!');
+}
+
+function closeFaqEditor() { document.getElementById('faqEditorModal').classList.add('hidden'); }
+
+// ============================================
 // SETTINGS
 // ============================================
 
@@ -1081,13 +1348,20 @@ function switchSection(section) {
     overview: 'Overview', hero: 'Hero Section', gallery: 'Gallery', services: 'Services',
     pricing: 'Pricing', testimonials: 'Testimonials', about: 'About Page', content: 'Page Content',
     blog: 'Blog', seo: 'SEO', settings: 'Settings', 'design-system': 'Design System',
+    team: 'Team Members', faq: 'FAQ Items',
   };
   document.getElementById('pageTitle').textContent = titles[section] || 'Dashboard';
   currentSection = section;
 
-  // Load design system data when that section is selected
+  // Load section-specific data
   if (section === 'design-system') {
     loadDesignSystem();
+  } else if (section === 'settings') {
+    loadBusinessHours();
+  } else if (section === 'team') {
+    loadTeam();
+  } else if (section === 'faq') {
+    loadFaq();
   }
 }
 
@@ -1119,8 +1393,10 @@ function showToast(message, type = 'success') {
 function loadDesignSystem() {
   if (!siteConfig) return;
 
+  const ds = siteConfig.designSystem || {};
+
   // Color Palette
-  const colors = siteConfig.brandAssets?.brandColors || {};
+  const colors = ds.colorPalette || siteConfig.brandAssets?.brandColors || {};
   const colorSwatches = document.getElementById('colorSwatches');
   if (colorSwatches) {
     const colorEntries = [
@@ -1144,8 +1420,8 @@ function loadDesignSystem() {
   // Typography
   const typoPreview = document.getElementById('typographyPreview');
   if (typoPreview) {
-    const headingFont = siteConfig.theme?.fonts?.heading || 'System Font';
-    const bodyFont = siteConfig.theme?.fonts?.body || 'System Font';
+    const headingFont = ds.headingFont || siteConfig.theme?.fonts?.heading || 'System Font';
+    const bodyFont = ds.bodyFont || siteConfig.theme?.fonts?.body || 'System Font';
     typoPreview.innerHTML = `
       <div class="typo-sample">
         <span class="typo-label">Heading</span>
@@ -1161,7 +1437,9 @@ function loadDesignSystem() {
   // Design Seed
   const seedInfo = document.getElementById('seedInfo');
   if (seedInfo) {
-    const seedId = siteConfig.buildSlug || 'default';
+    const seedId = ds.seedId || siteConfig.buildSlug || 'default';
+    const archetypeName = ds.archetype || siteConfig.industry || 'General';
+    const artDirection = ds.artDirection || 'editorial';
     seedInfo.innerHTML = `
       <div class="seed-detail">
         <span class="seed-label">Seed ID</span>
@@ -1169,7 +1447,11 @@ function loadDesignSystem() {
       </div>
       <div class="seed-detail">
         <span class="seed-label">Archetype</span>
-        <span class="seed-value">${siteConfig.industry || 'General'}</span>
+        <span class="seed-value">${archetypeName}</span>
+      </div>
+      <div class="seed-detail">
+        <span class="seed-label">Art Direction</span>
+        <span class="seed-value">${artDirection}</span>
       </div>
     `;
   }
@@ -1177,14 +1459,21 @@ function loadDesignSystem() {
   // Density
   const densityInfo = document.getElementById('densityInfo');
   if (densityInfo) {
+    const densityProfile = ds.densityProfile || 'balanced';
+    const decorativeIntensity = ds.decorativeIntensity || 'subtle';
+    const motionIntensity = ds.motionIntensity || 'moderate';
     densityInfo.innerHTML = `
       <div class="density-detail">
         <span class="density-label">Density Profile</span>
-        <span class="density-value">Balanced</span>
+        <span class="density-value">${densityProfile}</span>
       </div>
       <div class="density-detail">
         <span class="density-label">Decorative Intensity</span>
-        <span class="density-value">Subtle</span>
+        <span class="density-value">${decorativeIntensity}</span>
+      </div>
+      <div class="density-detail">
+        <span class="density-label">Motion Intensity</span>
+        <span class="density-value">${motionIntensity}</span>
       </div>
     `;
   }
@@ -1281,3 +1570,439 @@ async function enhanceSite() {
     }
   }
 }
+
+
+// ============================================
+// PHASE 10: CONTENT EDITORS (Tasks 5-11)
+// ============================================
+
+/**
+ * Task 10.5: Business Hours Editor
+ * Full implementation with UI
+ * Data structure: siteConfig.businessHours array
+ */
+function loadBusinessHours() {
+  const list = document.getElementById('businessHoursList');
+  if (!list) return;
+  
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const hours = siteConfig?.businessHours || days.map(day => ({ dayOfWeek: day, opens: '09:00', closes: '17:00', closed: false }));
+  
+  // Ensure all days exist
+  days.forEach(day => {
+    if (!hours.find(h => h.dayOfWeek === day)) {
+      hours.push({ dayOfWeek: day, opens: '09:00', closes: '17:00', closed: false });
+    }
+  });
+  
+  list.innerHTML = hours.map((h, idx) => `
+    <div class="business-hours-row" data-index="${idx}">
+      <div class="hours-day">${h.dayOfWeek}</div>
+      <div class="hours-inputs">
+        <input type="time" class="hours-time" data-idx="${idx}" data-field="opens" value="${h.opens || '09:00'}" ${h.closed ? 'disabled' : ''}>
+        <span>to</span>
+        <input type="time" class="hours-time" data-idx="${idx}" data-field="closes" value="${h.closes || '17:00'}" ${h.closed ? 'disabled' : ''}>
+        <label class="hours-closed">
+          <input type="checkbox" data-idx="${idx}" data-field="closed" ${h.closed ? 'checked' : ''}>
+          Closed
+        </label>
+      </div>
+    </div>
+  `).join('');
+  
+  // Add event listeners
+  list.querySelectorAll('input').forEach(input => {
+    input.addEventListener('change', (e) => {
+      const idx = parseInt(e.target.dataset.idx);
+      const field = e.target.dataset.field;
+      if (!siteConfig.businessHours) siteConfig.businessHours = hours;
+      
+      if (field === 'closed') {
+        siteConfig.businessHours[idx].closed = e.target.checked;
+        // Disable/enable time inputs
+        const row = e.target.closest('.business-hours-row');
+        row.querySelectorAll('.hours-time').forEach(t => t.disabled = e.target.checked);
+      } else {
+        siteConfig.businessHours[idx][field] = e.target.value;
+      }
+    });
+  });
+}
+
+function saveBusinessHours() {
+  saveSiteConfig();
+  showToast('Business hours saved!');
+}
+
+/**
+ * Task 10.6: Hero Content Editor
+ * Data: siteConfig.hero (headline, subheadline, ctaText, badge)
+ */
+function editHeroContent() {
+  // Placeholder: Modal for editing hero section
+  console.log('Hero editor - to be fully implemented')
+}
+
+/**
+ * Task 10.7: About Content Editor
+ * Data: siteConfig.about (title, paragraphs, history)
+ */
+function editAboutContent() {
+  // Placeholder: Modal for editing about section
+  console.log('About editor - to be fully implemented')
+}
+
+/**
+ * Task 10.8: Team Profiles Editor
+ * Data: siteConfig.team array
+ */
+function addTeamMember() {
+  // Placeholder: Add new team member
+  console.log('Team editor - to be fully implemented')
+}
+
+/**
+ * Task 10.9: FAQ Editor
+ * Data: siteConfig.faq array
+ */
+function addFaqItem() {
+  // Placeholder: Add FAQ question/answer
+  console.log('FAQ editor - to be fully implemented')
+}
+
+/**
+ * Task 10.10: Service Areas Editor
+ * Data: siteConfig.geo.serviceAreas array
+ */
+function editServiceAreas() {
+  // Placeholder: Edit service locations
+  console.log('Service areas editor - to be fully implemented')
+}
+
+// ============================================
+// PHASE 10: UX ENHANCEMENTS (Tasks 16-19)
+// ============================================
+
+/**
+ * Task 10.16: Auto-Save to LocalStorage
+ * Save draft changes every 30 seconds
+ */
+let autoSaveInterval = null;
+
+function startAutoSave() {
+  if (autoSaveInterval) clearInterval(autoSaveInterval);
+  
+  autoSaveInterval = setInterval(() => {
+    if (siteConfig && imageMap) {
+      try {
+        localStorage.setItem('siteConfig_draft', JSON.stringify(siteConfig));
+        localStorage.setItem('imageMap_draft', JSON.stringify(imageMap));
+        console.log('[Auto-save] Draft saved to localStorage');
+      } catch (e) {
+        console.error('[Auto-save] Failed:', e);
+      }
+    }
+  }, 30000); // Every 30 seconds
+}
+
+function restoreDraft() {
+  try {
+    const configDraft = localStorage.getItem('siteConfig_draft');
+    const imageDraft = localStorage.getItem('imageMap_draft');
+    
+    if (configDraft || imageDraft) {
+      const restore = confirm('Found unsaved changes. Restore draft?');
+      if (restore) {
+        if (configDraft) siteConfig = JSON.parse(configDraft);
+        if (imageDraft) imageMap = JSON.parse(imageDraft);
+        return true;
+      }
+    }
+  } catch (e) {
+    console.error('[Restore] Failed:', e);
+  }
+  return false;
+}
+
+function clearDraft() {
+  localStorage.removeItem('siteConfig_draft');
+  localStorage.removeItem('imageMap_draft');
+}
+
+/**
+ * Task 10.17: Undo/Redo System
+ * Track change history with stack
+ */
+const MAX_HISTORY = 50;
+let changeHistory = [];
+let historyIndex = -1;
+
+function saveToHistory(description) {
+  // Remove any redo history
+  if (historyIndex < changeHistory.length - 1) {
+    changeHistory = changeHistory.slice(0, historyIndex + 1);
+  }
+  
+  // Add new state
+  changeHistory.push({
+    timestamp: Date.now(),
+    description,
+    siteConfig: JSON.parse(JSON.stringify(siteConfig)),
+    imageMap: JSON.parse(JSON.stringify(imageMap))
+  });
+  
+  // Limit history size
+  if (changeHistory.length > MAX_HISTORY) {
+    changeHistory.shift();
+  } else {
+    historyIndex++;
+  }
+  
+  updateUndoRedoButtons();
+}
+
+function undo() {
+  if (historyIndex > 0) {
+    historyIndex--;
+    const state = changeHistory[historyIndex];
+    siteConfig = JSON.parse(JSON.stringify(state.siteConfig));
+    imageMap = JSON.parse(JSON.stringify(state.imageMap));
+    loadDashboardData(); // Refresh UI
+    updateUndoRedoButtons();
+    console.log('[Undo]', state.description);
+  }
+}
+
+function redo() {
+  if (historyIndex < changeHistory.length - 1) {
+    historyIndex++;
+    const state = changeHistory[historyIndex];
+    siteConfig = JSON.parse(JSON.stringify(state.siteConfig));
+    imageMap = JSON.parse(JSON.stringify(state.imageMap));
+    loadDashboardData(); // Refresh UI
+    updateUndoRedoButtons();
+    console.log('[Redo]', state.description);
+  }
+}
+
+function updateUndoRedoButtons() {
+  const undoBtn = document.getElementById('undoBtn');
+  const redoBtn = document.getElementById('redoBtn');
+  if (undoBtn) undoBtn.disabled = historyIndex <= 0;
+  if (redoBtn) redoBtn.disabled = historyIndex >= changeHistory.length - 1;
+}
+
+/**
+ * Task 10.18: Validation Layer
+ * Validate data before save
+ */
+function validateSiteConfig() {
+  const errors = [];
+  
+  if (!siteConfig.businessName || siteConfig.businessName.trim().length === 0) {
+    errors.push('Business name is required');
+  }
+  
+  if (!siteConfig.contact?.phone) {
+    errors.push('Contact phone is required');
+  }
+  
+  if (!siteConfig.services || siteConfig.services.length === 0) {
+    errors.push('At least one service is required');
+  }
+  
+  siteConfig.services?.forEach((service, i) => {
+    if (!service.title || service.title.trim().length === 0) {
+      errors.push(`Service ${i + 1}: Title is required`);
+    }
+    if (!service.description || service.description.length < 10) {
+      errors.push(`Service ${i + 1}: Description must be at least 10 characters`);
+    }
+  });
+  
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
+
+/**
+ * Task 10.19: Success Modal with Preview Link
+ */
+function showSuccessModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal-content success-modal">
+      <div class="success-icon">✓</div>
+      <h2>Changes Saved Successfully!</h2>
+      <p>Your website has been updated.</p>
+      <div class="button-group">
+        <a href="/" target="_blank" class="primary-btn">
+          <i class="fas fa-external-link-alt"></i>
+          View Live Site
+        </a>
+        <button onclick="this.closest('.modal-overlay').remove()" class="secondary-btn">
+          Continue Editing
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  
+  // Auto-close after 5 seconds
+  setTimeout(() => {
+    if (modal.parentElement) {
+      modal.remove();
+    }
+  }, 5000);
+}
+
+// ============================================
+// ENHANCED SAVE FUNCTION
+// ============================================
+
+// Create alias for the original save function
+const originalSaveSiteConfig = saveSiteConfig;
+
+// Enhanced save function with validation and history
+async function saveConfig() {
+  // Validate before save
+  const validation = validateSiteConfig();
+  if (!validation.valid) {
+    alert('Validation errors:\n' + validation.errors.join('\n'));
+    return;
+  }
+  
+  // Save to history
+  saveToHistory('Manual save');
+  
+  // Call original save
+  const result = await originalSaveSiteConfig();
+  
+  // Clear draft on successful save
+  if (result) {
+    clearDraft();
+    showSuccessModal();
+  }
+  
+  return result;
+}
+
+// Initialize auto-save when dashboard loads
+if (typeof loadDashboardData !== 'undefined') {
+  const originalLoadDashboardData = loadDashboardData;
+  loadDashboardData = function() {
+    originalLoadDashboardData();
+    
+    // Restore draft if available
+    restoreDraft();
+    
+    // Start auto-save
+    startAutoSave();
+    
+    // Save initial state to history
+    if (siteConfig && changeHistory.length === 0) {
+      saveToHistory('Initial state');
+    }
+  };
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+    e.preventDefault();
+    undo();
+  }
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+    e.preventDefault();
+    redo();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    saveConfig();
+  }
+});
+
+console.log('[Phase 10] Dashboard enhancements loaded: Auth, Auto-save, Undo/Redo, Validation');
+
+
+// ============================================
+// TUTORIAL EVENT DISPATCHERS
+// ============================================
+
+// Wrap modal open functions to dispatch tutorial events
+const originalOpenServiceEditor = openServiceEditor;
+openServiceEditor = function() {
+  document.dispatchEvent(new Event('modalOpened'));
+  originalOpenServiceEditor.apply(this, arguments);
+};
+
+const originalOpenPricingEditor = openPricingEditor;
+openPricingEditor = function() {
+  document.dispatchEvent(new Event('modalOpened'));
+  originalOpenPricingEditor.apply(this, arguments);
+};
+
+const originalOpenTestimonialEditor = openTestimonialEditor;
+openTestimonialEditor = function() {
+  document.dispatchEvent(new Event('modalOpened'));
+  originalOpenTestimonialEditor.apply(this, arguments);
+};
+
+const originalOpenBlogEditor = openBlogEditor;
+openBlogEditor = function() {
+  document.dispatchEvent(new Event('modalOpened'));
+  originalOpenBlogEditor.apply(this, arguments);
+};
+
+const originalOpenTeamEditor = openTeamEditor;
+openTeamEditor = function() {
+  document.dispatchEvent(new Event('modalOpened'));
+  originalOpenTeamEditor.apply(this, arguments);
+};
+
+const originalOpenFaqEditor = openFaqEditor;
+openFaqEditor = function() {
+  document.dispatchEvent(new Event('modalOpened'));
+  originalOpenFaqEditor.apply(this, arguments);
+};
+
+// Wrap edit functions
+const originalEditService = editService;
+editService = function() {
+  document.dispatchEvent(new Event('editClicked'));
+  originalEditService.apply(this, arguments);
+};
+
+// Wrap upload functions
+const originalHandleHeroImageUpload = handleHeroImageUpload;
+handleHeroImageUpload = function() {
+  originalHandleHeroImageUpload.apply(this, arguments);
+  setTimeout(() => document.dispatchEvent(new Event('imageUploaded')), 500);
+};
+
+const originalHandleAboutImageUpload = handleAboutImageUpload;
+handleAboutImageUpload = function() {
+  originalHandleAboutImageUpload.apply(this, arguments);
+  setTimeout(() => document.dispatchEvent(new Event('imageUploaded')), 500);
+};
+
+// Wrap gallery functions
+const originalCreateFolder = createFolder;
+createFolder = function() {
+  originalCreateFolder.apply(this, arguments);
+  document.dispatchEvent(new Event('galleryAction'));
+};
+
+const originalViewFolder = viewFolder;
+viewFolder = function() {
+  originalViewFolder.apply(this, arguments);
+  document.dispatchEvent(new Event('galleryAction'));
+};
+
+const originalOpenUploadModal = openUploadModal;
+openUploadModal = function() {
+  document.dispatchEvent(new Event('galleryAction'));
+  originalOpenUploadModal.apply(this, arguments);
+};

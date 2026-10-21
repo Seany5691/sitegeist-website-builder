@@ -26,8 +26,8 @@ Sections: 64-96px padding. Elements: 16-24px gaps. Standard spacing.
 IMAGE ASPECT RATIO: portrait
 3:4 or 4:5 aspect ratio. Great for people and products.
 
-COLOR INTENSITY: vibrant
-Full saturation colors. Energetic and attention-grabbing.
+COLOR INTENSITY: pastel
+Low saturation, high lightness colors. Soft and approachable.
 
 DENSITY PROFILE: balanced
 Standard spacing (64-96px padding), comfortable gaps. Professional and readable. Good default for most sites.
@@ -35,8 +35,8 @@ Standard spacing (64-96px padding), comfortable gaps. Professional and readable.
 DECORATIVE INTENSITY: expressive
 Bold decorative elements. Strong gradient overlays, visible grain/noise textures, decorative shapes, floating elements, glassmorphism cards. Eye-catching and memorable.
 
-TYPOGRAPHY PAIRING: friendly-rounded
-Heading: Nunito (rounded sans). Body: Open Sans. Warm, approachable. Great for bakeries, beauty, education, family services.
+TYPOGRAPHY PAIRING: elegant-mix
+Heading: Cormorant Garamond (refined serif). Body: Montserrat. Refined yet modern. Great for professional services, medical, legal.
 
 MOTION INTENSITY: subtle
 Gentle animations: 0.3s duration, 8px distance, 0.04s stagger. Refined and professional. No bouncy or flashy effects.
@@ -44,32 +44,32 @@ Gentle animations: 0.3s duration, 8px distance, 0.04s stagger. Refined and profe
 STAGGER STRENGTH: light
 Light stagger (0.04s between children). Subtle sequential reveal. Professional.
 
-ART DIRECTION: editorial
-Magazine-inspired: airy spacing, subtle motion, serif display typography, muted colors, editorial grid layouts. Sophisticated and refined.
+ART DIRECTION: warm-organic
+Friendly and approachable: balanced spacing, moderate motion, warm tones, rounded shapes, friendly typography. Inviting and personal.
 
 SECTION ORDER: Hero → Gallery → Testimonials → FAQ → About → Team → Services → Contact → Footer
 
 
-## Color Palette (Terracotta)
+## Color Palette (Selected)
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| Primary | #c06950 | Buttons, CTAs, active states |
-| Secondary | #d4876b | Accents, hover states |
-| Accent | #e8ad94 | Highlights, badges |
-| Background | #FDF6F0 | Page background |
-| Text | #5C3A20 | Body text |
+| Primary | #3C1414 | Buttons, CTAs, active states |
+| Secondary | #6B3A2E | Accents, hover states |
+| Accent | #FFD700 | Highlights, badges |
+| Background | #FFF8DC | Page background |
+| Text | #2C1810 | Body text |
 | Muted | #6b7280 | Secondary text |
 
 ## CSS Custom Properties
 
 ```css
 :root {
-  --color-primary: #c06950;
-  --color-secondary: #d4876b;
-  --color-accent: #e8ad94;
-  --color-bg: #FDF6F0;
-  --color-text: #5C3A20;
+  --color-primary: #3C1414;
+  --color-secondary: #6B3A2E;
+  --color-accent: #FFD700;
+  --color-bg: #FFF8DC;
+  --color-text: #2C1810;
   --color-muted: #6b7280;
   --font-heading: Playfair Display, serif;
   --font-body: Lato, sans-serif;
@@ -107,10 +107,10 @@ SECTION ORDER: Hero → Gallery → Testimonials → FAQ → About → Team → 
 
 ## Hero Section
 
-- Headline: "Baked with Love in North West"
-- Subheadline: "Custom cakes and cupcakes made fresh daily by Lety Gibbon, using family recipes and local ingredients."
-- Badge: "Serving North West Since 2012"
-- CTA: "Order Your Custom Cake"
+- Headline: "Baked With Love in North West"
+- Subheadline: "From custom celebration cakes to daily-fresh bread, we craft honest, delicious bakes using family recipes and local ingredients."
+- Badge: "Serving North West with Smiles Since 2012"
+- CTA: "Order Online"
 - Use stock image from Unsplash matching the industry
 
 ## Animation & Spacing

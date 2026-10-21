@@ -4,6 +4,7 @@
  */
 
 import { MasterSiteConfig, IndustryArchetype } from '@/types/site-config'
+import { generateLogoSet, LogoPalette } from '@/lib/logo-engine'
 
 export interface BoilerplateFiles {
   'package.json': string
@@ -20,8 +21,15 @@ export interface BoilerplateFiles {
   'app/services/page.tsx': string
   'app/contact/page.tsx': string
   'app/portfolio/page.tsx': string
+  'app/team/page.tsx': string
+  'app/blog/page.tsx': string
+  'app/reviews/page.tsx': string
+  'app/faq/page.tsx': string
+  'app/areas/page.tsx': string
+  'app/privacy/page.tsx': string
   'app/sitemap.ts': string
   'app/robots.ts': string
+  'app/icon.svg': string
   'components/Header.tsx': string
   'components/WhatsAppWidget.tsx': string
   'components/AnimateOnScroll.tsx': string
@@ -31,9 +39,17 @@ export interface BoilerplateFiles {
   'components/_Lightbox.tsx': string
   'components/Toast.tsx': string
   'lib/use-site-data.ts': string
+  'lib/auth.ts': string
+  'lib/dashboard-middleware.ts': string
+  'lib/rate-limiter.ts': string
+  'app/api/auth/[...nextauth]/route.ts': string
   'app/api/save-config/route.ts': string
   'app/api/upload/route.ts': string
+  '.env.local.example': string
+  '.env.local': string  // â† ADD THIS
+  '.dashboard-credentials.txt': string  // â† ADD THIS
   'site-config-defaults.json': string
+  'next-auth.d.ts': string  // â† ADD THIS (Fix #7)
 }
 
 export function generateBoilerplate(
@@ -65,8 +81,15 @@ export function generateBoilerplate(
     'app/services/page.tsx': generateSubPage('services', 'Services'),
     'app/contact/page.tsx': generateSubPage('contact', 'Contact'),
     'app/portfolio/page.tsx': generateSubPage('portfolio', 'Portfolio'),
+    'app/team/page.tsx': generateSubPage('team', 'Our Team'),
+    'app/blog/page.tsx': generateSubPage('blog', 'Blog'),
+    'app/reviews/page.tsx': generateSubPage('reviews', 'Reviews'),
+    'app/faq/page.tsx': generateSubPage('faq', 'FAQ'),
+    'app/areas/page.tsx': generateSubPage('areas', 'Areas We Serve'),
+    'app/privacy/page.tsx': generateSubPage('privacy', 'Privacy Policy'),
     'app/sitemap.ts': generateSitemap(),
     'app/robots.ts': generateRobots(),
+    'app/icon.svg': generateIconSvg(siteConfig),
     'components/Header.tsx': generateHeader(businessName, siteConfig),
     'components/WhatsAppWidget.tsx': generateWhatsAppWidget(siteConfig),
     'components/AnimateOnScroll.tsx': generateAnimateOnScroll(),
@@ -76,10 +99,19 @@ export function generateBoilerplate(
     'components/_Lightbox.tsx': generateLightbox(),
     'components/Toast.tsx': generateToast(),
     'lib/use-site-data.ts': generateUseSiteData(),
+    'lib/auth.ts': generateAuthConfig(),
+    'lib/dashboard-middleware.ts': generateAuthMiddleware(),
+    'lib/rate-limiter.ts': generateRateLimiter(),
+    'app/api/auth/[...nextauth]/route.ts': generateNextAuthRoute(),
     'app/api/save-config/route.ts': generateSaveConfigRoute(),
     'app/api/upload/route.ts': generateUploadRoute(),
+    '.env.local.example': generateEnvExample(),
+    '.env.local': generateEnvLocal(businessName),  // â† FIX #1: Auto-generated .env.local
+    '.dashboard-credentials.txt': generateDashboardCredentials(businessName),  // â† FIX #1: Credential file
     'site-config-defaults.json': generateSiteConfigDefaults(siteConfig, archetype, designSeed),
+    'next-auth.d.ts': generateNextAuthTypes(),  // â† FIX #7: TypeScript definitions
   }
+
 }
 
 function generatePackageJson(businessName: string): string {
@@ -94,27 +126,38 @@ function generatePackageJson(businessName: string): string {
       lint: 'next lint',
     },
     dependencies: {
-      next: '14.2.3',
+      next: '^14.2.35',
       react: '^18.3.1',
       'react-dom': '^18.3.1',
       'framer-motion': '10.18.0',
+      'next-auth': '^4.24.11',
+      'bcryptjs': '^2.4.3',
+      '@vercel/blob': '^2.8.0',
       'lucide-react': '^0.378.0',
       'clsx': '^2.1.1',
       'tailwind-merge': '^2.3.0',
+      '@supabase/supabase-js': '^2.45.0',
+      // Build tooling lives in dependencies (not devDependencies) so
+      // NODE_ENV=production installs can never skip Tailwind/TypeScript.
+      'typescript': '^5.4.5',
+      'tailwindcss': '^3.4.3',
+      'postcss': '^8.4.38',
+      'autoprefixer': '^10.4.19',
     },
     devDependencies: {
-      typescript: '^5.4.5',
       '@types/node': '^20.12.12',
       '@types/react': '^18.3.2',
       '@types/react-dom': '^18.3.0',
-      tailwindcss: '^3.4.3',
-      postcss: '^8.4.38',
-      autoprefixer: '^10.4.19',
+      '@types/bcryptjs': '^2.4.6',
     },
   }, null, 2)
 }
 
 function generateNextConfig(): string {
+  // Single source of truth: templates/backend/next.config.js carries the
+  // security headers (CSP / X-Frame-Options / HSTS / …). It is emitted here too
+  // because the generator writes next.config.js AFTER copyBackendDir(), so a
+  // header-less version would otherwise overwrite the shipped one.
   return `/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -128,12 +171,71 @@ const nextConfig = {
   },
   // Disable font optimization to prevent build failures when Google Fonts are unreachable
   optimizeFonts: false,
-}
 
-module.exports = nextConfig
+  // ── Security headers ────────────────────────────────────────────────────
+  // Applied to every response including the static dashboard assets in /public.
+  //
+  // The five "safe" headers (X-Frame-Options, X-Content-Type-Options,
+  // Referrer-Policy, HSTS, Permissions-Policy) cannot break rendering.
+  //
+  // CSP is the one that can, so it is scoped to exactly what the platform
+  // loads:
+  //   - 'unsafe-inline' for scripts is REQUIRED: the dashboard uses 100+ inline
+  //     onclick handlers. It still blocks loading scripts from any other
+  //     origin, which is the main XSS delivery route.
+  //   - fonts.googleapis.com / fonts.gstatic.com / cdnjs.cloudflare.com are
+  //     allowed for the dashboard's Google Fonts + Font Awesome.
+  //   - youtube / vimeo / google maps are allowed for embedded media.
+  //   - img-src is deliberately wide (any https image) because clients paste
+  //     their own image links. Images are a far lower risk than scripts.
+  async headers() {
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+      "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com",
+      "img-src 'self' data: blob: https:",
+      "media-src 'self' data: blob: https:",
+      "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://www.google.com https://maps.google.com",
+      "connect-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+      'upgrade-insecure-requests',
+    ].join('; ');
+
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          // Never allow the site to be framed — kills clickjacking of the login
+          { key: 'X-Frame-Options', value: 'DENY' },
+          // Never let the browser guess a content type
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          // Don't leak the referring URL to third parties
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Force HTTPS for a year, include subdomains, allow preload
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
+          // Deny powerful features nobody uses here
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()',
+          },
+          // Legacy IE MIME sniffing
+          { key: 'X-Download-Options', value: 'noopen' },
+          // Don't let third-party sites embed us via <base> manipulation
+          { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
+          { key: 'Content-Security-Policy', value: csp },
+        ],
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;
 `
 }
-
 function generateTsConfig(): string {
   return JSON.stringify({
     compilerOptions: {
@@ -149,6 +251,8 @@ function generateTsConfig(): string {
       isolatedModules: true,
       jsx: 'preserve',
       incremental: true,
+      downlevelIteration: true,    // FIX #6: Required for Map iterator compatibility
+      target: 'es2015',              // FIX #6: Target ES2015 for better compatibility
       plugins: [{ name: 'next' }],
       paths: { '@/*': ['./*'] },
     },
@@ -348,10 +452,12 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
   [data-temperature="cool"] { filter: hue-rotate(2deg) saturate(0.98); }
   [data-temperature="neutral"] { filter: none; }`
   // Density profiles control spacing
+  // Winning formula (DASHBOARD-CHANGES.md §24): section spacing is locked
+  // to 3.25 / 4.25 / 5.25 rem — do not leave 8rem desktop padding.
   const densityConfig: Record<string, { sectionSm: string; sectionMd: string; sectionLg: string; gap: string; maxW: string }> = {
-    airy: { sectionSm: '5rem', sectionMd: '7.5rem', sectionLg: '10rem', gap: '2rem', maxW: '1200px' },
-    balanced: { sectionSm: '4rem', sectionMd: '6rem', sectionLg: '8rem', gap: '1.5rem', maxW: '1280px' },
-    dense: { sectionSm: '3rem', sectionMd: '4rem', sectionLg: '6rem', gap: '1rem', maxW: '1400px' },
+    airy: { sectionSm: '3.25rem', sectionMd: '4.25rem', sectionLg: '5.25rem', gap: '2rem', maxW: '1200px' },
+    balanced: { sectionSm: '3.25rem', sectionMd: '4.25rem', sectionLg: '5.25rem', gap: '1.5rem', maxW: '1280px' },
+    dense: { sectionSm: '3.25rem', sectionMd: '4.25rem', sectionLg: '5.25rem', gap: '1rem', maxW: '1400px' },
   }
   const d = densityConfig[density] || densityConfig.balanced
 
@@ -398,6 +504,7 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
 
 @layer base {
   :root {
+    --header-h: 7.5rem;
     --color-primary: ${palette?.primary || '#0ea5e9'};
     --color-secondary: ${palette?.secondary || '#6366f1'};
     --color-accent: ${palette?.accent || '#f59e0b'};
@@ -405,10 +512,14 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     --color-text: ${isDarkMode ? '#f5f5f5' : '#1a1a1a'};
     --color-muted: ${isDarkMode ? '#9ca3af' : '#6b7280'};
 
-    /* Surface elevation scale */
+    /* Surface elevation scale — 5 levels + semantic variants */
     --surface-0: var(--color-bg);
     --surface-1: color-mix(in srgb, var(--color-text) ${isDarkMode ? '5%' : '3%'}, var(--color-bg));
     --surface-2: color-mix(in srgb, var(--color-text) ${isDarkMode ? '10%' : '6%'}, var(--color-bg));
+    --surface-3: color-mix(in srgb, var(--color-text) ${isDarkMode ? '15%' : '9%'}, var(--color-bg));
+    --surface-4: color-mix(in srgb, var(--color-text) ${isDarkMode ? '20%' : '12%'}, var(--color-bg));
+    --surface-primary: color-mix(in srgb, var(--color-primary) ${isDarkMode ? '15%' : '10%'}, var(--surface-1));
+    --surface-accent: color-mix(in srgb, var(--color-accent) ${isDarkMode ? '15%' : '10%'}, var(--surface-1));
 
     /* Design tokens — spacing */
     --space-xs: 0.25rem;
@@ -421,12 +532,19 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     --section-gap: ${d.gap};
     --max-width: ${d.maxW};
 
-    /* Design tokens — stacked shadows (direct + ambient) */
+    /* Composite shadow system — contact shadow + ambient spread */
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02);
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.03);
     --shadow-md: 0 2px 4px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.06);
     --shadow-lg: 0 4px 8px rgba(0,0,0,0.06), 0 16px 32px rgba(0,0,0,0.08);
     --shadow-xl: 0 8px 16px rgba(0,0,0,0.08), 0 24px 48px rgba(0,0,0,0.1);
     --shadow-2xl: 0 12px 24px rgba(0,0,0,0.1), 0 32px 64px rgba(0,0,0,0.15);
+
+    /* Glow shadows for interactive elements */
+    --shadow-glow-primary: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent),
+                           0 4px 12px color-mix(in srgb, var(--color-primary) 15%, transparent);
+    --shadow-glow-accent: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent),
+                          0 4px 12px color-mix(in srgb, var(--color-accent) 15%, transparent);
 
     /* Design tokens — border radius */
     --radius-sm: 4px;
@@ -587,21 +705,36 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     height: auto;
   }
 
-  /* Custom scrollbar — branded, thin, transparent track */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
+  /* Custom scrollbar — branded, thin */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
   ::-webkit-scrollbar-thumb {
     background: color-mix(in srgb, var(--color-text) 20%, transparent);
-    border-radius: 3px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: color-mix(in srgb, var(--color-text) 35%, transparent);
+    background-clip: padding-box;
   }
-  * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--color-text) 20%, transparent) transparent; }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-text) 20%, transparent) transparent;
+  }
 
   /* Text selection — branded */
   ::selection {
-    background: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    background: color-mix(in srgb, var(--color-primary) 30%, transparent);
+    color: var(--color-text);
+  }
+  ::-moz-selection {
+    background: color-mix(in srgb, var(--color-primary) 30%, transparent);
     color: var(--color-text);
   }
 }
@@ -626,7 +759,7 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     }
   }
 
-  /* Button system — variants driven by design tokens */
+  /* Button system — 5-state tactile interactions */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -638,74 +771,127 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     cursor: pointer;
     transition: all var(--motion-normal) var(--motion-easing);
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
   }
 
   .btn-sm { padding: 0.5rem 1rem; font-size: 0.8125rem; border-radius: var(--radius-md); }
   .btn-md { padding: 0.75rem 1.5rem; font-size: 0.9375rem; border-radius: var(--radius-md); }
   .btn-lg { padding: 1rem 2rem; font-size: 1.0625rem; border-radius: var(--radius-lg); }
 
+  /* Primary Button */
   .btn-primary {
     background-color: var(--color-primary);
     color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), var(--shadow-sm);
   }
   .btn-primary:hover {
-    opacity: 0.9;
+    background-color: color-mix(in srgb, var(--color-primary) 90%, #000);
     transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), var(--shadow-md);
+  }
+  .btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    transition-duration: 100ms;
+  }
+  .btn-primary:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-glow-primary);
   }
 
+  /* Secondary Button */
   .btn-secondary {
     background-color: var(--color-secondary);
     color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), var(--shadow-sm);
   }
   .btn-secondary:hover {
-    opacity: 0.9;
+    background-color: color-mix(in srgb, var(--color-secondary) 90%, #000);
     transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), var(--shadow-md);
+  }
+  .btn-secondary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    transition-duration: 100ms;
+  }
+  .btn-secondary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-secondary) 40%, transparent);
   }
 
+  /* Outline Button */
   .btn-outline {
     background: transparent;
     color: var(--color-primary);
     border: 2px solid var(--color-primary);
+    box-shadow: none;
   }
   .btn-outline:hover {
     background-color: var(--color-primary);
     color: #fff;
     transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-outline:active {
+    transform: translateY(0) scale(0.98);
+    background-color: color-mix(in srgb, var(--color-primary) 90%, #000);
+    transition-duration: 100ms;
+  }
+  .btn-outline:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-glow-primary);
   }
 
+  /* Ghost Button */
   .btn-ghost {
     background: transparent;
     color: var(--color-text);
+    box-shadow: none;
   }
   .btn-ghost:hover {
-    background-color: color-mix(in srgb, var(--color-text) 5%, transparent);
+    background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+  .btn-ghost:active {
+    background-color: color-mix(in srgb, var(--color-text) 12%, transparent);
+    transform: scale(0.98);
+    transition-duration: 100ms;
+  }
+  .btn-ghost:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-text) 30%, transparent);
   }
 
+  /* Accent Button */
   .btn-accent {
     background-color: var(--color-accent);
     color: var(--color-primary);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), var(--shadow-sm);
+    font-weight: 700;
   }
   .btn-accent:hover {
-    opacity: 0.9;
+    background-color: color-mix(in srgb, var(--color-accent) 90%, #000);
     transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), var(--shadow-md);
   }
-
-  /* Button states — active, disabled, focus-visible */
-  .btn:active {
-    transform: scale(0.98) translateY(0);
+  .btn-accent:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
     transition-duration: 100ms;
   }
-  .btn:disabled, .btn[aria-disabled="true"] {
+  .btn-accent:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-glow-accent);
+  }
+
+  /* Disabled State — Universal */
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
-  }
-  .btn:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 40%, transparent);
+    transform: none !important;
   }
   .btn-primary, .btn-accent {
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
@@ -721,29 +907,111 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
   }
 
-  /* Form system — consistent input styling */
+  /* Form Input System — Floating Labels + Validation */
   .form-input {
     width: 100%;
     padding: 0.75rem 1rem;
     font-family: var(--font-body), sans-serif;
     font-size: 0.9375rem;
     color: var(--color-text);
-    background-color: var(--color-bg);
-    border: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    background-color: var(--surface-1);
+    border: 1.5px solid color-mix(in srgb, var(--color-text) 15%, transparent);
     border-radius: var(--radius-md);
     outline: none;
-    transition: border-color var(--motion-fast) var(--motion-easing), box-shadow var(--motion-fast) var(--motion-easing);
+    transition: border-color var(--motion-fast) var(--motion-easing),
+                box-shadow var(--motion-fast) var(--motion-easing),
+                background-color var(--motion-fast) var(--motion-easing);
+  }
+  .form-input:hover {
+    border-color: color-mix(in srgb, var(--color-text) 25%, transparent);
   }
   .form-input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+    background-color: var(--color-bg);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
   }
   .form-input::placeholder {
     color: var(--color-muted);
+    opacity: 0.6;
   }
   .form-input:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    background-color: color-mix(in srgb, var(--color-text) 5%, transparent);
+  }
+
+  /* Floating Label System */
+  .floating-label-group {
+    position: relative;
+  }
+  .floating-input {
+    padding-top: 1.25rem;
+    padding-bottom: 0.5rem;
+  }
+  .floating-label {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    padding: 0 0.25rem;
+  }
+  .floating-input:focus ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label {
+    top: 0.5rem;
+    transform: translateY(0);
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    background: var(--color-bg);
+  }
+
+  /* Validation States */
+  .form-input-error {
+    border-color: #ef4444;
+    background-color: color-mix(in srgb, #ef4444 3%, var(--color-bg));
+  }
+  .form-input-error:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  }
+  .form-input-success {
+    border-color: #22c55e;
+    background-color: color-mix(in srgb, #22c55e 3%, var(--color-bg));
+  }
+  .form-input-success:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+  }
+  .form-error-message {
+    font-size: 0.75rem;
+    color: #ef4444;
+    margin-top: 0.375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-weight: 500;
+  }
+  .form-error-message::before {
+    content: '⚠';
+    font-size: 1rem;
+  }
+  .form-success-message {
+    font-size: 0.75rem;
+    color: #22c55e;
+    margin-top: 0.375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-weight: 500;
+  }
+  .form-success-message::before {
+    content: '✓';
+    font-size: 1rem;
   }
 
   .form-label {
@@ -760,37 +1028,181 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     margin-top: 0.25rem;
   }
 
-  .form-input-error {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
-  }
-  .form-input-error:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
-  }
-  .form-input-success {
-    border-color: #22c55e;
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
-  }
-  .form-input-success:focus {
-    border-color: #22c55e;
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
-  }
-  .form-error-message {
-    font-size: 0.75rem;
-    color: #ef4444;
-    margin-top: 0.375rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+  /* Typography System — Mandatory utility classes */
+  .heading {
+    font-family: var(--font-heading), serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
   }
 
-  /* Skeleton loading states */
+  .heading-display {
+    font-family: var(--font-heading), serif;
+    font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  .heading-1 {
+    font-family: var(--font-heading), serif;
+    font-size: clamp(2rem, 4vw + 0.5rem, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .heading-2 {
+    font-family: var(--font-heading), serif;
+    font-size: clamp(1.5rem, 3vw + 0.5rem, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .heading-3 {
+    font-family: var(--font-heading), serif;
+    font-size: clamp(1.25rem, 2vw + 0.5rem, 1.875rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .body-text {
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(0.9375rem, 1vw + 0.5rem, 1.0625rem);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.65;
+  }
+
+  .body-text-large {
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .body-text-small {
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(0.8125rem, 0.8vw + 0.4rem, 0.9375rem);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* Text wrapping utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Premium Card System — Stacked shadows + edge illumination */
+  .card {
+    background: var(--surface-1);
+    border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--motion-normal) var(--motion-easing);
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, 
+      color-mix(in srgb, #fff 10%, transparent), 
+      transparent 50%,
+      color-mix(in srgb, var(--color-primary) 5%, transparent)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--motion-normal) var(--motion-easing);
+    pointer-events: none;
+  }
+
+  .card:hover {
+    border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  /* Card with top accent */
+  .card-accent-top {
+    border-top: 2px solid var(--color-primary);
+  }
+
+  /* Card with gradient border on hover */
+  .card-gradient-border {
+    background: var(--surface-1);
+    border: none;
+    position: relative;
+    isolation: isolate;
+  }
+  .card-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--motion-normal) var(--motion-easing);
+    z-index: -1;
+  }
+  .card-gradient-border:hover::before {
+    opacity: 1;
+  }
+
+  /* Skeleton Loading System — Smooth shimmer animation */
+  /* 
+   * NOTE: Components using skeleton classes should add ARIA attributes:
+   * <div className="skeleton" aria-busy="true" aria-label="Loading content">
+   * This ensures screen readers announce loading state (WCAG 2.1 Level A)
+   */
   .skeleton {
-    background: linear-gradient(90deg, color-mix(in srgb, var(--color-text) 5%, transparent) 25%, color-mix(in srgb, var(--color-text) 10%, transparent) 50%, color-mix(in srgb, var(--color-text) 5%, transparent) 75%);
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-text) 6%, transparent) 25%,
+      color-mix(in srgb, var(--color-text) 12%, transparent) 50%,
+      color-mix(in srgb, var(--color-text) 6%, transparent) 75%
+    );
     background-size: 200% 100%;
-    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
     border-radius: var(--radius-md);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255,255,255,0.08) 50%,
+      transparent 100%
+    );
+    animation: skeleton-shine 1.8s ease-in-out infinite;
   }
 
   @keyframes skeleton-shimmer {
@@ -798,10 +1210,225 @@ function generateGlobalCss(palette: any, isDarkMode: boolean, density: string = 
     100% { background-position: -200% 0; }
   }
 
-  .skeleton-text { height: 1rem; margin-bottom: 0.5rem; }
-  .skeleton-heading { height: 2rem; width: 60%; margin-bottom: 1rem; }
-  .skeleton-card { height: 200px; }
-  .skeleton-avatar { width: 48px; height: 48px; border-radius: 50%; }
+  @keyframes skeleton-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .skeleton-text {
+    height: 1rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+  }
+  .skeleton-text-short {
+    height: 1rem;
+    margin-bottom: 0.5rem;
+    width: 60%;
+  }
+  .skeleton-heading {
+    height: 2rem;
+    width: 70%;
+    margin-bottom: 1rem;
+  }
+  .skeleton-card {
+    height: 300px;
+    width: 100%;
+  }
+  .skeleton-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .skeleton-button {
+    height: 2.5rem;
+    width: 120px;
+    border-radius: var(--radius-md);
+  }
+
+  /* Toast Notification System — with progress bar */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    min-width: 300px;
+    max-width: 400px;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-xl);
+    z-index: 100;
+    animation: toast-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    .toast {
+      bottom: 5rem; /* Account for mobile keyboard */
+      left: 1rem;
+      right: 1rem;
+      min-width: auto; /* Full width on mobile */
+    }
+  }
+
+  .toast-success {
+    background: #059669;
+    color: #fff;
+  }
+  .toast-error {
+    background: #dc2626;
+    color: #fff;
+  }
+  .toast-info {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .toast-warning {
+    background: #f59e0b;
+    color: #fff;
+  }
+
+  /* Toast icon */
+  .toast::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .toast-success::before {
+    content: '✓';
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .toast-error::before {
+    content: '✕';
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  /* Toast progress bar */
+  .toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.4);
+    animation: toast-progress linear forwards;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes toast-progress {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+
+  /* Toast dismiss button */
+  .toast-dismiss {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(0,0,0,0.2);
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    transition: all var(--motion-fast) var(--motion-easing);
+  }
+  .toast-dismiss:hover {
+    opacity: 1;
+    background: rgba(0,0,0,0.3);
+  }
+
+  /* Micro-Interaction Utilities */
+
+  /* Hover lift with shadow enhancement */
+  .hover-lift {
+    transition: transform var(--motion-fast) var(--motion-easing),
+                box-shadow var(--motion-fast) var(--motion-easing),
+                border-color var(--motion-fast) var(--motion-easing);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Hover glow effect */
+  .hover-glow {
+    transition: box-shadow var(--motion-normal) var(--motion-easing);
+  }
+  .hover-glow:hover {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent),
+                var(--shadow-md);
+  }
+
+  /* Hover zoom on images */
+  .hover-zoom {
+    overflow: hidden;
+    border-radius: inherit;
+  }
+  .hover-zoom img {
+    transition: transform var(--motion-slow) var(--motion-easing);
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hover-zoom:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Hover brighten */
+  .hover-brighten {
+    transition: filter var(--motion-fast) var(--motion-easing);
+  }
+  .hover-brighten:hover {
+    filter: brightness(1.1);
+  }
+
+  /* Focus ring for keyboard navigation */
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: inherit;
+  }
+
+  /* Active press state */
+  .press-scale:active {
+    transform: scale(0.98);
+    transition-duration: 100ms;
+  }
+
+  /* Cursor States */
+  a[href], button, [role="button"], .btn, input[type="submit"], input[type="button"], select {
+    cursor: pointer;
+  }
+  [disabled], .btn:disabled, .btn[aria-disabled="true"], input:disabled, select:disabled, textarea:disabled {
+    cursor: not-allowed;
+  }
 
   /* Image treatment — consistent visual style */
   .img-treated {
@@ -1082,6 +1709,128 @@ ${locationTemperature}
     animation: toast-progress linear forwards;
   }
   .toast { position: relative; overflow: hidden; }
+
+  /* Universal keyboard focus — WCAG 2.1 Level AA compliance */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:not([tabindex="-1"]):focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .focus-ring-primary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .focus-ring-accent:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .focus-within-ring:focus-within {
+    outline: 2px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+    outline-offset: 2px;
+  }
+
+  /* Image loading states */
+  img[data-loading="true"] {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  img[data-loaded="true"] {
+    opacity: 1;
+  }
+
+  .img-skeleton {
+    position: relative;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  }
+
+  .img-skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255,255,255,0.08) 50%,
+      transparent 100%
+    );
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  }
+
+  /* Respect user motion preferences — WCAG 2.1 Level AA */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    
+    .skeleton {
+      animation-duration: 3s !important;
+    }
+  }
+
+  /* Print styles — professional document output */
+  @media print {
+    * {
+      background: white !important;
+      color: black !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+    
+    nav,
+    header,
+    footer,
+    .btn,
+    button,
+    .scroll-to-top,
+    .toast,
+    [aria-hidden="true"] {
+      display: none !important;
+    }
+    
+    img {
+      max-width: 100% !important;
+      page-break-inside: avoid;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      page-break-after: avoid;
+      page-break-inside: avoid;
+    }
+    
+    p, blockquote {
+      orphans: 3;
+      widows: 3;
+    }
+    
+    section {
+      page-break-inside: avoid;
+    }
+    
+    a[href^="http"]::after {
+      content: " (" attr(href) ")";
+      font-size: 0.8em;
+      font-weight: normal;
+    }
+    
+    table, th, td {
+      border: 1px solid #ddd !important;
+    }
+  }
 }
 
 @layer utilities {
@@ -1149,62 +1898,50 @@ function generateLayout(
   const bodyWeights = getFontWeights(fontBodyRaw)
   const temperature = getLocationTemperature(city)
 
-  const headingWeightProp = headingWeights ? `\n  weight: ['${headingWeights.join("', '")}'],` : ''
-  const bodyWeightProp = bodyWeights ? `\n  weight: ['${bodyWeights.join("', '")}'],` : ''
-
   return `import type { Metadata } from 'next'
-import { ${fontHeading} } from 'next/font/google'
-import { ${fontBody} } from 'next/font/google'
 import './globals.css'
+import { loadJSON } from '@/lib/blob-storage'
+import { buildJsonLdGraph } from '@/lib/schema'
+import { buildRootMetadata } from '@/lib/page-meta'
+import { getSiteUrl } from '@/lib/site-url'
 
-const headingFont = ${fontHeading}({
-  subsets: ['latin'],${headingWeightProp}
-  variable: '--font-heading',
-  display: 'swap',
-  fallback: ['Georgia', 'Cambria', 'serif'],
-  adjustFontFallback: false,
-  preload: false,
-})
+// ${businessName}${city ? ` — ${city}` : ''}
+// Fonts load via the Google Fonts @import in globals.css (browser-side).
+// We intentionally do NOT use next/font/google here — it downloads fonts at
+// build time and breaks the build when fonts.gstatic.com is unreachable.
+const fontVars = {
+  '--font-heading': "${fontHeading.replace(/_/g, ' ')}, Georgia, Cambria, serif",
+  '--font-body': "${fontBody.replace(/_/g, ' ')}, system-ui, -apple-system, 'Segoe UI', sans-serif",
+} as React.CSSProperties
 
-const bodyFont = ${fontBody}({
-  subsets: ['latin'],${bodyWeightProp}
-  variable: '--font-body',
-  display: 'swap',
-  fallback: ['system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-  adjustFontFallback: false,
-  preload: false,
-})
-
-export const metadata: Metadata = {
-  title: '${seo?.title || businessName}',
-  description: '${seo?.description || ''}',
-  keywords: ${JSON.stringify(seo?.keywords || [])},
-  openGraph: {
-    title: '${seo?.openGraph?.title || seo?.title || businessName}',
-    description: '${seo?.openGraph?.description || seo?.description || ''}',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: '${seo?.twitter?.title || seo?.title || businessName}',
-    description: '${seo?.twitter?.description || seo?.description || ''}',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  return buildRootMetadata()
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  let config: any = {}
+  try {
+    config = (await loadJSON('site-config.json')) || {}
+  } catch {
+    config = {}
+  }
+  const baseUrl = getSiteUrl()
+  const jsonLdBlocks = buildJsonLdGraph(config, baseUrl)
+
   return (
-    <html lang="en" className={\`\${headingFont.variable} \${bodyFont.variable}\`}>
+    <html lang="en" style={fontVars}>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(${JSON.stringify(seo?.jsonLd || { '@context': 'https://schema.org', '@type': 'LocalBusiness', name: businessName }, null, 6)})
-          }}
-        />
+        {jsonLdBlocks.map((block, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
+          />
+        ))}
       </head>
       <body className="antialiased" data-temperature="${temperature}" data-art="${artDir}">
         {children}
@@ -1220,6 +1957,10 @@ function generateHeader(businessName: string, siteConfig: MasterSiteConfig): str
   const logoUrl = siteConfig.brandAssets?.logoUrl || ''
   
   // Build the header component as a string without template literal interpolation
+  // NOTE: For WCAG Level A compliance, consider adding a skip-link:
+  // <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 btn btn-primary">
+  //   Skip to main content
+  // </a>
   const lines = [
     `'use client'`,
     '',
@@ -1229,7 +1970,11 @@ function generateHeader(businessName: string, siteConfig: MasterSiteConfig): str
     "import Image from 'next/image'",
     "import { Menu, X, Phone } from 'lucide-react'",
     '',
+    "import { useSiteData } from '@/lib/use-site-data'",
+    "import { siteNavLinks } from '@/lib/control-flags'",
+    '',
     'export default function Header() {',
+    '  const { config } = useSiteData()',
     '  const [isScrolled, setIsScrolled] = useState(false)',
     '  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)',
     '  const pathname = usePathname()',
@@ -1246,13 +1991,8 @@ function generateHeader(businessName: string, siteConfig: MasterSiteConfig): str
     '    ? \'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-sm\'',
     '    : \'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent\'',
     '',
-    '  const navLinks = [',
-    '    { href: \'/\', label: \'Home\' },',
-    '    { href: \'/services\', label: \'Services\' },',
-    '    { href: \'/portfolio\', label: \'Portfolio\' },',
-    '    { href: \'/about\', label: \'About\' },',
-    '    { href: \'/contact\', label: \'Contact\' },',
-    '  ]',
+    '  // Nav is generated from the Section Registry — only shows what is switched on.',
+    '  const navLinks = siteNavLinks(config)',
     '',
     '  return (',
     '    <header className={headerClass}>',
@@ -1374,43 +2114,52 @@ function generateWhatsAppWidget(siteConfig: MasterSiteConfig): string {
   return lines.join('\n')
 }
 
+/**
+ * Favicon mark — auto-served by the Next.js App Router as /favicon.ico
+ * plus /icon.svg. Generated from the deterministic logo engine so every
+ * site ships with a real branded icon instead of the Next.js default.
+ */
+function generateIconSvg(siteConfig: MasterSiteConfig): string {
+  const palette: LogoPalette = {
+    primary: siteConfig.brandAssets?.brandColors?.primary || siteConfig.theme?.palette?.primary || '#0f172a',
+    secondary: siteConfig.brandAssets?.brandColors?.secondary || siteConfig.theme?.palette?.secondary,
+    accent: siteConfig.brandAssets?.brandColors?.accent || siteConfig.theme?.palette?.accent || '#f59e0b',
+    bg: siteConfig.theme?.palette?.bg,
+    text: siteConfig.theme?.palette?.text,
+  }
+  const set = generateLogoSet({
+    businessName: siteConfig.businessName || 'Business',
+    industry: siteConfig.industry,
+    palette,
+  })
+  return set.faviconSvg
+}
+
 function generateSitemap(): string {
   return `import { MetadataRoute } from 'next'
+import { loadJSON } from '@/lib/blob-storage'
+import { getSiteUrl } from '@/lib/site-url'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
-  
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = getSiteUrl()
+
+  let lastMod = new Date()
+  try {
+    const config = await loadJSON('site-config.json')
+    if (config?.updatedAt) {
+      const parsed = new Date(config.updatedAt)
+      if (!isNaN(parsed.getTime())) lastMod = parsed
+    }
+  } catch {
+    // fall back to now
+  }
+
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: \`\${baseUrl}/services\`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: \`\${baseUrl}/portfolio\`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: \`\${baseUrl}/about\`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: \`\${baseUrl}/contact\`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
+    { url: baseUrl, lastModified: lastMod, changeFrequency: 'weekly', priority: 1 },
+    { url: \`\${baseUrl}/services\`, lastModified: lastMod, changeFrequency: 'monthly', priority: 0.8 },
+    { url: \`\${baseUrl}/portfolio\`, lastModified: lastMod, changeFrequency: 'weekly', priority: 0.8 },
+    { url: \`\${baseUrl}/about\`, lastModified: lastMod, changeFrequency: 'monthly', priority: 0.6 },
+    { url: \`\${baseUrl}/contact\`, lastModified: lastMod, changeFrequency: 'monthly', priority: 0.6 },
   ]
 }
 `
@@ -1418,32 +2167,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 function generateRobots(): string {
   return `import { MetadataRoute } from 'next'
+import { ALLOWED_USER_AGENTS } from '@/lib/robots-ua-list'
+import { getSiteUrl } from '@/lib/site-url'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
-  
+  const baseUrl = getSiteUrl()
+
   return {
     rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-      },
-      {
-        userAgent: 'GPTBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'PerplexityBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'ClaudeBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'Bytespider',
-        allow: '/',
-      },
+      { userAgent: '*', allow: '/' },
+      ...ALLOWED_USER_AGENTS.map((userAgent) => ({ userAgent, allow: '/' as const })),
     ],
     sitemap: \`\${baseUrl}/sitemap.xml\`,
   }
@@ -1515,6 +2248,9 @@ function generateSiteConfigDefaults(
       contactDescription: '',
       portfolioTitle: '',
       portfolioDescription: '',
+      ourWorkTitle: '',
+      ourWorkSubtitle: '',
+      ourWorkDescription: '',
       testimonialsTitle: '',
       testimonialsSubtitle: '',
       faqTitle: '',
@@ -2000,15 +2736,28 @@ export function useSiteData() {
   const [config, setConfig] = useState<any>(null)
   const [imageMap, setImageMap] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     Promise.all([
-      fetch('/site-config.json').then(r => r.ok ? r.json() : null).then(setConfig).catch(() => {}),
-      fetch('/image-map.json').then(r => r.ok ? r.json() : null).then(setImageMap).catch(() => {}),
-    ]).finally(() => setLoading(false))
+      fetch('/site-config.json').then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('/image-map.json').then(r => r.ok ? r.json() : null).catch(() => null),
+    ]).then(([cfg, img]) => {
+      setConfig(cfg)
+      setImageMap(img)
+      // Delay to prevent flash of skeleton (min 300ms for smooth transition)
+      setTimeout(() => {
+        setLoading(false)
+        setIsLoading(false)
+      }, 300)
+    }).catch(err => {
+      console.error('Failed to load site data:', err)
+      setLoading(false)
+      setIsLoading(false)
+    })
   }, [])
 
-  return { config, imageMap, loading }
+  return { config, imageMap, loading, isLoading }
 }
 `
 }
@@ -2017,8 +2766,15 @@ function generateSaveConfigRoute(): string {
   return `import { NextRequest, NextResponse } from 'next/server'
 import { writeFile } from 'fs/promises'
 import { join } from 'path'
+import { protectRoute } from '@/lib/dashboard-middleware'
 
 export async function POST(request: NextRequest) {
+  // Verify authentication and origin
+  const sessionOrError = await protectRoute(request)
+  if (sessionOrError instanceof NextResponse) {
+    return sessionOrError // Return error response
+  }
+
   try {
     const data = await request.json()
     const publicDir = join(process.cwd(), 'public')
@@ -2045,8 +2801,15 @@ function generateUploadRoute(): string {
   return `import { NextRequest, NextResponse } from 'next/server'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
+import { protectRoute } from '@/lib/dashboard-middleware'
 
 export async function POST(request: NextRequest) {
+  // Verify authentication and origin
+  const sessionOrError = await protectRoute(request)
+  if (sessionOrError instanceof NextResponse) {
+    return sessionOrError // Return error response
+  }
+
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File
@@ -2086,70 +2849,151 @@ export async function POST(request: NextRequest) {
 `
 }
 
-function generateHomePage(sectionOrder?: number[]): string {
-  // Section index mapping: 0=Hero, 1=Services, 2=Gallery, 3=Testimonials, 4=FAQ, 5=About, 6=Team, 7=Contact
-  const sectionNames = ['Hero', 'Services', 'Gallery', 'Testimonials', 'Faq', 'About', 'CtaBanner', 'PricingTable']
-  
-  // Build section order — Hero always first, Contact always last
-  let orderedSections: string[]
-  if (sectionOrder && sectionOrder.length > 0) {
-    // Map section order indices to component names, filtering out Team (6) since we don't have a standalone Team component
-    const mapped = sectionOrder
-      .filter(i => i !== 6 && i !== 7) // Skip Team and Contact (Contact is always last)
-      .map(i => sectionNames[i])
-      .filter(Boolean)
-    // Remove duplicates while preserving order
-    const seen = new Set<string>()
-    orderedSections = mapped.filter(s => {
-      if (seen.has(s)) return false
-      seen.add(s)
-      return true
-    })
-    // Ensure Hero is first if not already present
-    if (!orderedSections.includes('Hero')) orderedSections.unshift('Hero')
-  } else {
-    orderedSections = ['Hero', 'Services', 'Gallery', 'Testimonials', 'About', 'Faq', 'CtaBanner', 'PricingTable']
-  }
-
-  const sectionComponents: Record<string, string> = {
-    'Hero': 'Hero',
-    'Services': 'Services',
-    'Gallery': 'Gallery',
-    'Testimonials': 'Testimonials',
-    'Faq': 'Faq',
-    'About': 'About',
-    'CtaBanner': 'CtaBanner',
-    'PricingTable': 'PricingTable',
-  }
-
-  const sectionJsx = orderedSections
-    .map(s => `        <${sectionComponents[s]} />`)
-    .join('\n')
-
+/**
+ * Homepage — composed at runtime by SectionRenderer, which reads the
+ * Section Registry and siteConfig.controls. Nothing is hardcoded here, so
+ * switching a section on/off in the dashboard re-flows the page cleanly.
+ */
+function generateHomePage(_sectionOrder?: number[]): string {
   return `'use client'
 
-import dynamic from 'next/dynamic'
-
-const Header = dynamic(() => import('@/components/Header'), { ssr: false })
-const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
-const Services = dynamic(() => import('@/components/Services'), { ssr: false })
-const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
-const Testimonials = dynamic(() => import('@/components/Testimonials'), { ssr: false })
-const Faq = dynamic(() => import('@/components/Faq'), { ssr: false })
-const About = dynamic(() => import('@/components/About'), { ssr: false })
-const CtaBanner = dynamic(() => import('@/components/CtaBanner'), { ssr: false })
-const PricingTable = dynamic(() => import('@/components/PricingTable'), { ssr: false })
-const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
-const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
-const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
-const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import WhatsAppWidget from '@/components/WhatsAppWidget'
+import ScrollToTop from '@/components/ScrollToTop'
+import SectionRenderer from '@/components/SectionRenderer'
+import FeatureHost from '@/components/features/FeatureHost'
+import WhatsAppGate from '@/components/WhatsAppGate'
 
 export default function Home() {
   return (
     <>
+      <FeatureHost placement="top-banner" />
+      <Header />
+      <FeatureHost placement="header" />
+      <main>
+        <SectionRenderer />
+        <FeatureHost placement="inline" />
+      </main>
+      <Footer />
+      <FeatureHost placement="footer" />
+      <FeatureHost placement="floating" />
+      <FeatureHost placement="modal" />
+      <WhatsAppGate><WhatsAppWidget /></WhatsAppGate>
+      <ScrollToTop />
+    </>
+  )
+}
+`
+}
+
+/**
+ * Full Control System page — Team / Blog / Reviews / FAQ / Areas / Privacy.
+ * Header + PageHero + page component + Contact + Footer.
+ * If the client turns the page off in Settings, PageGate shows a graceful
+ * notice (the nav link is already hidden by the section registry).
+ */
+function generateControlPage(slug: string, label: string, component: string, pageKey: string): string {
+  const raw = [
+    "import type { Metadata } from 'next'",
+    "import Header from '@/components/Header'",
+    "import PageHero from '@/components/PageHero'",
+    "import Body from '@/components/COMPONENT'",
+    "import Contact from '@/components/Contact'",
+    "import Footer from '@/components/Footer'",
+    "import WhatsAppWidget from '@/components/WhatsAppWidget'",
+    "import ScrollToTop from '@/components/ScrollToTop'",
+    "import { buildPageMetadata } from '@/lib/page-meta'",
+    "import { loadJSON } from '@/lib/blob-storage'",
+    "import { isPageEnabled } from '@/lib/control-flags'",
+    "",
+    "export async function generateMetadata(): Promise<Metadata> {",
+    "  return buildPageMetadata('home' as any, 'LABEL | Website', '/SLUG')",
+    "}",
+    "",
+    "export default function Page() {",
+    "  return (",
+    "    <>",
+    "      <Header />",
+    "      <main className=\"pt-20\">",
+    "        <PageHero page=\"SLUG\" fallbackTitle=\"LABEL\" fallbackSubtitle=\"\" fallbackImage=\"\" />",
+    "        <PageGate pageKey=\"PAGEKEY\">",
+    "          <Body />",
+    "        </PageGate>",
+    "      </main>",
+    "      <Contact />",
+    "      <Footer />",
+    "      <WhatsAppWidget />",
+    "      <ScrollToTop />",
+    "    </>",
+    "  )",
+    "}",
+    "",
+    "function PageGate({ pageKey, children }: { pageKey: string; children: React.ReactNode }) {",
+    "  return <PageGateInner pageKey={pageKey}>{children}</PageGateInner>",
+    "}",
+    "",
+    "async function PageGateInner({ pageKey, children }: { pageKey: string; children: React.ReactNode }) {",
+    "  const config: any = (await loadJSON('site-config.json')) || {}",
+    "  if (!isPageEnabled(config, pageKey)) {",
+    "    return (",
+    "      <div className=\"section-padding text-center\">",
+    "        <p style={{ color: 'var(--color-muted)' }}>This page is not available.</p>",
+    "      </div>",
+    "    )",
+    "  }",
+    "  return <>{children}</>",
+    "}",
+  ].join("\n")
+  return raw
+    .split('COMPONENT').join(component)
+    .split('LABEL').join(label)
+    .split('SLUG').join(slug)
+    .split('PAGEKEY').join(pageKey)
+}
+
+function generateSubPage(slug: string, label: string): string {
+  // Full Control System pages dispatch to the shared generator
+  const controlComponents: Record<string, { comp: string; pageKey: string }> = {
+    team: { comp: 'TeamPage', pageKey: 'teamPage' },
+    blog: { comp: 'BlogPage', pageKey: 'blogPage' },
+    reviews: { comp: 'ReviewsPage', pageKey: 'reviewsPage' },
+    faq: { comp: 'Faq', pageKey: 'faqPage' },
+    areas: { comp: 'AreasPage', pageKey: 'areasPage' },
+    privacy: { comp: 'PrivacyContent', pageKey: 'privacy' },
+  }
+  if (controlComponents[slug]) {
+    const c = controlComponents[slug]
+    return generateControlPage(slug, label, c.comp, c.pageKey)
+  }
+  // Portfolio is the full gallery page (DASHBOARD-CHANGES.md §16)
+  if (slug === 'portfolio') {
+    return `import type { Metadata } from 'next'
+import Header from '@/components/Header'
+import PageHero from '@/components/PageHero'
+import Gallery from '@/components/Gallery'
+import Contact from '@/components/Contact'
+import Footer from '@/components/Footer'
+import WhatsAppWidget from '@/components/WhatsAppWidget'
+import ScrollToTop from '@/components/ScrollToTop'
+import { buildPageMetadata } from '@/lib/page-meta'
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPageMetadata('portfolio', '${label} | Website')
+}
+
+export default function PortfolioPage() {
+  return (
+    <>
       <Header />
       <main>
-${sectionJsx}
+        <PageHero
+          page="portfolio"
+          fallbackTitle="${label}"
+          fallbackSubtitle=""
+          fallbackImage=""
+        />
+        <Gallery mode="full" />
         <Contact />
       </main>
       <Footer />
@@ -2159,19 +3003,18 @@ ${sectionJsx}
   )
 }
 `
-}
+  }
 
-function generateSubPage(slug: string, label: string): string {
   const lines = [
     "import type { Metadata } from 'next'",
-    "import dynamic from 'next/dynamic'",
+    "import Header from '@/components/Header'",
+    "import PageHero from '@/components/PageHero'",
+    "import Footer from '@/components/Footer'",
+    "import WhatsAppWidget from '@/components/WhatsAppWidget'",
+    "import { buildPageMetadata } from '@/lib/page-meta'",
     "",
-    "const Header = dynamic(() => import('@/components/Header'), { ssr: false })",
-    "const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })",
-    "const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })",
-    "",
-    "export const metadata: Metadata = {",
-    `  title: '${label} | Website',`,
+    "export async function generateMetadata(): Promise<Metadata> {",
+    `  return buildPageMetadata('${slug}', '${label} | Website')`,
     "}",
     "",
     `export default function ${label}Page() {`,
@@ -2179,6 +3022,12 @@ function generateSubPage(slug: string, label: string): string {
     "    <>",
     "      <Header />",
     '      <main className="pt-20">',
+    "        <PageHero",
+    `          page="${slug}"`,
+    `          fallbackTitle="${label}"`,
+    '          fallbackSubtitle=""',
+    '          fallbackImage=""',
+    "        />",
     `        <p>${label} page content goes here.</p>`,
     "      </main>",
     "      <Footer />",
@@ -2188,4 +3037,426 @@ function generateSubPage(slug: string, label: string): string {
     "}",
   ]
   return lines.join('\n') + '\n'
+}
+
+
+// ============================================
+// PHASE 10: DASHBOARD SECURITY FUNCTIONS
+// ============================================
+
+function generateAuthConfig(): string {
+  return `import { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import bcrypt from 'bcryptjs'
+import { loginRateLimiter } from './rate-limiter'
+
+// Admin credentials from environment variables
+const ADMIN_USERNAME = process.env.DASHBOARD_USERNAME || 'admin'
+const ADMIN_PASSWORD_HASH = process.env.DASHBOARD_PASSWORD_HASH || ''
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: 'Dashboard Login',
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
+        if (!credentials?.username || !credentials?.password) {
+          return null
+        }
+        
+        // Get IP address for rate limiting
+        const forwarded = req.headers?.['x-forwarded-for']
+        const ip = typeof forwarded === 'string' 
+          ? forwarded.split(',')[0] 
+          : req.headers?.['x-real-ip'] || 'unknown'
+        
+        // Check rate limit (5 attempts per 15 minutes)
+        if (loginRateLimiter.check(ip)) {
+          const remaining = loginRateLimiter.remaining(ip)
+          throw new Error(\`Too many login attempts. Try again in 15 minutes. (\${remaining} attempts remaining)\`)
+        }
+
+        // Verify username
+        if (credentials.username !== ADMIN_USERNAME) {
+          return null
+        }
+
+        // Verify password with bcrypt
+        const isValid = await bcrypt.compare(credentials.password, ADMIN_PASSWORD_HASH)
+        
+        if (!isValid) {
+          return null
+        }
+        
+        // Success - clear rate limit
+        loginRateLimiter.clear(ip)
+
+        return {
+          id: '1',
+          name: ADMIN_USERNAME,
+          email: 'admin@dashboard.local'
+        }
+      }
+    })
+  ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 24 * 60 * 60, // 24 hours
+  },
+  pages: {
+    signIn: '/dashboard',
+    error: '/dashboard',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string
+      }
+      return session
+    }
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+}
+`
+}
+
+function generateNextAuthRoute(): string {
+  return `import NextAuth from 'next-auth'
+import { authOptions } from '@/lib/auth'
+
+const handler = NextAuth(authOptions)
+
+export { handler as GET, handler as POST }
+`
+}
+
+function generateAuthMiddleware(): string {
+  return `import { getServerSession } from 'next-auth/next'
+import { authOptions } from './auth'
+import { NextRequest, NextResponse } from 'next/server'
+
+/**
+ * Verify user is authenticated
+ * Returns session if valid, error response if not
+ */
+export async function requireAuth(request: NextRequest) {
+  const session = await getServerSession(authOptions)
+  
+  if (!session || !session.user) {
+    return NextResponse.json(
+      { success: false, message: 'Unauthorized. Please log in.' },
+      { status: 401 }
+    )
+  }
+  
+  return session
+}
+
+/**
+ * Validate request origin to prevent CSRF
+ */
+export function validateOrigin(request: NextRequest): boolean {
+  const origin = request.headers.get('origin')
+  const host = request.headers.get('host')
+  
+  // Allow same-origin requests
+  if (origin && host) {
+    try {
+      const originUrl = new URL(origin)
+      return originUrl.host === host
+    } catch {
+      return false
+    }
+  }
+  
+  // Allow requests without origin header (same-origin)
+  return !origin
+}
+
+/**
+ * Combined middleware: auth + origin validation
+ */
+export async function protectRoute(request: NextRequest) {
+  // Check origin
+  if (!validateOrigin(request)) {
+    return NextResponse.json(
+      { success: false, message: 'Invalid origin' },
+      { status: 403 }
+    )
+  }
+  
+  // Check authentication
+  const sessionOrError = await requireAuth(request)
+  
+  // If it's a response (error), return it
+  if (sessionOrError instanceof NextResponse) {
+    return sessionOrError
+  }
+  
+  // Otherwise it's a valid session
+  return sessionOrError
+}
+`
+}
+
+function generateRateLimiter(): string {
+  return `// Simple in-memory rate limiter for login attempts
+// In production, consider using Redis for distributed systems
+
+type RateLimitEntry = {
+  count: number
+  resetAt: number
+}
+
+const rateLimitStore = new Map<string, RateLimitEntry>()
+
+export class RateLimiter {
+  private maxAttempts: number
+  private windowMs: number
+  
+  constructor(maxAttempts: number = 5, windowMinutes: number = 15) {
+    this.maxAttempts = maxAttempts
+    this.windowMs = windowMinutes * 60 * 1000
+  }
+  
+  /**
+   * Check if request is rate limited
+   * @param identifier - IP address or username
+   * @returns true if rate limited, false if allowed
+   */
+  check(identifier: string): boolean {
+    const now = Date.now()
+    const entry = rateLimitStore.get(identifier)
+    
+    // No entry or window expired - allow
+    if (!entry || now > entry.resetAt) {
+      rateLimitStore.set(identifier, {
+        count: 1,
+        resetAt: now + this.windowMs
+      })
+      return false
+    }
+    
+    // Increment count
+    entry.count++
+    
+    // Check if exceeded
+    if (entry.count > this.maxAttempts) {
+      return true // Rate limited
+    }
+    
+    return false // Still allowed
+  }
+  
+  /**
+   * Get remaining attempts
+   */
+  remaining(identifier: string): number {
+    const entry = rateLimitStore.get(identifier)
+    if (!entry || Date.now() > entry.resetAt) {
+      return this.maxAttempts
+    }
+    return Math.max(0, this.maxAttempts - entry.count)
+  }
+  
+  /**
+   * Clear rate limit for identifier (use after successful login)
+   */
+  clear(identifier: string): void {
+    rateLimitStore.delete(identifier)
+  }
+  
+  /**
+   * Cleanup expired entries (call periodically)
+   */
+  cleanup(): void {
+    const now = Date.now()
+    for (const [key, entry] of rateLimitStore.entries()) {
+      if (now > entry.resetAt) {
+        rateLimitStore.delete(key)
+      }
+    }
+  }
+}
+
+// Singleton instance
+export const loginRateLimiter = new RateLimiter(5, 15) // 5 attempts per 15 minutes
+
+// Cleanup every 5 minutes
+if (typeof setInterval !== 'undefined') {
+  setInterval(() => loginRateLimiter.cleanup(), 5 * 60 * 1000)
+}
+`
+}
+
+function generateEnvExample(): string {
+  return `# Dashboard Authentication
+DASHBOARD_USERNAME=your_business_name
+# Local dev: raw bcrypt hash is fine
+DASHBOARD_PASSWORD_HASH=$2a$10$replace_with_real_hash
+# Vercel production: Base64-encoded bcrypt hash (Vercel strips $ from raw bcrypt)
+# node -e "console.log(Buffer.from(process.env.HASH).toString('base64'))"
+DASHBOARD_PASSWORD_HASH_BASE64=
+NEXTAUTH_SECRET=your_nextauth_secret_here
+NEXTAUTH_URL=http://localhost:3000
+
+# Site URL — required for canonical URLs, sitemap, llms.txt, Open Graph
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+
+# Shared multi-tenant lead database (Supabase)
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_ANON_KEY=your_anon_key
+# Tenant id = trial_websites.id in the platform database
+TENANT_ID=00000000-0000-0000-0000-000000000000
+
+# Vercel Blob (REQUIRED in production — auto-added when Blob store is linked)
+BLOB_READ_WRITE_TOKEN=vercel_blob_rw_XXXXXXXXXX
+
+# Contact form email delivery (Resend) — required on every generated site
+RESEND_API_KEY=re_xxxxxxxxxxxx
+EMAIL_FROM="Website Enquiries <no-reply@yourbuilder.com>"
+# Optional fallback recipient if dashboard has no email set:
+# CONTACT_FORM_FALLBACK_TO=you@yourbuilder.com
+
+# After first login, change your password in dashboard settings
+# Then delete the plain-text password from .dashboard-credentials.txt
+`
+}
+
+// FIX #1: Auto-generate dashboard credentials with proper password hashing
+function generateEnvLocal(businessName: string): string {
+  const bcrypt = require('bcryptjs')
+  const crypto = require('crypto')
+  
+  // Extract first word from business name for username
+  const firstWord = businessName.split(/[\s&\-,]+/)[0].trim()
+  const username = firstWord
+  
+  // Generate password: FirstWord@CurrentYear!
+  const currentYear = new Date().getFullYear()
+  const password = `${firstWord}@${currentYear}!`
+  
+  // Hash password with bcrypt
+  const passwordHash = bcrypt.hashSync(password, 10)
+
+  // Base64 form of the hash for Vercel + local (Vercel strips $ from env values)
+  const passwordHashBase64 = Buffer.from(passwordHash, 'utf-8').toString('base64')
+
+  // Generate secure NextAuth secret
+  const nextAuthSecret = crypto.randomBytes(32).toString('hex')
+
+  // Platform-wide keys — SAME on every generated site (leads, email, tenant).
+  // These must never be missing or /api/leads 500s and contact email breaks.
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+  const supabaseAnon = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+  const supabaseService = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+  const resendKey = process.env.RESEND_API_KEY || ''
+  const emailFrom = process.env.EMAIL_FROM || 'Website Enquiries <no-reply@sitespire.co.za>'
+  const contactFallback = process.env.CONTACT_FORM_FALLBACK_TO || ''
+
+  // NOTE: never escape $ in the bcrypt hash — that produces an invalid hash
+  // and can break .env parsing. Use the Base64 form as the source of truth.
+  return `# Dashboard Authentication
+# Auto-generated credentials for: ${businessName}
+DASHBOARD_USERNAME=${username}
+DASHBOARD_PASSWORD_HASH=${passwordHash}
+# Use this on Vercel (raw bcrypt $ symbols get stripped there)
+DASHBOARD_PASSWORD_HASH_BASE64=${passwordHashBase64}
+NEXTAUTH_SECRET=${nextAuthSecret}
+NEXTAUTH_URL=http://localhost:3000
+
+# Vercel Blob (REQUIRED in production — auto-added when Blob store is linked)
+# BLOB_READ_WRITE_TOKEN=vercel_blob_rw_XXXXXXXXXX
+
+# Site URL — required for canonical URLs, sitemap, llms.txt, Open Graph
+# NEXT_PUBLIC_SITE_URL=https://your-domain.com
+
+# Shared multi-tenant lead database (Supabase) — platform-wide, same on every site
+SUPABASE_URL=${supabaseUrl}
+SUPABASE_ANON_KEY=${supabaseAnon}
+SUPABASE_SERVICE_ROLE_KEY=${supabaseService}
+NEXT_PUBLIC_SUPABASE_URL=${supabaseUrl}
+NEXT_PUBLIC_SUPABASE_ANON_KEY=${supabaseAnon}
+# TENANT_ID is written by the build pipeline (= trial_websites.id)
+TENANT_ID=
+
+# Contact form email delivery (Resend) — platform-wide, same on every site
+RESEND_API_KEY=${resendKey}
+EMAIL_FROM="${emailFrom}"
+CONTACT_FORM_FALLBACK_TO=${contactFallback}
+
+# Generated Credentials:
+# Username: ${username}
+# Password: ${password}
+#
+# IMPORTANT: Change your password after first login in dashboard settings!
+# After changing password, you can delete this comment section.
+`
+}
+
+// FIX #1: Create plain-text credentials file for user reference
+function generateDashboardCredentials(businessName: string): string {
+  const firstWord = businessName.split(/[\s&\-,]+/)[0].trim()
+  const currentYear = new Date().getFullYear()
+  const password = `${firstWord}@${currentYear}!`
+  
+  return `═════════════════════
+     DASHBOARD LOGIN CREDENTIALS
+═════════════════════
+
+Business: ${businessName}
+
+Dashboard URL: http://localhost:3000/dashboard
+
+Username: ${firstWord}
+Password: ${password}
+
+═════════════════════
+
+⚠️ IMPORTANT SECURITY NOTES:
+
+1. Change your password after first login!
+   Go to Dashboard → Settings → Change Password
+
+2. DELETE THIS FILE after you've logged in and 
+   changed your password.
+
+3. Never commit this file to version control.
+
+═════════════════════
+Generated: ${new Date().toISOString()}
+`
+}
+
+// FIX #7: NextAuth TypeScript definitions
+function generateNextAuthTypes(): string {
+  return `import NextAuth, { DefaultSession } from 'next-auth'
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string
+    } & DefaultSession['user']
+  }
+
+  interface User {
+    id: string
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    id: string
+  }
+}
+`
 }

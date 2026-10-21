@@ -613,6 +613,71 @@ body {
   gap: 0.75rem;
 }
 
+/* Team List */
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* FAQ List */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Generic List Item (for Team, FAQ, etc) */
+.list-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: move;
+}
+
+.list-item.dragging {
+  opacity: 0.5;
+}
+
+.list-item.drag-over {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.list-item-content {
+  flex: 1;
+}
+
+.list-item-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.list-item-subtitle {
+  font-size: 0.8125rem;
+  color: var(--primary-light);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.list-item-text {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.list-item-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
 .service-item {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -768,6 +833,62 @@ body {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+/* Business Hours List */
+.business-hours-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.business-hours-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-input);
+  border-radius: var(--radius-sm);
+}
+
+.hours-day {
+  min-width: 90px;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.hours-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.hours-time {
+  padding: 0.5rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+}
+
+.hours-time:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hours-closed {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.hours-closed input[type="checkbox"] {
+  cursor: pointer;
 }
 
 .settings-field {
@@ -1748,4 +1869,469 @@ body {
   color: var(--text-muted);
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+
+
+/* ============================================
+   TUTORIAL SYSTEM
+   ============================================ */
+
+/* Tutorial Overlay - Dims everything */
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tutorial-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Tutorial Spotlight - Highlights the focused element */
+.tutorial-spotlight {
+  position: absolute;
+  border: 3px solid var(--primary);
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2),
+              0 0 0 99999px rgba(15, 23, 42, 0.85);
+  pointer-events: none;
+  z-index: 9999;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tutorial Tooltip */
+.tutorial-tooltip {
+  position: absolute;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  max-width: 360px;
+  box-shadow: var(--shadow-lg);
+  z-index: 10000;
+  animation: tooltipFadeIn 0.3s ease;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tooltip Arrow */
+.tutorial-tooltip::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+}
+
+.tutorial-tooltip[data-position="bottom"]::before {
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: var(--bg-card);
+}
+
+.tutorial-tooltip[data-position="top"]::before {
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: var(--bg-card);
+}
+
+.tutorial-tooltip[data-position="right"]::before {
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-right-color: var(--bg-card);
+}
+
+.tutorial-tooltip[data-position="left"]::before {
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left-color: var(--bg-card);
+}
+
+/* Tooltip Content */
+.tutorial-tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tutorial-tooltip-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tutorial-tooltip-icon i {
+  font-size: 1rem;
+  color: white;
+}
+
+.tutorial-tooltip-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tutorial-tooltip-message {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.tutorial-tooltip-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.tutorial-progress {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tutorial-progress-bar {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.tutorial-progress-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.tutorial-progress-dot.active {
+  background: var(--primary);
+  width: 20px;
+  border-radius: 3px;
+}
+
+.tutorial-tooltip-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tutorial-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tutorial-btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.tutorial-btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.tutorial-btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.tutorial-btn-secondary:hover {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+/* Tutorial Welcome Modal */
+.tutorial-welcome {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  z-index: 10001;
+  text-align: center;
+  animation: modalFadeIn 0.4s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.tutorial-welcome-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.tutorial-welcome-icon i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.tutorial-welcome h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.tutorial-welcome p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.tutorial-welcome-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.tutorial-welcome-btn {
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tutorial-welcome-btn-primary {
+  background: var(--primary);
+  color: white;
+  flex: 1;
+}
+
+.tutorial-welcome-btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.tutorial-welcome-btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.tutorial-welcome-btn-secondary:hover {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+/* Restart Tutorial Button */
+.tutorial-restart-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+}
+
+.tutorial-restart-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.1) rotate(180deg);
+  box-shadow: var(--shadow-lg);
+}
+
+.tutorial-restart-btn i {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.tutorial-restart-btn:hover i {
+  color: white;
+}
+
+.tutorial-restart-btn[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  right: 60px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+}
+
+/* Tutorial Completion Modal */
+.tutorial-complete {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  z-index: 10001;
+  text-align: center;
+  animation: modalFadeIn 0.4s ease;
+}
+
+.tutorial-complete-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--success), #059669);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  animation: successPulse 0.6s ease;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.tutorial-complete-icon i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.tutorial-complete h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.tutorial-complete p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.tutorial-complete-btn {
+  padding: 0.875rem 2rem;
+  background: var(--success);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tutorial-complete-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Hide tutorial elements by default */
+.tutorial-overlay,
+.tutorial-spotlight,
+.tutorial-tooltip,
+.tutorial-welcome,
+.tutorial-complete {
+  display: none;
+}
+
+.tutorial-overlay.active,
+.tutorial-spotlight.active,
+.tutorial-tooltip.active,
+.tutorial-welcome.active,
+.tutorial-complete.active {
+  display: block;
+}
+
+/* Blur effect for unfocused elements during tutorial */
+body.tutorial-active .dashboard > *:not(.tutorial-spotlight):not(.tutorial-tooltip):not(.tutorial-overlay) {
+  filter: blur(2px);
+  transition: filter 0.3s ease;
+}
+
+body.tutorial-active .tutorial-spotlight {
+  filter: none !important;
 }

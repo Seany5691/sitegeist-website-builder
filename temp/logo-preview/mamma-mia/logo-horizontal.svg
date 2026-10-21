@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 256" width="920" height="256" role="img" aria-label="Mamma &amp; Mia Cakes And Catering">
+  <rect width="920" height="256" fill="#FFF8DC"/>
+  <g transform="translate(0,0)"><g>
+    <rect x="6" y="6" width="244" height="244" rx="54" fill="#3C1414" stroke="#6B3A2E" stroke-width="7"/>
+    <rect x="24" y="24" width="208" height="208" rx="40" fill="none" stroke="#FFD700" stroke-width="2.5"/>
+    <text x="128" y="152" text-anchor="middle" font-family="Georgia,'Palatino Linotype','Book Antiqua',Palatino,serif" font-size="48" font-weight="600" letter-spacing="1" fill="#FFD700">M&amp;M</text></g></g>
+  <text x="286" y="118" font-family="Georgia,'Palatino Linotype','Book Antiqua',Palatino,serif" font-size="74" font-weight="600" letter-spacing="1.5" fill="#3C1414">Mamma &amp; Mia</text>
+  <text x="290" y="172" font-family="Georgia,'Palatino Linotype','Book Antiqua',Palatino,serif" font-size="27" font-weight="500" letter-spacing="7.5" fill="#2C1810" opacity="0.78">CAKES AND CATERING</text>
+  <rect x="288" y="134" width="120" height="2.5" fill="#FFD700"/>
+</svg>

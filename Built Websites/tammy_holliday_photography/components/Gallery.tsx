@@ -3,6 +3,7 @@
 import { useSiteData } from '@/lib/use-site-data'
 import { AnimateOnScroll } from '@/components/AnimateOnScroll'
 import { useState } from 'react'
+import Lightbox from './_Lightbox'
 
 export default function GalleryCategories() {
   const { imageMap, config } = useSiteData()
@@ -30,7 +31,7 @@ export default function GalleryCategories() {
     const images: string[] = (catData.images || []).map((img: any) => typeof img === 'string' ? img : img.src || img.imageUrl || img)
 
     return (
-      <section className="section-padding" style={{ background: 'var(--color-bg)' }}>
+      <section id="gallery" className="section-padding" style={{ background: 'var(--color-bg)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateOnScroll className="mb-8">
             <button onClick={() => setActiveCategory(null)}
@@ -51,7 +52,7 @@ export default function GalleryCategories() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {images.map((url, i) => (
               <div key={i}
-                className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg img-treated"
+                className="hover-zoom group relative aspect-square rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg img-treated"
                 onClick={() => setLightboxIndex(i)}>
                 <img src={url} alt={`${activeCategory} ${i + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
               </div>
@@ -61,17 +62,7 @@ export default function GalleryCategories() {
 
         {/* Lightbox */}
         {lightboxIndex !== null && (
-          <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center" onClick={() => setLightboxIndex(null)}>
-            <button onClick={() => setLightboxIndex(null)} className="absolute top-4 right-4 text-white/80 hover:text-white z-10 text-2xl">✕</button>
-            <button onClick={(e) => { e.stopPropagation(); setLightboxIndex((lightboxIndex - 1 + images.length) % images.length) }}
-              className="absolute left-4 text-white/80 hover:text-white z-10 text-4xl">‹</button>
-            <img src={images[lightboxIndex]} alt="" className="max-w-[90vw] max-h-[90vh] object-contain" />
-            <button onClick={(e) => { e.stopPropagation(); setLightboxIndex((lightboxIndex + 1) % images.length) }}
-              className="absolute right-4 text-white/80 hover:text-white z-10 text-4xl">›</button>
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm">
-              {lightboxIndex + 1} / {images.length}
-            </div>
-          </div>
+          <Lightbox images={images.map(url => ({ url, category: activeCategory || '' }))} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onNavigate={setLightboxIndex} />
         )}
       </section>
     )
@@ -79,7 +70,7 @@ export default function GalleryCategories() {
 
   // Default: show category cards
   return (
-    <section className="section-padding" style={{ background: 'var(--color-bg)' }}>
+    <section id="gallery" className="section-padding" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center mb-12">
           <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>
@@ -96,7 +87,7 @@ export default function GalleryCategories() {
           )}
         </AnimateOnScroll>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ${categoryNames.length <= 2 ? 'max-w-2xl mx-auto' : ''}`}>
           {categoryNames.map((catName, i) => {
             const catData = categories[catName]
             const thumbUrl = catData.thumbnail || (catData.images?.[0] ? (typeof catData.images[0] === 'string' ? catData.images[0] : catData.images[0].src || catData.images[0].imageUrl) : '')
@@ -104,7 +95,7 @@ export default function GalleryCategories() {
 
             return (
               <AnimateOnScroll key={catName} delay={i * 80}>
-                <div className="group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl rounded-xl overflow-hidden border"
+                <div className="card hover-lift group cursor-pointer transition-all duration-300 rounded-xl overflow-hidden border"
                   style={{ borderColor: 'color-mix(in srgb, var(--color-text) 8%, transparent)' }}
                   onClick={() => setActiveCategory(catName)}>
                   <div className="aspect-[3/4] overflow-hidden relative img-vignette">

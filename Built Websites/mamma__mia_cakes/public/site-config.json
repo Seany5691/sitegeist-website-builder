@@ -2,131 +2,160 @@
   "businessName": "Mamma & Mia Cakes And Catering",
   "city": "North West",
   "ownerName": "Lety Gibbon",
-  "phone": "27721565654",
+  "phone": "0721565654",
   "email": "",
   "address": "North West",
-  "logoUrl": "",
   "hero": {
-    "headline": "Baked with Love in North West",
-    "subheadline": "Custom cakes and cupcakes made fresh daily by Lety Gibbon, using family recipes and local ingredients.",
-    "badge": "Serving North West Since 2012",
-    "ctaText": "Order Your Custom Cake",
+    "headline": "Baked With Love in North West",
+    "subheadline": "From custom celebration cakes to daily-fresh bread, we craft honest, delicious bakes using family recipes and local ingredients.",
+    "badge": "Serving North West with Smiles Since 2012",
+    "ctaText": "Order Online",
     "ctaLink": "#contact",
-    "heroImageUrl": "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1920&q=80",
-    "heroImageAlt": "Freshly baked artisan cakes and pastries at Mamma & Mia Cakes in North West"
+    "heroImageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1920&q=80",
+    "heroImageAlt": "Fresh artisan cakes and pastries at Mamma & Mia Cakes And Catering in North West"
   },
   "about": {
     "title": "Our Story",
-    "tagline": "Real recipes. Real ingredients. Real good cake.",
-    "paragraph1": "In 2012, Lety Gibbon started baking from her home kitchen in North West, using her Italian grandmother's handwritten recipe book. What began as weekend orders for friends and family quickly grew into something bigger — word spread about her lemon zest wedding cakes and honeycomb cupcakes.",
-    "paragraph2": "Today, Mamma & Mia Cakes serves customers across Klerksdorp, Potchefstroom, Stilfontein, and beyond. Every cake is still hand-decorated by Lety. Every batch of cupcakes is baked fresh that morning. We source our butter, eggs, and honey from local North West farms.",
-    "paragraph3": "We don't cut corners. We don't use premixes. When you order from Mamma & Mia, you're getting the same recipes Lety's grandmother perfected decades ago — made with care, delivered with a smile.",
-    "imageUrl": "/uploads/mamma_mia_cakes_and_catering/stock/stock-002.webp",
-    "imageAlt": "Lety Gibbon, owner and head baker at Mamma & Mia Cakes And Catering"
+    "tagline": "Family Recipes, Baked Fresh Daily",
+    "paragraph1": "Mamma & Mia started in 2012 when Lety Gibbon turned her grandmother's kitchen notebook into a North West bakery counter. What began with three types of bread has grown into a full-service bakery offering everything from daily treats to custom wedding cakes.",
+    "paragraph2": "We still bake every morning at 4am using the same recipes Lety learned as a child. Our eggs come from a local farm, our butter from a nearby dairy, and our coffee from a North West roaster. We believe the best bakes start with honest ingredients and patient hands.",
+    "paragraph3": "Whether you're picking up a Friday morning cinnamon bun or planning a three-tier celebration cake, you'll find the same care in every crumb. Visit us at our North West location and taste the difference that family tradition makes.",
+    "imageUrl": "/uploads/1789973152284-images__1_.jpg",
+    "imageAlt": "Lety Gibbon, founder of Mamma & Mia Cakes And Catering"
   },
   "pageContent": {
     "servicesTitle": "What We Bake",
-    "servicesDescription": "From custom celebration cakes to dessert catering, we bring your sweetest ideas to life with fresh ingredients and family recipes.",
+    "servicesDescription": "From daily treats to milestone cakes, we bake for every moment",
     "servicesCtaTitle": "Ready to Order?",
-    "servicesCtaText": "Tell us about your event and we'll create something unforgettable. Custom quotes are always free.",
-    "contactTitle": "Get In Touch",
-    "contactDescription": "Ready to order? Reach out by phone, WhatsApp, or the form below. We respond to every message within a few hours.",
-    "portfolioTitle": "Our Portfolio",
-    "portfolioDescription": "A taste of what we create every day.",
-    "testimonialsTitle": "What Our Customers Say",
-    "testimonialsSubtitle": "Happy Clients",
-    "faqTitle": "Frequently Asked Questions",
-    "faqSubtitle": "Questions & Answers",
-    "galleryTitle": "Our Creations",
-    "gallerySubtitle": "Every cake tells a story. Browse our gallery of handcrafted baked goods made right here in North West.",
-    "aboutTitle": "Our Story",
-    "aboutSubtitle": "From Our Kitchen to Your Table",
-    "ctaTitle": "Craving Something Sweet?",
-    "ctaText": "Order your custom cake today and taste the difference that fresh, local ingredients make.",
+    "servicesCtaText": "Get in touch to discuss your custom order or visit our counter for fresh daily bakes",
+    "contactTitle": "Let's Talk Cake",
+    "contactDescription": "Call us, visit our counter, or fill out the form below. We're here to help you plan your perfect bake.",
+    "portfolioTitle": "Fresh From Our Ovens",
+    "portfolioDescription": "A look at what we've been baking lately",
+    "testimonialsTitle": "Happy Customers",
+    "testimonialsSubtitle": "What our clients say about us",
+    "faqTitle": "Common Questions",
+    "faqSubtitle": "Everything you need to know about ordering from us",
+    "galleryTitle": "Our Work",
+    "gallerySubtitle": "Recent cakes, pastries, and catering spreads",
+    "aboutTitle": "About Us",
+    "aboutSubtitle": "Family recipes, local ingredients, baked with love",
+    "ctaTitle": "Ready to Order Your Custom Cake?",
+    "ctaText": "Whether it's a birthday, wedding, or corporate event, we'll create something special just for you",
     "pricingTitle": "Our Pricing",
-    "pricingSubtitle": ""
+    "pricingSubtitle": "Transparent pricing for all our services"
   },
   "services": [
     {
-      "title": "Custom Celebration Cakes",
-      "description": "Tell us your vision for birthdays, weddings, or anniversaries. We create one-of-a-kind cakes with flavors and designs you choose, from classic vanilla to our signature North West honeycomb.",
-      "priceTag": "From R450",
-      "icon": "Star",
-      "imageUrl": "/uploads/mamma_mia_cakes_and_catering/stock/stock-003.webp"
+      "title": "Celebration Cakes",
+      "description": "From a two-tier birthday cake for 50 guests to an elegant three-tier wedding cake, we design and bake for your special occasion. Every cake includes a free tasting consultation with Lety.",
+      "priceTag": "Get a Custom Quote",
+      "icon": "Cake",
+      "imageUrl": "https://t3.ftcdn.net/jpg/01/95/22/88/360_F_195228889_Rjyw3YY1GRpzqDkQUUhbQ2Gu2REzh1Pz.jpg"
     },
     {
-      "title": "Cupcakes & Treats by the Dozen",
-      "description": "Perfect for office parties, school events, or just because. Choose from our daily menu or order a custom batch with your favorite frosting and toppings.",
-      "priceTag": "From R180/dozen",
-      "icon": "MessageCircle",
-      "imageUrl": "/uploads/mamma_mia_cakes_and_catering/stock/stock-004.webp"
+      "title": "Corporate Catering",
+      "description": "Impress your team with our continental breakfast platters, lunchtime savoury trays, and afternoon tea boxes, delivered warm to offices across North West.",
+      "priceTag": "Get a Custom Quote",
+      "icon": "Building2",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcsFOOILIzpfV8Y2wbh9hBjiC7OdsDFNlos9pOubzRN8zC2gqwTTlx78s&s=10"
     },
     {
-      "title": "Event Catering",
-      "description": "We provide dessert tables and pastry platters for events across North West. We handle the setup so you can enjoy your party.",
-      "priceTag": "Custom Quote",
-      "icon": "HelpCircle",
-      "imageUrl": "https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=600&q=80"
+      "title": "Daily Bakery Counter",
+      "description": "Walk in for our famous cheese rolls, cinnamon buns, and classic Victoria sponge. Our counter is stocked fresh from 7am until sold out.",
+      "priceTag": "Get a Custom Quote",
+      "icon": "ShoppingBag",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysl-IpzuSB0yQWg5N1KwDYxh_wzIWklHGtcdfomp5cpmriNThakC5YHSh&s=10"
+    },
+    {
+      "title": "Custom Cake Consultation",
+      "description": "Sit down with us to plan your dream cake. We'll guide you through flavours, fillings, and design sketches to bring your idea to life.",
+      "priceTag": "Get a Custom Quote",
+      "icon": "MessageSquare",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPVcKxyX2IWlSU7CyyHkaOO-Zcpg1FY4NdEcbjaHK589fgmQT16-W9KSA&s=10"
     }
   ],
   "testimonials": [
     {
-      "text": "Lety made our wedding cake exactly how we dreamed. The lemon zest flavor was incredible, and she even delivered it to the venue in Potchefstroom herself.",
-      "name": "Sarah & James",
+      "name": "Sarah M.",
+      "text": "Lety made my daughter's christening cake from a photo I showed her on my phone. It looked exactly as I imagined, and the vanilla sponge was the best I've ever tasted.",
       "rating": 5,
       "source": "Google",
       "photoUrl": ""
     },
     {
-      "text": "I order cupcakes for my shop's monthly customer appreciation day. They're always fresh, and my clients in Klerksdorp love them.",
-      "name": "Thabo M.",
+      "name": "David from North West Accounting",
+      "text": "We order the corporate breakfast platter every Friday for our team. The pastries are always warm, and the fruit is perfectly ripe. It's the best part of our workweek.",
       "rating": 5,
       "source": "Google",
       "photoUrl": ""
     },
     {
-      "text": "The best carrot cake in the North West. I drive from Rustenburg just for it.",
-      "name": "Annette P.",
+      "name": "Sean Jordaan",
+      "text": "Lety has done multiple cakes and Cupcakes for us on multiple occasions, and theyhave been absolutely incredible every single time. Would definitely recommend",
       "rating": 5,
-      "source": "Google",
-      "photoUrl": ""
+      "source": "Dashboard"
     }
   ],
   "faq": [
     {
       "question": "How far in advance should I order a custom cake?",
-      "answer": "For custom cakes, we recommend at least 2 weeks' notice. For cupcakes or standard orders, 3-5 days is usually fine. For wedding cakes, we suggest booking 4-6 weeks ahead to secure your date."
+      "answer": "We recommend 2-3 weeks for standard cakes and at least 6 weeks for wedding cakes. This gives us time for a detailed consultation and to source any special ingredients you request."
     },
     {
-      "question": "Do you deliver?",
-      "answer": "Yes, we deliver across the North West region — including Klerksdorp, Potchefstroom, Stilfontein, and Rustenburg. Delivery fees depend on the distance from our bakery. Pickup is also available."
+      "question": "Do you deliver, and what is your range?",
+      "answer": "Yes, we deliver all custom cake orders within a 25km radius of our North West bakery. Delivery fees apply, and our driver will carefully set up your cake at the venue."
     },
     {
-      "question": "Can you accommodate dietary restrictions?",
-      "answer": "We offer gluten-free and vegan options for most of our cupcakes and cakes. Please specify your needs when ordering so we can adjust our recipes accordingly."
-    },
-    {
-      "question": "Where are you located?",
-      "answer": "Our bakery is in North West. We provide the exact address upon order confirmation for pickup. We also deliver across the region."
+      "question": "Are your ingredients locally sourced?",
+      "answer": "As much as possible, yes. We get our eggs from a farm in the local area, our butter from a dairy in the neighbouring province, and our coffee from a local roaster for our coffee cakes."
     }
   ],
   "pricing": [],
   "team": [
     {
       "name": "Lety Gibbon",
-      "role": "Owner & Head Baker",
-      "bio": "Lety learned to bake from her Italian grandmother and has been creating custom cakes for North West families since 2012.",
-      "imageUrl": "/uploads/mamma_mia_cakes_and_catering/stock/stock-002.webp"
+      "role": "Founder & Head Baker",
+      "bio": "Lety started Mamma & Mia in 2012 with her grandmother's recipe book and a dream. She still arrives at 4am every morning to start the ovens.",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80"
     }
   ],
   "businessHours": [
-    { "dayOfWeek": "Monday", "opens": "08:00", "closes": "17:00" },
-    { "dayOfWeek": "Tuesday", "opens": "08:00", "closes": "17:00" },
-    { "dayOfWeek": "Wednesday", "opens": "08:00", "closes": "17:00" },
-    { "dayOfWeek": "Thursday", "opens": "08:00", "closes": "17:00" },
-    { "dayOfWeek": "Friday", "opens": "08:00", "closes": "17:00" },
-    { "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" },
-    { "dayOfWeek": "Sunday", "opens": "Closed", "closes": "Closed" }
+    {
+      "dayOfWeek": "Monday",
+      "opens": "06:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "opens": "07:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Wednesday",
+      "opens": "07:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Thursday",
+      "opens": "07:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Friday",
+      "opens": "07:00",
+      "closes": "17:00"
+    },
+    {
+      "dayOfWeek": "Saturday",
+      "opens": "07:00",
+      "closes": "14:00"
+    },
+    {
+      "dayOfWeek": "Sunday",
+      "opens": "Closed",
+      "closes": "Closed"
+    }
   ],
   "socialLinks": {
     "facebook": "https://www.facebook.com/groups/135211271843817/media",
@@ -134,51 +163,10 @@
     "twitter": "",
     "linkedin": ""
   },
+  "logoUrl": "",
   "contact": {
-    "phone": "27721565654",
-    "whatsapp": "27721565654",
+    "phone": "0721565654",
     "email": "",
     "address": "North West"
-  },
-  "blogPosts": [],
-  "gallery": [],
-  "categorizedGalleries": {},
-  "features": {
-    "whatsappWidget": true,
-    "clickToCall": true,
-    "contactForm": true,
-    "googleMaps": false,
-    "businessHours": true,
-    "testimonials": true,
-    "faq": true,
-    "blog": false,
-    "teamProfiles": true,
-    "pricingTables": false,
-    "socialMediaLinks": true,
-    "animatedScroll": true,
-    "imageLightbox": true
-  },
-  "seo": {
-    "title": "Mamma & Mia Cakes | Custom Bakery in North West",
-    "description": "Order custom cakes & cupcakes from Mamma & Mia Cakes in North West. Fresh daily, local ingredients. Call Lety at 072 156 5654 for your celebration.",
-    "keywords": [
-      "custom cakes North West",
-      "bakery North West",
-      "cupcakes Klerksdorp",
-      "wedding cakes Potchefstroom",
-      "order cakes online North West"
-    ]
-  },
-  "geo": {
-    "serviceAreas": ["Klerksdorp", "Stilfontein", "Potchefstroom", "Rustenburg"],
-    "region": "North West"
-  },
-  "motto": "Real recipes. Real ingredients. Real good cake.",
-  "history": "Founded in 2012 by Lety Gibbon in her North West home kitchen, inspired by her Italian grandmother's baking. The business grew through word-of-mouth and now serves customers across the region.",
-  "specializations": [
-    "Custom Designed Celebration Cakes",
-    "Artisan Cupcakes with Unique Flavors",
-    "Dessert Catering for Local Events"
-  ],
-  "hasWhatsApp": true
+  }
 }

@@ -9,9 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#c06950',
-        secondary: '#d4876b',
-        accent: '#e8ad94',
+        primary: '#3C1414',
+        secondary: '#6B3A2E',
+        accent: '#FFD700',
         whatsapp: '#25D366',
       },
       fontFamily: {

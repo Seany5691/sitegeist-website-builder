@@ -15,7 +15,7 @@ export default function AdditionalSections() {
         <section key={section.id || i} id={`touch-${section.id || i}`} className="section-padding" style={{ background: i % 2 === 0 ? 'var(--color-bg)' : 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll className="text-center mb-10">
-              <span className="text-sm font-semibold uppercase tracking-wider section-subtitle" style={{ color: 'var(--color-accent)' }}>
+              <span className="text-sm font-semibold uppercase tracking-wider section-subtitle" style={{ color: 'var(--safe-eyebrow)' }}>
                 {section.type === 'content' ? 'About' : section.type}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"

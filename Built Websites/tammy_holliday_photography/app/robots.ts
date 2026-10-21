@@ -1,29 +1,14 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
-  
+  const baseUrl = 'https://tammyholliday.co.za'
+
   return {
     rules: [
       {
         userAgent: '*',
         allow: '/',
-      },
-      {
-        userAgent: 'GPTBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'PerplexityBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'ClaudeBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'Bytespider',
-        allow: '/',
+        disallow: ['/dashboard/', '/api/', '/uploads/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

@@ -2,6 +2,16 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import { chromium, Browser, Page } from 'playwright'
 import { ScrapedData, ContactInfo, ScrapedImageContext, ScrapedImageMeta } from '@/types/site-config'
+import { 
+  extractStructuredData as extractStructuredBusinessData, 
+  mergeStructuredData 
+} from './structured-data-extractor'
+import { extractServices, categorizeServices } from './content-extractors/service-extractor'
+import { detectBeforeAfterPairs } from './content-extractors/before-after-detector'
+import { extractVideos as extractVideoContent } from './content-extractors/video-extractor'
+import { categorizePortfolio } from './content-extractors/portfolio-categorizer'
+import { extractPricing as extractPricingTiers } from './content-extractors/pricing-extractor'
+import { extractFAQs as extractFAQContent } from './content-extractors/faq-extractor'
 
 const MAX_PAGES = 200
 const SCRAPE_DELAY_MS = 800
@@ -90,6 +100,13 @@ export interface LocalScrapeResult {
   images: string[]
   imagesWithContext?: ScrapedImageContext[]
   mapEmbedUrl?: string | null
+  structuredBusinessData?: any // Add structured business data from new extractor
+  services?: any[] // Services extracted from the page
+  beforeAfterPairs?: any[] // Before/after image pairs
+  videos?: any[] // Video content
+  portfolioCategories?: any[] // Portfolio categories
+  pricingTiers?: any[] // Pricing tiers
+  faqsExtracted?: any[] // Extracted FAQs
 }
 
 let browserInstance: Browser | null = null
@@ -189,7 +206,7 @@ function htmlToMarkdown(html: string): string {
   // Blockquotes
   md = md.replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/gi, (_match, content) => {
     const lines = content.replace(/<[^>]+>/g, '').trim().split('\n')
-    return '\n' + lines.map(l => `> ${l.trim()}`).join('\n') + '\n'
+    return '\n' + lines.map((l: string) => `> ${l.trim()}`).join('\n') + '\n'
   })
 
   // Details/Summary — convert to heading + content
@@ -742,6 +759,71 @@ async function scrapeSinglePageLocally(targetUrl: string): Promise<LocalScrapeRe
     const cleanedHtml = cleanHtmlForMarkdown(html)
     const markdown = htmlToMarkdown(cleanedHtml)
 
+    // Extract structured data using the new extractor
+    let structuredBusinessData
+    try {
+      structuredBusinessData = await extractStructuredBusinessData(page)
+      console.log(`[Local Scraper] Structured data extraction: Found ${structuredBusinessData.foundData.schemas.join(', ') || 'none'}`)
+    } catch (error) {
+      console.log(`[Local Scraper] Structured data extraction failed:`, error)
+      structuredBusinessData = { foundData: { hasJsonLd: false, hasOpenGraph: false, hasMicrodata: false, schemas: [] } }
+    }
+
+    // Extract services using the new service extractor
+    let services: any[] = []
+    try {
+      const extractedServices = await extractServices(page)
+      services = categorizeServices(extractedServices)
+      console.log(`[Local Scraper] Service extraction: Found ${services.length} services`)
+    } catch (error) {
+      console.log(`[Local Scraper] Service extraction failed:`, error)
+    }
+
+    // Extract before/after image pairs
+    let beforeAfterPairs: any[] = []
+    try {
+      beforeAfterPairs = await detectBeforeAfterPairs(page)
+      console.log(`[Local Scraper] Before/after detection: Found ${beforeAfterPairs.length} pairs`)
+    } catch (error) {
+      console.log(`[Local Scraper] Before/after detection failed:`, error)
+    }
+
+    // Extract video content
+    let videos: any[] = []
+    try {
+      videos = await extractVideoContent(page)
+      console.log(`[Local Scraper] Video extraction: Found ${videos.length} videos`)
+    } catch (error) {
+      console.log(`[Local Scraper] Video extraction failed:`, error)
+    }
+
+    // Extract portfolio categories
+    let portfolioCategories: any[] = []
+    try {
+      portfolioCategories = await categorizePortfolio(page, targetUrl)
+      console.log(`[Local Scraper] Portfolio categorization: Found ${portfolioCategories.length} categories`)
+    } catch (error) {
+      console.log(`[Local Scraper] Portfolio categorization failed:`, error)
+    }
+
+    // Extract pricing tiers
+    let pricingTiers: any[] = []
+    try {
+      pricingTiers = await extractPricingTiers(page)
+      console.log(`[Local Scraper] Pricing extraction: Found ${pricingTiers.length} tiers`)
+    } catch (error) {
+      console.log(`[Local Scraper] Pricing extraction failed:`, error)
+    }
+
+    // Extract FAQs
+    let faqsExtracted: any[] = []
+    try {
+      faqsExtracted = await extractFAQContent(page)
+      console.log(`[Local Scraper] FAQ extraction: Found ${faqsExtracted.length} FAQs`)
+    } catch (error) {
+      console.log(`[Local Scraper] FAQ extraction failed:`, error)
+    }
+
     console.log(`[Local Scraper] Scraped ${targetUrl} - found ${images.length} images`)
 
     await page.close()
@@ -756,6 +838,13 @@ async function scrapeSinglePageLocally(targetUrl: string): Promise<LocalScrapeRe
       images,
       imagesWithContext,
       mapEmbedUrl,
+      structuredBusinessData, // Add structured data to return value
+      services, // Add services to return value
+      beforeAfterPairs, // Add before/after pairs to return value
+      videos, // Add videos to return value
+      portfolioCategories, // Add portfolio categories to return value
+      pricingTiers, // Add pricing tiers to return value
+      faqsExtracted, // Add FAQs to return value
     }
   } finally {
     await context.close()
@@ -2054,7 +2143,7 @@ export function extractBusinessHours(markdown: string): Array<{ dayOfWeek: strin
     `(?:${days.join('|')})[^:]*:\s*(\\d{1,2}:?\\d{0,2})\\s*(?:AM|PM)?\\s*[-\\u2013]\\s*(\\d{1,2}:?\\d{0,2})\\s*(?:AM|PM)?`,
     'gi'
   )
-  let match
+  let match: RegExpExecArray | null
   while ((match = timePattern.exec(markdown)) !== null) {
     const dayMatch = match[0].match(new RegExp(days.join('|'), 'i'))
     if (dayMatch) {
@@ -2083,7 +2172,7 @@ export function extractBusinessHours(markdown: string): Array<{ dayOfWeek: strin
   // Pattern: Closed on Sunday
   const closedPattern = /(?:closed|not open)[^\n]*(?:on\s+)?(\w+day)/gi
   while ((match = closedPattern.exec(markdown)) !== null) {
-    const day = days.find(d => d.toLowerCase() === match[1].toLowerCase())
+    const day = days.find(d => d.toLowerCase() === match![1].toLowerCase())
     if (day && !hours.find(h => h.dayOfWeek === day)) {
       hours.push({ dayOfWeek: day, opens: 'Closed', closes: 'Closed' })
     }

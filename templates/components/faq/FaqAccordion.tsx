@@ -20,7 +20,7 @@ export default function FaqAccordion() {
     <section id="faq" className="section-padding" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center mb-12">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>{sectionSubtitle}</span>
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>{sectionSubtitle}</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
             style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-text)', letterSpacing: '-0.025em' }}>
             {sectionTitle}

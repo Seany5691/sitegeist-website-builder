@@ -1,15 +1,22 @@
-import type { Metadata } from 'next'
+'use client'
 import dynamic from 'next/dynamic'
 
-export const revalidate = 0
-
-const PortfolioContent = dynamic(() => import('./PortfolioContent'), { ssr: false })
-
-export const metadata: Metadata = {
-  title: 'Portfolio | Tammy Holliday Photography',
-  description: 'Browse our portfolio of wedding, family, newborn, portrait, and event photography across Gauteng.',
-}
+const Header = dynamic(() => import('@/components/Header'), { ssr: false })
+const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
+const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
+const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
 
 export default function PortfolioPage() {
-  return <PortfolioContent />
+  return (
+    <>
+      <Header />
+      <main>
+        <Gallery />
+      </main>
+      <Footer />
+      <WhatsAppWidget />
+      <ScrollToTop />
+    </>
+  )
 }

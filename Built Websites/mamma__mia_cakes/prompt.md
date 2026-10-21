@@ -25,20 +25,20 @@ Read these files in .build-instructions/ as you work:
 This website has a specific visual identity defined by its design seed.
 FOLLOW THESE DIRECTION EXACTLY — they determine the visual personality.
 
-ART DIRECTION: EDITORIAL
-Magazine-inspired: airy spacing, subtle motion, serif display typography, muted colors, editorial grid layouts. Sophisticated and refined.
+ART DIRECTION: WARM-ORGANIC
+Friendly and approachable: balanced spacing, moderate motion, warm tones, rounded shapes, friendly typography. Inviting and personal.
 
 LAYOUT STYLE: PLAYFUL
 Fun, energetic design with rounded shapes, bright colors, and engaging interactions.
 
-TYPOGRAPHY PAIRING: FRIENDLY-ROUNDED
-Heading: Nunito (rounded sans). Body: Open Sans. Warm, approachable.
+TYPOGRAPHY PAIRING: ELEGANT-MIX
+Heading: Cormorant Garamond (refined serif). Body: Montserrat. Refined yet modern.
 
 MOTION INTENSITY: SUBTLE
 Gentle animations: 0.3s duration, 8px distance. Refined and professional.
 
-COLOR INTENSITY: VIBRANT
-Full saturation colors. Energetic and attention-grabbing.
+COLOR INTENSITY: PASTEL
+Low saturation, high lightness colors. Soft and approachable.
 
 DECORATIVE INTENSITY: EXPRESSIVE
 Bold decorative elements. Strong gradients, visible textures, decorative shapes, glassmorphism.
@@ -90,7 +90,7 @@ The design must communicate these differentiators visually, not just in text.
 
 DIFFERENTIATORS TO HIGHLIGHT:
 - Social proof: Real testimonials from satisfied clients
-- Comprehensive: 3 services offered
+- Comprehensive: 4 services offered
 - Location: Convenient and accessible
 - Experience: Years of proven results
 - Trust: Licensed, insured, and certified
@@ -301,9 +301,9 @@ SECTION ORDER: Hero → Testimonials → FAQ → About → Team → Services →
 ==================================================
 DESIGN SEED SUMMARY
 ==================================================
-Art Direction: editorial
+Art Direction: warm-organic
 Layout Style: playful
-Typography: friendly-rounded (Heading: Playfair Display, Body: Lato)
+Typography: elegant-mix (Heading: Playfair Display, Body: Lato)
 Motion: subtle
 Colors: Terracotta — Primary: #c06950, Secondary: #d4876b, Accent: #e8ad94
 Background: #FDF6F0 (light mode)
@@ -313,24 +313,22 @@ Spacing: comfortable
 BUSINESS DATA
 ==================================================
 SERVICES:
-1. Custom Celebration Cakes: Tell us your vision for birthdays, weddings, or anniversaries. We create one-of-a-kind cakes with flavors and designs you choose, from classic vanilla to our signature North West honeycomb.
-2. Cupcakes & Treats by the Dozen: Perfect for office parties, school events, or just because. Choose from our daily menu or order a custom batch with your favorite frosting and toppings.
-3. Event Catering: We provide dessert tables and pastry platters for events across North West. We handle the setup so you can enjoy your party.
+1. Celebration Cakes: From a two-tier birthday cake for 50 guests to an elegant three-tier wedding cake, we design and bake for your special occasion. Every cake includes a free tasting consultation with Lety.
+2. Corporate Catering: Impress your team with our continental breakfast platters, lunchtime savoury trays, and afternoon tea boxes, delivered warm to offices across North West.
+3. Daily Bakery Counter: Walk in for our famous cheese rolls, cinnamon buns, and classic Victoria sponge. Our counter is stocked fresh from 7am until sold out.
+4. Custom Cake Consultation: Sit down with us to plan your dream cake. We’ll guide you through flavours, fillings, and design sketches to bring your idea to life.
 
 TESTIMONIALS:
-1. "Lety made our wedding cake exactly how we dreamed. The lemon zest flavor was incredible, and she even delivered it to the venue in Potchefstroom herself." - Sarah & James (5/5)
-2. "I order cupcakes for my shop's monthly customer appreciation day. They're always fresh, and my clients in Klerksdorp love them." - Thabo M. (5/5)
-3. "The best carrot cake in the North West. I drive from Rustenburg just for it." - Annette P. (5/5)
+1. "Lety made my daughter's christening cake from a photo I showed her on my phone. It looked exactly as I imagined, and the vanilla sponge was the best I've ever tasted." - Sarah M. (5/5)
+2. "We order the corporate breakfast platter every Friday for our team. The pastries are always warm, and the fruit is perfectly ripe. It’s the best part of our workweek." - David from North West Accounting (5/5)
 
 FAQ:
 1. Q: How far in advance should I order a custom cake?
-   A: For custom cakes, we recommend at least 2 weeks' notice. For cupcakes or standard orders, 3-5 days is usually fine.
-2. Q: Do you deliver?
-   A: Yes, we deliver across the North West region. Delivery fees depend on the distance from our bakery.
-3. Q: Can you accommodate dietary restrictions?
-   A: We offer gluten-free and vegan options for most of our cupcakes and cakes. Please specify your needs when ordering.
-4. Q: Where are you located?
-   A: Our bakery is in North West. We provide the exact address upon order confirmation for pickup.
+   A: We recommend 2-3 weeks for standard cakes and at least 6 weeks for wedding cakes. This gives us time for a detailed consultation and to source any special ingredients you request.
+2. Q: Do you deliver, and what is your range?
+   A: Yes, we deliver all custom cake orders within a 25km radius of our North West bakery. Delivery fees apply, and our driver will carefully set up your cake at the venue.
+3. Q: Are your ingredients locally sourced?
+   A: As much as possible, yes. We get our eggs from a farm in [Local Area], our butter from a dairy in [Neighbouring Province], and our coffee from a local roaster for our coffee cakes.
 
 CONTACT: Phone=27721565654, WhatsApp=27721565654, Email=, Address=North West
 
@@ -364,6 +362,17 @@ For sub-page headers, use a background image with overlay:
   </section>
 
 SOCIAL: facebook: https://www.facebook.com/groups/135211271843817/media
+
+==================================================
+CRITICAL IMAGE INSTRUCTIONS
+==================================================
+
+NO SCRAPED IMAGES AVAILABLE. Use Unsplash stock images that match the Bakery & Baked Goods industry.
+- Hero: Use a high-quality Unsplash image as background
+- Gallery: Use 8-15 Unsplash images organized by category
+- Services: Use relevant Unsplash images for each service
+- NEVER use gradient placeholders or colored boxes.
+
 
 ==================================================
 YOUR TASKS (in order)

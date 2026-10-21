@@ -81,3 +81,22 @@ body {
     linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
+/* Premium Enforcer: Floating animations for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 7s ease-in-out infinite 1s;
+}

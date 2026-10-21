@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "score": 0,
+  "rawScore": 0,
+  "breakdown": {
+    "visualHierarchy": 0,
+    "whitespace": 0,
+    "contrast": 0,
+    "layoutCraft": 0,
+    "states": 0,
+    "consistency": 0,
+    "responsive": 0,
+    "a11y": 0,
+    "imageQuality": 0,
+    "imageAuthenticity": 0,
+    "distinctiveness": 0,
+    "brandFit": 0,
+    "memorability": 0
+  },
+  "priorityFixes": [],
+  "uniquenessSuggestions": [],
+  "targetChecklist": [],
+  "feedback": "LLM judge call failed — skipping visual scoring",
+  "recommendation": "reroll",
+  "attempt": 1,
+  "lowDimensions": [],
+  "coverage": {
+    "pagesJudged": [
+      "home",
+      "about",
+      "services",
+      "portfolio",
+      "contact"
+    ],
+    "sectionsJudged": [],
+    "featuresJudged": [
+      "quote-popup",
+      "mobile-menu",
+      "contact-form-errors",
+      "quote-popup",
+      "contact-form-errors"
+    ],
+    "viewports": [
+      "390",
+      "768",
+      "1440"
+    ],
+    "missing": [
+      "judge-call-failed"
+    ]
+  },
+  "stockImageNotes": [],
+  "rubricVersion": "v1",
+  "stage": 1
+}

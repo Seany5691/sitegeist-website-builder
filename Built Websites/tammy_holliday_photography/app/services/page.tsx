@@ -1,15 +1,22 @@
-import type { Metadata } from 'next'
+'use client'
 import dynamic from 'next/dynamic'
 
-export const revalidate = 0
-
-const ServicesContent = dynamic(() => import('./ServicesContent'), { ssr: false })
-
-export const metadata: Metadata = {
-  title: 'Photography Services | Tammy Holliday Photography',
-  description: 'Explore our photography services in Gauteng — weddings, family portraits, newborn sessions, matric dance, cake smash, and event coverage.',
-}
+const Header = dynamic(() => import('@/components/Header'), { ssr: false })
+const Services = dynamic(() => import('@/components/Services'), { ssr: false })
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
+const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
+const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
 
 export default function ServicesPage() {
-  return <ServicesContent />
+  return (
+    <>
+      <Header />
+      <main>
+        <Services />
+      </main>
+      <Footer />
+      <WhatsAppWidget />
+      <ScrollToTop />
+    </>
+  )
 }

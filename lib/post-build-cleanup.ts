@@ -7,6 +7,7 @@
 
 import { promises as fs } from 'fs'
 import path from 'path'
+import { parseJsonSafe } from '@/lib/utils'
 
 interface CleanupResult {
   success: boolean
@@ -25,12 +26,15 @@ interface QAScore {
   recommendations: string[]
 }
 
-// Hash of the correct app/page.tsx content (dynamic imports pattern)
+// Hash of the correct app/page.tsx content (STATIC imports — no ssr:false)
 const EXPECTED_PAGE_TSX_PATTERNS = [
-  "import dynamic from 'next/dynamic'",
-  "dynamic(() => import('@/components/Header')",
-  "dynamic(() => import('@/components/Hero')",
-  "dynamic(() => import('@/components/Footer')",
+  "import Header from '@/components/Header'",
+  "import Footer from '@/components/Footer'",
+  "import SectionRenderer from '@/components/SectionRenderer'",
+]
+// dynamic(..., { ssr: false }) causes blank pages — flag it if MiMo reintroduces it
+const FORBIDDEN_PAGE_TSX_PATTERNS = [
+  "ssr: false",
 ]
 
 // Files MiMo should NEVER create
@@ -90,16 +94,21 @@ export async function runPostBuildCleanup(projectDir: string): Promise<CleanupRe
     // Directory doesn't exist — good
   }
 
-  // 2. Verify app/page.tsx has dynamic imports
+  // 2. Verify app/page.tsx uses static imports (no ssr:false)
   const pageTsxPath = path.join(projectDir, 'app', 'page.tsx')
   try {
     const content = await fs.readFile(pageTsxPath, 'utf-8')
     const missingPatterns = EXPECTED_PAGE_TSX_PATTERNS.filter(p => !content.includes(p))
     if (missingPatterns.length > 0) {
-      result.errors.push(`app/page.tsx is missing dynamic import patterns: ${missingPatterns.join(', ')}`)
+      result.errors.push(`app/page.tsx is missing static import patterns: ${missingPatterns.join(', ')}`)
       result.success = false
     } else {
-      result.actions.push('app/page.tsx verified — has correct dynamic imports')
+      result.actions.push('app/page.tsx verified — has correct static imports')
+    }
+    const forbidden = FORBIDDEN_PAGE_TSX_PATTERNS.filter(p => content.includes(p))
+    if (forbidden.length > 0) {
+      result.errors.push(`app/page.tsx uses forbidden dynamic/ssr:false imports: ${forbidden.join(', ')}`)
+      result.success = false
     }
   } catch {
     result.errors.push('app/page.tsx not found')
@@ -112,16 +121,19 @@ export async function runPostBuildCleanup(projectDir: string): Promise<CleanupRe
     'components/Services.tsx': ["'use client'", 'useSiteData'],
     'components/Gallery.tsx': ["'use client'", 'useSiteData'],
     'components/Testimonials.tsx': ["'use client'", 'useSiteData'],
-    'components/Contact.tsx': ["'use client'", 'useSiteData'],
+    'components/Contact.tsx': ["'use client'", 'useSiteData', '/api/contact'],
     'components/About.tsx': ["'use client'", 'useSiteData'],
     'components/Faq.tsx': ["'use client'", 'useSiteData'],
     'components/Footer.tsx': ['useSiteData'],
     'components/Header.tsx': ["'use client'", 'useSiteData'],
-    'components/WhatsAppWidget.tsx': ["'use client'"],
+    'components/WhatsAppWidget.tsx': ["'use client'", 'whatsapp'],
     'components/AnimateOnScroll.tsx': ["'use client'", 'IntersectionObserver'],
-    'lib/use-site-data.ts': ["'use client'", 'useSiteData', '/site-config.json'],
-    'app/api/save-config/route.ts': ['siteConfig', 'imageMap', 'site-config.json'],
-    'app/api/upload/route.ts': ['formData', 'uploads'],
+    'lib/use-site-data.ts': ["'use client'", 'useSiteData', '/api/site-data'],
+    'lib/blob-storage.ts': ['cacheControlMaxAge', 'saveJSON', 'loadJSON'],
+    'app/api/site-data/route.ts': ["force-dynamic", 'loadJSON'],
+    'app/api/contact/route.ts': ['RESEND_API_KEY'],
+    'app/api/save-config/route.ts': ['protectRoute', 'saveJSON'],
+    'app/api/upload/route.ts': ['protectRoute', 'uploadImage'],
     'app/dashboard/page.tsx': ['useRouter', 'dashboard/index.html'],
   }
 
@@ -170,7 +182,7 @@ export async function runPostBuildCleanup(projectDir: string): Promise<CleanupRe
   // 6. Verify site-config.json has required fields
   try {
     const configPath = path.join(projectDir, 'public', 'site-config.json')
-    const config = JSON.parse(await fs.readFile(configPath, 'utf-8'))
+    const config = parseJsonSafe(await fs.readFile(configPath, 'utf-8'))
 
     const requiredFields = ['hero', 'about', 'pageContent', 'services', 'testimonials', 'faq', 'businessHours']
     for (const field of requiredFields) {
@@ -180,9 +192,9 @@ export async function runPostBuildCleanup(projectDir: string): Promise<CleanupRe
       }
     }
 
-    // Check hero fields
+    // Check hero fields — heroImageUrl is required (premium site without a hero photo is a fail)
     if (config.hero) {
-      const heroFields = ['headline', 'subheadline', 'badge', 'ctaText']
+      const heroFields = ['headline', 'subheadline', 'badge', 'ctaText', 'heroImageUrl']
       for (const field of heroFields) {
         if (!config.hero[field]) {
           result.errors.push(`site-config.json hero missing field: ${field}`)
@@ -213,7 +225,7 @@ export async function runPostBuildCleanup(projectDir: string): Promise<CleanupRe
   // 7. Verify image-map.json has thumbnail fields
   try {
     const mapPath = path.join(projectDir, 'public', 'image-map.json')
-    const imageMap = JSON.parse(await fs.readFile(mapPath, 'utf-8'))
+    const imageMap = parseJsonSafe(await fs.readFile(mapPath, 'utf-8'))
 
     if (imageMap.categories) {
       const categories = Object.keys(imageMap.categories)
@@ -256,7 +268,7 @@ async function downloadStockImages(projectDir: string, result: CleanupResult): P
   try {
     const configPath = path.join(projectDir, 'public', 'site-config.json')
     const configRaw = await fs.readFile(configPath, 'utf-8')
-    const config = JSON.parse(configRaw)
+    const config = parseJsonSafe(configRaw)
 
     const clientFolder = path.basename(projectDir)
     const uploadsDir = path.join(projectDir, 'public', 'uploads', clientFolder)
@@ -477,7 +489,7 @@ async function runAccessibilityChecks(projectDir: string): Promise<{ actions: st
   // Check site-config.json for alt text in images
   try {
     const configPath = path.join(projectDir, 'public', 'site-config.json')
-    const config = JSON.parse(await fs.readFile(configPath, 'utf-8'))
+    const config = parseJsonSafe(await fs.readFile(configPath, 'utf-8'))
 
     // Check hero image has alt text
     if (config.hero?.heroImageUrl && !config.hero?.heroImageAlt) {
@@ -515,7 +527,7 @@ async function calculateQAScore(projectDir: string, cleanupResult: CleanupResult
   let contentScore = 10
   try {
     const configPath = path.join(projectDir, 'public', 'site-config.json')
-    const config = JSON.parse(await fs.readFile(configPath, 'utf-8'))
+    const config = parseJsonSafe(await fs.readFile(configPath, 'utf-8'))
 
     // Check for empty required fields
     const requiredFields = ['hero', 'about', 'pageContent', 'services', 'testimonials', 'faq']
@@ -563,7 +575,7 @@ async function calculateQAScore(projectDir: string, cleanupResult: CleanupResult
   let imageScore = 10
   try {
     const mapPath = path.join(projectDir, 'public', 'image-map.json')
-    const imageMap = JSON.parse(await fs.readFile(mapPath, 'utf-8'))
+    const imageMap = parseJsonSafe(await fs.readFile(mapPath, 'utf-8'))
 
     if (!imageMap.categories || Object.keys(imageMap.categories).length === 0) {
       imageScore -= 5

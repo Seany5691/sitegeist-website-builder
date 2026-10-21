@@ -1,29 +1,28 @@
 {
-  "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
-  "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today.",
+  "title": "Tammy Holliday Photography | Photography in Gauteng",
+  "description": "Professional photography services in Gauteng. Contact Tammy Holliday Photography for quality service and exceptional results.",
   "keywords": [
-    "Gauteng photographer",
-    "wedding photographer Gauteng",
-    "family portraits",
-    "newborn photography",
     "Tammy Holliday Photography",
-    "professional photographer South Africa"
+    "Photography",
+    "Gauteng",
+    "Photography Gauteng",
+    "services"
   ],
   "openGraph": {
-    "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
-    "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today.",
+    "title": "Tammy Holliday Photography | Photography in Gauteng",
+    "description": "Professional photography services in Gauteng. Contact Tammy Holliday Photography for quality service and exceptional results.",
     "type": "website"
   },
   "twitter": {
     "card": "summary_large_image",
-    "title": "Tammy Holliday Photography | Gauteng Wedding & Portrait Photographer",
-    "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today."
+    "title": "Tammy Holliday Photography | Photography in Gauteng",
+    "description": "Professional photography services in Gauteng. Contact Tammy Holliday Photography for quality service and exceptional results."
   },
   "jsonLd": {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Tammy Holliday Photography",
-    "description": "Professional photographer in Gauteng specializing in weddings, families, newborns, and portraits. Tammy Holliday captures timeless moments with a classic, personalized approach. Book your session today.",
+    "description": "Professional photography services in Gauteng. Contact Tammy Holliday Photography for quality service and exceptional results.",
     "telephone": "27834799732",
     "email": "letsmeet@tammyholliday.co.za",
     "address": {

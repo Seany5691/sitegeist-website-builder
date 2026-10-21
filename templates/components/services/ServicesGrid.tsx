@@ -38,8 +38,8 @@ export default function ServicesGrid() {
   return (
     <section id="services" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimateOnScroll className="text-center mb-16">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>
+        <AnimateOnScroll className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>
             What We Offer
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
@@ -53,28 +53,84 @@ export default function ServicesGrid() {
           )}
         </AnimateOnScroll>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 1 service = large centred card; 2 = centred pair; 3 = centred row; 4+ = full grid */}
+        <div
+          className={
+            services.length <= 2
+              ? 'flex flex-wrap justify-center gap-6'
+              : services.length === 3
+                ? 'flex flex-wrap justify-center gap-6'
+                : 'grid sm:grid-cols-2 lg:grid-cols-4 gap-6'
+          }
+        >
           {services.map((service: any, i: number) => (
-            <AnimateOnScroll key={i} delay={i * 100}>
-              <div className="group rounded-xl p-6 border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg h-full"
-                style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))', borderColor: 'color-mix(in srgb, var(--color-text) 8%, transparent)' }}>
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300"
+            <AnimateOnScroll
+              key={i}
+              delay={i * 100}
+              className={
+                services.length === 1
+                  ? 'w-full max-w-2xl'
+                  : services.length === 2
+                    ? 'w-full max-w-md'
+                    : services.length === 3
+                      ? 'w-full max-w-sm'
+                      : ''
+              }
+            >
+              <div
+                className={`bg-white rounded-3xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 relative overflow-hidden group h-full flex flex-col ${
+                  services.length === 1 ? 'p-10 sm:p-12' : ''
+                }`}
+              >
+                {/* Decorative accent blob */}
+                <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-5 group-hover:opacity-10 transition-opacity duration-500"
+                     style={{ background: 'var(--color-primary-cta)' }} />
+                
+                {/* Service image with brand-tinted frame (if exists) */}
+                {service.imageUrl && (
+                  <div className="relative mb-6 rounded-2xl overflow-hidden border-4 shadow-lg"
+                       style={{ borderColor: 'color-mix(in srgb, var(--color-primary) 30%, transparent)' }}>
+                    <img src={service.imageUrl} alt={service.title} 
+                         className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-110" />
+                  </div>
+                )}
+                
+                {/* Numbered badge */}
+                <div className="absolute top-4 left-4 w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white shadow-lg"
+                     style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))' }}>
+                  {i + 1}
+                </div>
+                
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
                   style={{ background: 'color-mix(in srgb, var(--color-primary) 10%, transparent)' }}>
                   <svg className="w-7 h-7" style={{ color: 'var(--color-primary)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d={iconPaths[service.icon] || iconPaths[Object.keys(iconPaths)[i % Object.keys(iconPaths).length]] || iconPaths.Star} />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
+                <h3 className={`font-bold mb-3 flex-shrink-0 ${services.length === 1 ? 'text-2xl sm:text-3xl' : 'text-xl'}`}
+                  style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
                   {service.title}
                 </h3>
-                <p className="leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+                <p className={`leading-relaxed flex-grow ${services.length === 1 ? 'text-lg' : ''}`}
+                  style={{ color: 'var(--color-muted)' }}>
                   {service.description}
                 </p>
                 {service.priceTag && (
-                  <div className="mt-4 pt-4" style={{ borderTop: '1px solid color-mix(in srgb, var(--color-text) 8%, transparent)' }}>
-                    <span className="text-sm font-semibold" style={{ color: 'var(--color-accent)' }}>{service.priceTag}</span>
+                  <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
+                       style={{ background: 'var(--color-primary-cta)', color: 'white' }}>
+                    {service.priceTag}
                   </div>
                 )}
+                
+                {/* Premium CTA button */}
+                <a href={service.ctaLink || '#contact'} 
+                   className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-lg font-semibold transition-all duration-300 hover:gap-4 text-sm self-start"
+                   style={{ background: 'var(--color-primary-cta)', color: 'white' }}>
+                  Learn More
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </a>
               </div>
             </AnimateOnScroll>
           ))}

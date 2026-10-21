@@ -3,18 +3,20 @@
 import { useSiteData } from '@/lib/use-site-data'
 import { useEffect, useState } from 'react'
 
-export default function HeroContact() {
+export default function HeroContact({ pageId = 'home' }: { pageId?: string }) {
   const { config } = useSiteData()
   const [mounted, setMounted] = useState(false)
   useEffect(() => { setMounted(true) }, [])
 
-  const hero = config?.hero || {}
+  const baseHero = config?.hero || {}
+  const pageHero = config?.pageHeroes?.[pageId] || {}
+  const hero = { ...baseHero, ...pageHero }
   const headline = hero.headline || 'Welcome'
   const subheadline = hero.subheadline || ''
   const heroImage = hero.heroImageUrl || ''
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden img-hero-overlay">
+    <section className="relative min-h-[80vh] sm:min-min-h-[80vh] sm:min-h-screen flex items-center overflow-hidden img-hero-overlay">
       {/* Background */}
       {heroImage ? (
         <>
@@ -31,26 +33,28 @@ export default function HeroContact() {
           <div>
             {hero.badge && (
               <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--color-accent)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--safe-eyebrow)', border: '1px solid rgba(255,255,255,0.15)', transitionDelay: '0.1s' }}>
                 {hero.badge}
               </div>
             )}
 
             <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6 hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-              style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.025em' }}>
+              style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.025em', transitionDelay: '0.2s' }}>
               {headline}
             </h1>
 
             {subheadline && (
-              <p className={`text-lg text-white/70 leading-relaxed mb-8 hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <p className={`text-lg text-white/70 leading-relaxed mb-8 hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                style={{ transitionDelay: '0.3s' }}>
                 {subheadline}
               </p>
             )}
 
             {/* Quick contact options */}
-            <div className={`flex flex-wrap gap-4 hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            <div className={`flex flex-wrap gap-4 hero-entrance ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+              style={{ transitionDelay: '0.4s' }}>
               {config?.contact?.phone && (
-                <a href={`tel:${config.contact.phone}`} className="btn btn-md btn-accent">
+                <a href={`tel:${config.contact.phone}`} className="btn btn-md btn-accent press-scale">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                   Call Now
                 </a>
@@ -58,7 +62,7 @@ export default function HeroContact() {
               {config?.contact?.whatsapp && (
                 <a href={`https://wa.me/${config.contact.whatsapp}`}
                   target="_blank" rel="noopener noreferrer"
-                  className="btn btn-md"
+                  className="btn btn-md press-scale"
                   style={{ background: '#25D366', color: '#fff' }}>
                   WhatsApp Us
                 </a>
@@ -67,8 +71,9 @@ export default function HeroContact() {
           </div>
 
           {/* Quick contact card */}
-          <div className={`hero-entrance ${mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="backdrop-blur-xl rounded-2xl p-8 border"
+          <div className={`hero-entrance ${mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
+            style={{ transitionDelay: '0.5s' }}>
+            <div className="card hover-lift backdrop-blur-xl rounded-2xl p-8 border"
               style={{ background: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.15)' }}>
               <h3 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-heading)' }}>
                 Get In Touch

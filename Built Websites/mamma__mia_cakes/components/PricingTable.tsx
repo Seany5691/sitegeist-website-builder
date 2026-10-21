@@ -32,44 +32,59 @@ export default function PricingTable() {
         </AnimateOnScroll>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {pricing.map((item: any, i: number) => (
-            <AnimateOnScroll key={i} delay={i * 100}>
-              <div className="group relative rounded-2xl p-8 border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col"
-                style={{ borderColor: i === 1 ? 'var(--color-primary)' : 'color-mix(in srgb, var(--color-text) 8%, transparent)', background: 'var(--color-bg)' }}>
-                {/* Featured indicator */}
-                {i === 1 && pricing.length > 2 && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold"
-                    style={{ background: 'var(--color-accent)', color: 'var(--color-primary)' }}>
-                    Popular
+          {pricing.map((item: any, i: number) => {
+            const isFeatured = i === 1 && pricing.length > 2
+            return (
+              <AnimateOnScroll key={i} delay={i * 100}>
+                <div 
+                  className={`group relative rounded-2xl p-8 border transition-all duration-300 h-full flex flex-col ${isFeatured ? 'card hover-lift scale-105' : 'card hover-lift'}`}
+                  style={{ 
+                    borderColor: isFeatured ? 'var(--color-primary)' : 'color-mix(in srgb, var(--color-text) 8%, transparent)', 
+                    background: 'var(--color-bg)',
+                    ...(isFeatured ? { boxShadow: '0 4px 20px color-mix(in srgb, var(--color-primary) 20%, transparent)' } : {})
+                  }}
+                >
+                  {/* Featured indicator */}
+                  {isFeatured && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold animate-pulse"
+                      style={{ background: 'var(--color-accent)', color: 'var(--color-primary)' }}>
+                      Popular
+                    </div>
+                  )}
+
+                  <h3 className="text-lg font-bold mb-2"
+                    style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
+                    {item.service}
+                  </h3>
+
+                  <div className="mb-4">
+                    <span className="text-3xl font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>
+                      {item.price}
+                    </span>
                   </div>
-                )}
 
-                <h3 className="text-lg font-bold mb-2"
-                  style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
-                  {item.service}
-                </h3>
+                  {item.details && (
+                    <p className="text-sm leading-relaxed flex-1" style={{ color: 'var(--color-muted)' }}>
+                      {item.details}
+                    </p>
+                  )}
 
-                <div className="mb-4">
-                  <span className="text-3xl font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>
-                    {item.price}
-                  </span>
+                  <div className="mt-6">
+                    <a 
+                      href="#contact" 
+                      className={`btn btn-md w-full press-scale ${isFeatured ? 'hover-glow' : ''}`}
+                      style={isFeatured 
+                        ? { background: 'var(--color-primary)', color: 'var(--color-bg)' } 
+                        : { border: '2px solid var(--color-primary)', color: 'var(--color-primary)', background: 'transparent' }
+                      }
+                    >
+                      Get Started
+                    </a>
+                  </div>
                 </div>
-
-                {item.details && (
-                  <p className="text-sm leading-relaxed flex-1" style={{ color: 'var(--color-muted)' }}>
-                    {item.details}
-                  </p>
-                )}
-
-                <div className="mt-6">
-                  <a href="#contact" className="btn btn-md w-full"
-                    style={i === 1 ? { background: 'var(--color-primary)', color: '#fff' } : { border: '2px solid var(--color-primary)', color: 'var(--color-primary)', background: 'transparent' }}>
-                    Get Started
-                  </a>
-                </div>
-              </div>
-            </AnimateOnScroll>
-          ))}
+              </AnimateOnScroll>
+            )
+          })}
         </div>
       </div>
     </section>

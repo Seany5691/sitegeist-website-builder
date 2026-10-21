@@ -32,7 +32,7 @@ export default function VideoEmbed() {
     <section id="videos" className="section-padding" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center mb-12">
-          <span className="text-sm font-semibold uppercase tracking-wider section-subtitle" style={{ color: 'var(--color-accent)' }}>
+          <span className="text-sm font-semibold uppercase tracking-wider section-subtitle" style={{ color: 'var(--safe-eyebrow)' }}>
             Watch
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"

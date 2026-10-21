@@ -4,6 +4,13 @@
 export interface BrandAssets {
   logoUrl?: string
   logoDarkUrl?: string
+  /**
+   * Where the logo came from. Precedence: uploaded > scraped > generated.
+   * Once 'uploaded', nothing downstream may overwrite logoUrl.
+   */
+  logoSource?: 'uploaded' | 'scraped' | 'generated'
+  /** Original filename of an uploaded logo, for traceability */
+  logoName?: string
   brandColors: {
     primary: string
     secondary: string
@@ -297,6 +304,41 @@ export interface MasterSiteConfig {
   businessName: string
   city: string
   ownerName: string
+  /** Industry label from GeistTrack / lead scraper (closed set) — archetype source of truth */
+  industry?: string
+  /** Platform tenant id (= trial_websites.id) used for form_submissions scoping */
+  tenantId?: string
+  /** Schema.org sub-type (Bakery, Plumber, ...) — defaults from industry */
+  schemaType?: string
+  /**
+   * Full Control System — what is ON/OFF for sections, pages and features.
+   * Missing keys fall back to registry defaults, so older sites still render.
+   */
+  controls?: {
+    sections?: Record<string, boolean>
+    pages?: Record<string, boolean>
+    features?: Record<string, boolean>
+  }
+  /** Per-feature edit payload written by the dashboard Features tab */
+  featureData?: Record<string, Record<string, unknown>>
+  /** Optional content blocks used by newer sections */
+  stats?: Array<{ value: string; label: string }>
+  process?: Array<{ step: string; title: string; description?: string; image?: string }>
+  caseStudies?: Array<{ title: string; summary?: string; result?: string; image?: string; tags?: string[] }>
+  trustBadges?: { title?: string; badges?: Array<{ label: string; icon?: string; url?: string }> }
+  partners?: { title?: string; items?: Array<{ name: string; logoUrl?: string; url?: string }> }
+  areas?: { title?: string; items?: Array<{ name: string; url?: string }> }
+  awards?: Array<{ title: string; issuer?: string; year?: string; url?: string; image?: string }>
+  beforeAfter?: Array<{ before: string; after: string; caption?: string }>
+  newsletter?: { headline?: string; body?: string; ctaLabel?: string }
+  mapEmbedUrl?: string
+  videos?: Array<{ url: string; type?: string; thumbnail?: string }>
+  /** Email address that receives contact-form lead notifications */
+  notifyEmail?: string
+  /** Schema.org priceRange e.g. "$$", "R50-R500" */
+  priceRange?: string
+  /** Last content update — used for sitemap lastModified */
+  updatedAt?: string
   theme: ThemeConfig
   brandAssets: BrandAssets
   analytics?: AnalyticsConfig
@@ -335,9 +377,6 @@ export interface MasterSiteConfig {
   buildMode?: 'TRIAL' | 'PRODUCTION'
   openRouterError?: string
   imageManifest?: ImageManifestEntry[]
-  // Enhanced data from scraper
-  videos?: Array<{ url: string; type: string; thumbnail?: string }>
-  mapEmbedUrl?: string
   selectedComponents?: {
     hero?: string
     services?: string

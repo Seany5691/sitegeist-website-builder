@@ -1,15 +1,22 @@
-import type { Metadata } from 'next'
+'use client'
 import dynamic from 'next/dynamic'
 
-export const revalidate = 0
-
-const ContactContent = dynamic(() => import('./ContactContent'), { ssr: false })
-
-export const metadata: Metadata = {
-  title: 'Contact Us | Tammy Holliday Photography',
-  description: 'Get in touch with Tammy Holliday Photography. Book your session, check availability, or ask a question.',
-}
+const Header = dynamic(() => import('@/components/Header'), { ssr: false })
+const Contact = dynamic(() => import('@/components/Contact'), { ssr: false })
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })
+const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'), { ssr: false })
+const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
 
 export default function ContactPage() {
-  return <ContactContent />
+  return (
+    <>
+      <Header />
+      <main>
+        <Contact />
+      </main>
+      <Footer />
+      <WhatsAppWidget />
+      <ScrollToTop />
+    </>
+  )
 }

@@ -9,10 +9,38 @@ import { parseStructuredMarkdown } from '@/lib/markdown-parser'
 import { BuildSiteRequest, BuildSiteResponse, MasterSiteConfig, ScrapedData } from '@/types/site-config'
 
 const WEBSITES_FOLDER = 'C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites'
+
+// Primary: MiMo Token Plan
 const MIMO_API_URL = 'https://token-plan-sgp.xiaomimimo.com/v1/chat/completions'
 const MIMO_API_KEY = 'tp-s5mjmff9x4qh31pudzb4k45ipyprkgxvmgeyhidxqo28ljg3'
 const MIMO_MODEL = 'mimo-v2.5-pro'
 
+// Secondary: MiMo Prepaid
+const MIMO_PREPAID_API_URL = process.env.MIMO_PREPAID_URL || 'https://api.xiaomimimo.com/v1/chat/completions'
+const MIMO_PREPAID_API_KEY = process.env.MIMO_PREPAID_API_KEY || ''
+const MIMO_PREPAID_MODEL = process.env.MIMO_PREPAID_MODEL || 'mimo-v2.5'
+
+// Tertiary: OpenRouter Fallback
+const FALLBACK_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
+const FALLBACK_MODEL = 'meta-llama/llama-3.1-8b-instruct:free'
+
+/**
+ * Phase 1: Scrape Website & Generate Config
+ * 
+ * This endpoint handles the scraping phase of the build pipeline:
+ * - Scrapes existing website content (if provided)
+ * - Scrapes social media (Instagram, Facebook) for additional images/posts
+ * - Scrapes Google Maps for reviews and business info
+ * - Detects industry archetype and generates design seed
+ * - Extracts logo colors with industry fallback
+ * - Assembles site-config.json with all scraped data
+ * 
+ * Called by: /api/build-trial (step 2 of pipeline)
+ * Calls next: /api/build-website (for boilerplate generation)
+ * 
+ * @param request - Contains business metadata and URLs to scrape
+ * @returns JSON response with site-config.json path
+ */
 export async function POST(request: NextRequest) {
   try {
     const body: BuildSiteRequest = await request.json()
@@ -239,9 +267,12 @@ export async function POST(request: NextRequest) {
       conversionCTAs: industryConversionCTAs,
     })
     let creativeCopy: any = null
+    let copywriterSuccess = false
     
     try {
-      const response = await fetch(MIMO_API_URL, {
+      // Primary: MiMo Token Plan
+      console.log('[Copywriter] [PRIMARY] Calling MiMo Token Plan...')
+      let response = await fetch(MIMO_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -262,16 +293,91 @@ export async function POST(request: NextRequest) {
         const data = await response.json()
         const content = data.choices?.[0]?.message?.content || ''
         
-        console.log(`[Copywriter] Raw response length: ${content.length} chars`)
+        console.log(`[Copywriter] ✓ MiMo Token Plan succeeded - ${content.length} chars`)
         
         // Parse structured markdown instead of JSON
         creativeCopy = parseStructuredMarkdown(content)
-        console.log('[Copywriter] Parsed structured markdown successfully')
+        copywriterSuccess = true
       } else {
-        console.warn('[Copywriter] API returned error:', response.status)
+        console.warn('[Copywriter] MiMo Token Plan returned error:', response.status)
+        throw new Error(`Token Plan failed: ${response.status}`)
       }
     } catch (error) {
-      console.warn('[Copywriter] API call failed:', error)
+      console.warn('[Copywriter] MiMo Token Plan failed:', error)
+      
+      // Secondary: MiMo Prepaid
+      if (!copywriterSuccess && MIMO_PREPAID_API_KEY) {
+        try {
+          console.log('[Copywriter] [SECONDARY] Calling MiMo Prepaid...')
+          const response = await fetch(MIMO_PREPAID_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${MIMO_PREPAID_API_KEY}`,
+            },
+            body: JSON.stringify({
+              model: MIMO_PREPAID_MODEL,
+              messages: [
+                { role: 'system', content: 'You are an expert website copywriter who writes copy that matches specific visual design directions. You NEVER use generic corporate language. You write specific, concrete, human copy that references real facts — locations, numbers, names, processes. You match your tone to the visual mood: bold and authoritative for industrial sites, warm and inviting for hospitality, clean and professional for medical. Return structured markdown with ## section headings. No JSON. No code blocks. Just markdown.' },
+                { role: 'user', content: copywriterPrompt },
+              ],
+              temperature: 0.7,
+              max_tokens: 4000,
+            }),
+          })
+
+          if (response.ok) {
+            const data = await response.json()
+            const content = data.choices?.[0]?.message?.content || ''
+            
+            console.log(`[Copywriter] ✓ MiMo Prepaid succeeded - ${content.length} chars`)
+            
+            creativeCopy = parseStructuredMarkdown(content)
+            copywriterSuccess = true
+          } else {
+            console.warn('[Copywriter] MiMo Prepaid returned error:', response.status)
+          }
+        } catch (prepaidError) {
+          console.warn('[Copywriter] MiMo Prepaid failed:', prepaidError)
+        }
+      }
+      
+      // Tertiary: OpenRouter
+      if (!copywriterSuccess && process.env.OPENROUTER_API_KEY) {
+        try {
+          console.log('[Copywriter] [TERTIARY] Calling OpenRouter...')
+          const response = await fetch(FALLBACK_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+              'HTTP-Referer': 'https://sitegeist.com',
+              'X-Title': 'SiteSpire Website Builder',
+            },
+            body: JSON.stringify({
+              model: FALLBACK_MODEL,
+              messages: [
+                { role: 'system', content: 'You are an expert website copywriter who writes copy that matches specific visual design directions. You NEVER use generic corporate language. You write specific, concrete, human copy that references real facts — locations, numbers, names, processes. You match your tone to the visual mood: bold and authoritative for industrial sites, warm and inviting for hospitality, clean and professional for medical. Return structured markdown with ## section headings. No JSON. No code blocks. Just markdown.' },
+                { role: 'user', content: copywriterPrompt },
+              ],
+              temperature: 0.7,
+              max_tokens: 4000,
+            }),
+          })
+
+          if (response.ok) {
+            const data = await response.json()
+            const content = data.choices?.[0]?.message?.content || ''
+            
+            console.log(`[Copywriter] ✓ OpenRouter succeeded - ${content.length} chars`)
+            
+            creativeCopy = parseStructuredMarkdown(content)
+            copywriterSuccess = true
+          }
+        } catch (openrouterError) {
+          console.warn('[Copywriter] OpenRouter failed:', openrouterError)
+        }
+      }
     }
 
     // Fallback if AI fails
@@ -335,6 +441,32 @@ export async function POST(request: NextRequest) {
     const clientPath = path.join(WEBSITES_FOLDER, clientFolder)
     await fs.mkdir(clientPath, { recursive: true })
     await fs.mkdir(path.join(clientPath, 'data'), { recursive: true })
+
+    // ── Client-uploaded logo takes absolute precedence ─────────────────────
+    // uploaded > scraped > generated. Once set, downstream scrape/image steps
+    // must not overwrite brandAssets.logoUrl (guards in media-downloader + ai-engine).
+    const uploadedLogo = (body as any)?.uploadedLogo
+    if (uploadedLogo?.storedName) {
+      const stagedPath = path.join(process.cwd(), 'temp', 'uploaded-logos', path.basename(uploadedLogo.storedName))
+      try {
+        await fs.access(stagedPath)
+        siteConfig.brandAssets = siteConfig.brandAssets || {
+          brandColors: { primary: '#0ea5e9', secondary: '#6366f1', accent: '#f59e0b', bg: '#ffffff' },
+        }
+        const ext = path.extname(uploadedLogo.storedName).toLowerCase()
+        const siteLogoRel = `/uploads/logo${ext}`
+        const siteLogoAbs = path.join(clientPath, 'public', siteLogoRel.replace(/^\//, ''))
+        await fs.mkdir(path.dirname(siteLogoAbs), { recursive: true })
+        await fs.copyFile(stagedPath, siteLogoAbs)
+        siteConfig.brandAssets.logoUrl = siteLogoRel
+        siteConfig.brandAssets.logoSource = 'uploaded'
+        siteConfig.brandAssets.logoName = uploadedLogo.name || uploadedLogo.storedName
+        if (siteConfig.hero) siteConfig.hero.logoUrl = siteLogoRel
+        console.log(`[Builder] Using CLIENT-UPLOADED logo: ${siteConfig.brandAssets.logoName}`)
+      } catch (e) {
+        console.warn('[Builder] Uploaded logo not in staging — falling back to scrape/generate.', e)
+      }
+    }
 
     // Write all output files
     await fs.writeFile(path.join(clientPath, 'site-config.json'), JSON.stringify(siteConfig, null, 2), 'utf-8')
@@ -421,8 +553,8 @@ export async function POST(request: NextRequest) {
         const serviceImages = firstCategory.images.filter((img: any) => img.src)
         if (siteConfig.services) {
           for (let i = 0; i < siteConfig.services.length && i < serviceImages.length; i++) {
-            if (!siteConfig.services[i].imageUrl || siteConfig.services[i].imageUrl?.includes('logo')) {
-              siteConfig.services[i].imageUrl = serviceImages[i].src
+            if (!siteConfig.services[i].realImageUrl || siteConfig.services[i].realImageUrl?.includes('logo')) {
+              siteConfig.services[i].realImageUrl = serviceImages[i].src
             }
           }
         }

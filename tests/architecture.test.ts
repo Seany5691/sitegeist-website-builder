@@ -57,14 +57,15 @@ describe('Prompt Generation', () => {
     expect(prompt).toContain('useSiteData')
   })
 
-  it('should include dynamic import pattern in Rule 1D', () => {
+  it('should include static import pattern in Rule 1D', () => {
     const config = makeSiteConfig()
     const prompt = generateMiMoPrompt({ buildMode: 'TRIAL', siteConfig: config })
 
-    expect(prompt).toContain("const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })")
-    expect(prompt).toContain("const Services = dynamic(() => import('@/components/Services'), { ssr: false })")
-    expect(prompt).toContain("const Gallery = dynamic(() => import('@/components/Gallery'), { ssr: false })")
-    expect(prompt).toContain("const Footer = dynamic(() => import('@/components/Footer'), { ssr: false })")
+    expect(prompt).toContain("import Header from '@/components/Header'")
+    expect(prompt).toContain("import Footer from '@/components/Footer'")
+    expect(prompt).toContain("import SectionRenderer from '@/components/SectionRenderer'")
+    // Must NOT tell MiMo to use ssr:false dynamic imports (blank-page cause)
+    expect(prompt).not.toMatch(/GOOD:\s*const Hero = dynamic/)
   })
 
   it('should tell MiMo components are pre-built', () => {
@@ -437,7 +438,7 @@ describe('Boilerplate Generator', () => {
     const bakeryBoilerplate = generateBoilerplate(bakeryConfig, bakeryArchetype)
 
     expect(bakeryBoilerplate['app/layout.tsx']).toContain('Nunito')
-    expect(bakeryBoilerplate['app/layout.tsx']).toContain('Open_Sans')
+    expect(bakeryBoilerplate['app/layout.tsx']).toContain('Open Sans')
   })
 
   it('should use framer-motion 10.18.0', () => {
@@ -764,8 +765,8 @@ describe('Tammy Holliday Photography — Full Pipeline Test', () => {
     )
     const boilerplate = generateBoilerplate(tammyConfig, archetype)
 
-    // Photography archetype uses Playfair Display
-    expect(boilerplate['app/layout.tsx']).toContain('Playfair_Display')
+    // Photography archetype uses Playfair Display (CSS font variable)
+    expect(boilerplate['app/layout.tsx']).toContain('Playfair Display')
     expect(boilerplate['app/layout.tsx']).toContain('Inter')
 
     // Should have correct business name
@@ -850,7 +851,7 @@ describe('Dynamic Archetype Validation — All 9 Archetypes', () => {
       name: 'Health First Medical Clinic',
       industry: 'medical',
       expectedArchetype: 'medical',
-      expectedFont: 'Plus_Jakarta_Sans',
+      expectedFont: 'Plus Jakarta Sans',
       expectedTheme: 'light',
       services: [{ title: 'General Practice', description: 'Family healthcare' }],
     },
@@ -858,7 +859,7 @@ describe('Dynamic Archetype Validation — All 9 Archetypes', () => {
       name: 'The Italian Restaurant',
       industry: 'restaurant',
       expectedArchetype: 'restaurant',
-      expectedFont: 'Playfair_Display',
+      expectedFont: 'Playfair Display',
       expectedTheme: 'light',
       services: [{ title: 'Fine Dining', description: 'Authentic Italian cuisine' }],
     },
@@ -866,7 +867,7 @@ describe('Dynamic Archetype Validation — All 9 Archetypes', () => {
       name: 'Smith & Associates Law Firm',
       industry: 'legal',
       expectedArchetype: 'legal',
-      expectedFont: 'Playfair_Display',
+      expectedFont: 'Playfair Display',
       expectedTheme: 'dark',
       services: [{ title: 'Corporate Law', description: 'Business legal services' }],
     },
@@ -874,7 +875,7 @@ describe('Dynamic Archetype Validation — All 9 Archetypes', () => {
       name: 'Capture Moments Photography',
       industry: 'photography',
       expectedArchetype: 'photography',
-      expectedFont: 'Playfair_Display',
+      expectedFont: 'Playfair Display',
       expectedTheme: 'light',
       services: [{ title: 'Wedding Photography', description: 'Full-day coverage' }],
     },
@@ -890,7 +891,7 @@ describe('Dynamic Archetype Validation — All 9 Archetypes', () => {
       name: 'Prime Real Estate Agency',
       industry: 'realestate',
       expectedArchetype: 'realestate',
-      expectedFont: 'DM_Sans',
+      expectedFont: 'DM Sans',
       expectedTheme: 'light',
       services: [{ title: 'Property Sales', description: 'Residential and commercial' }],
     },

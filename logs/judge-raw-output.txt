@@ -1,0 +1,81 @@
+## SCORES
+visualHierarchy: 7
+whitespace: 7
+contrast: 5
+layoutCraft: 6
+states: 4
+consistency: 7
+responsive: 6
+a11y: 5
+imageQuality: 7
+imageAuthenticity: 3
+distinctiveness: 5
+brandFit: 7
+memorability: 6
+overall: 5.9
+
+## FEEDBACK
+The palette (butter cream / deep cocoa / gold) and the Playfair-style display serif are genuinely on-brand for an artisan bakery, and the repeated contact panel with the "TODAY" badge in the business-hours table is a genuinely premium detail. But the build currently ships with visible layout bugs that break the "R100,000" bar: the interior-page H1s are clipped by the top of the hero band on services, contact, about and portfolio; the hero cards on home are cut off mid-sentence ("our sp…"); and the "Ready to Order Your Custom Cake?" CTA band renders cream-on-cream and is effectively invisible on every page. Forms rely entirely on placeholder text plus native browser validation tooltips, which reads unfinished rather than professional.
+
+## PRIORITY FIXES
+1. [high] components/Hero.tsx (interior pages — services, contact, about, portfolio)
+ISSUE: The H1 ("What We Bake", "Let's Talk Cake", "Our Story", "Fresh From Our Ovens") is clipped by the top edge of the hero band and collides with the sticky header.
+CHANGE: Give the hero band `min-height: 320px` with `padding-top: 96px` and `overflow: visible`, and set the H1 to `clamp(2.5rem, 5vw, 4.5rem)` so it never exceeds the band at any viewport.
+
+2. [high] components/CtaBand.tsx
+ISSUE: "Ready to Order Your Custom Cake?" uses white/cream text on the cream page background — contrast is ~1.2:1 and the copy is unreadable on home, services and mobile.
+CHANGE: Fill the band with `#3B1A18` (cocoa) at 0.92 opacity over the ambient image, set the heading to `#FFFFFF` and subhead to `#F5E6C8`; verify 4.5:1 against the actual rendered backdrop.
+
+3. [high] components/HeroCards.tsx / home-hero.css
+ISSUE: The three hero service cards are clipped mid-sentence at the hero/section boundary on desktop ("our sp…") and overlap each other and the sticky Call Now bar on 390px.
+CHANGE: Remove the negative-margin overlap on mobile (stack cards with 24px gap below the hero), and on desktop either shorten the card copy to 2 lines with `line-clamp: 2` + "Read more" or expand the hero so the cards are fully contained.
+
+4. [high] components/ContactForm.tsx
+ISSUE: Inputs have no persistent labels (placeholder-only) and errors render as native browser tooltips ("Please fill out this field.") with only a black border — no error copy, no icon, no `aria-invalid`.
+CHANGE: Add always-visible labels above each field (`font-size: 14px; color: #6B4A3A`), and on invalid submit show `1.5px solid #B3261E` border, an inline error message in `#B3261E` with a warning icon, plus `aria-describedby` and `role="alert"`.
+
+5. [medium] app/globals.css — form placeholder contrast
+ISSUE: Placeholder text is light beige on cream (~2:1) so the form reads as empty and fails WCAG AA.
+CHANGE: Set `::placeholder { color: #8A6B4F; opacity: 1; }` and lighten input background to `#FFFFFF` with `1px solid #D9C7A7` for a clear field boundary.
+
+6. [medium] components/ServiceCard.tsx
+ISSUE: The yellow "Get a Custom Quote" pill sits on top of the image bottom-right corner and collides with the image edge; on mobile it overlaps the photo and pushes the number badge out of rhythm.
+CHANGE: Move the pill below the image inside the text column, aligned left with the H3 and "Get Started" button, or pin it consistently to the card's bottom-right corner with 24px inset.
+
+7. [medium] components/PortfolioGrid.tsx
+ISSUE: Masonry columns end unevenly (a single tall orphan in column 1) and gaps are inconsistent between the 4-column desktop and 2-column mobile layouts.
+CHANGE: Use CSS `grid-auto-rows: 8px` with a fixed row-span per image or `column-count` with uniform `gap: 24px`, and normalize all thumbnails to 4:5 crops.
+
+8. [low] components/LocationMap.tsx
+ISSUE: "Our Location" renders as a blank grey box on home and mobile — looks broken.
+CHANGE: Render a styled map embed or a fallback static image with address + "Get Directions" button in the same card treatment as the business-hours panel.
+
+## TARGET CHECKLIST
+- All H1s fully contained within their hero band at 390/768/1440 with no clipping
+- CTA band text passes 4.5:1 against its background
+- Form has persistent visible labels above every input (Name, Email, Phone, Message)
+- Form errors are custom-styled: red border + inline message + `aria-invalid` + `role="alert"`
+- Placeholder text passes 4.5:1 on the input background
+- Hero card copy is never truncated without a "…" / "Read more" affordance
+- "Get a Custom Quote" pill placement is identical on every service card
+- Portfolio grid gaps and crops are uniform across all three viewports
+- Map/location block renders content instead of an empty grey box
+- Focus-visible outline (2px, offset 2px) on all buttons, links and inputs
+- Icon-only buttons (menu, social, quote) carry `aria-label`
+- Tap targets on mobile are ≥ 44px (nav links, FAQ rows, phone number)
+
+## UNIQUENESS
+- Replace the generic yellow number circles with hand-drawn icing-swirl SVG numerals piped in gold — a small motif that could run through section labels too.
+- Add a "cake cross-section" section divider: an SVG silhouette of a layered cake slice that fills with colour as the user scrolls, used as the transition into the portfolio.
+- Give the "TODAY" business-hours row a subtle animated gradient (cream → gold) so the page feels alive in real time; it's the most distinctive element currently and deserves to be the hero of the contact block.
+- Turn the "Our Work" grid into a hover-reveal "menu card": each cake image dims and shows the flavour name in the display serif ("Black Forest · Belgian Chocolate"), matching the bakery-counter concept.
+- A vertical "recipe card" strip on the About page — a torn-paper edge element with the grandmother's-notebook story typeset as handwriting, honouring the "family recipes" brand line.
+- Hero could cycle the three service images with a soft cross-fade behind the display headline instead of the static chocolate-texture backdrop, immediately proving the product.
+
+## STOCK IMAGE NOTES
+- Home hero backdrop and interior-page hero bands use a dark chocolate/batter texture stock image — replace with a real wide shot of the Mamma & Mia counter or a signature cake being iced, shot at the same warm cream-toned lighting as the rest of the site.
+- The portfolio mixes styles: a moody black-background cupcake, a caramel-pour shot, and a bright pastel studio cake don't read as one bakery. Replace with a consistent set of real product photos on a single neutral surface with the same warm light.
+- "Daily Bakery Counter" and the dark bakery-shelf images are generic stock shopfronts — use real photos of the North West counter and display case.
+- The cake with "50 & Fabulous" topper and the "Happy Birthday" slate are the only images that feel like real commissions; keep this direction and shoot all portfolio items as real customer orders with the same framing.
+- Testimonial avatars use letter monograms (S, D, S) — fine as placeholders, but swap for real customer initials/photos once consent is obtained.
+- The marble-and-gold "Custom Cake Consultation" image is stock and over-styled versus the brand; replace with a photo of the actual consultation sketchbook or a work-in-progress cake on the bench.

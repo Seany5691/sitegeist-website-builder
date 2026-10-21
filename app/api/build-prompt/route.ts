@@ -5,6 +5,20 @@ import { generateBuildInstructions } from '@/lib/prompt-builder'
 
 const WEBSITES_FOLDER = 'C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites'
 
+/**
+ * Debug Endpoint: Generate MiMo Prompt Only
+ * 
+ * Utility endpoint for testing and debugging. Generates the MiMo prompt
+ * without actually building the website. Useful for:
+ * - Testing prompt generation logic
+ * - Debugging Phase 9 helper functions
+ * - Verifying site-config.json structure
+ * 
+ * This is NOT part of the production build pipeline.
+ * 
+ * @param req - Contains siteConfig and buildMode
+ * @returns Generated .mimo-prompt.txt content
+ */
 export async function POST(req: NextRequest) {
   try {
     const { siteConfig, buildMode, websitesFolder } = await req.json()

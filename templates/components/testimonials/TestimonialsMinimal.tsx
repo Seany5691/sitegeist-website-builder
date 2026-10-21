@@ -17,7 +17,7 @@ export default function TestimonialsMinimal() {
     <section id="testimonials" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center mb-12">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>{sectionSubtitle}</span>
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>{sectionSubtitle}</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
             style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-text)', letterSpacing: '-0.025em' }}>
             {sectionTitle}
@@ -28,7 +28,7 @@ export default function TestimonialsMinimal() {
           {testimonials.map((t: any, i: number) => (
             <AnimateOnScroll key={i} delay={i * 100}>
               <div className="flex gap-4">
-                <div className="w-1 rounded-full flex-shrink-0" style={{ background: 'var(--color-accent)' }} />
+                <div className="w-1 rounded-full flex-shrink-0" style={{ background: 'var(--color-primary-cta)' }} />
                 <div>
                   <p className="text-lg leading-relaxed mb-3 italic" style={{ color: 'var(--color-text)' }}>
                     &ldquo;{t.text}&rdquo;

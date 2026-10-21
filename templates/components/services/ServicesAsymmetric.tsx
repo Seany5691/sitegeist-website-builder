@@ -16,8 +16,8 @@ export default function ServicesAsymmetric() {
   return (
     <section id="services" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimateOnScroll className="text-center mb-16">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>
+        <AnimateOnScroll className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>
             What We Offer
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
@@ -37,26 +37,31 @@ export default function ServicesAsymmetric() {
 
             return (
               <AnimateOnScroll key={i}>
-                <div className={`grid lg:grid-cols-2 gap-8 lg:gap-16 items-center ${isReversed ? 'lg:direction-rtl' : ''}`}>
-                  {/* Image */}
-                  <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden img-treated ${isReversed ? 'lg:order-2' : ''}`}>
+                <div className={`grid lg:grid-cols-2 gap-8 lg:gap-16 items-center bg-white rounded-3xl p-8 lg:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)] transition-all duration-500 relative overflow-hidden group ${isReversed ? 'lg:direction-rtl' : ''}`}>
+                  {/* Decorative accent blob */}
+                  <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-5 group-hover:opacity-10 transition-opacity duration-500"
+                       style={{ background: 'var(--color-primary-cta)' }} />
+                  
+                  {/* Image with brand-tinted frame */}
+                  <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden border-4 shadow-lg ${isReversed ? 'lg:order-2' : ''}`}
+                       style={{ borderColor: 'color-mix(in srgb, var(--color-primary) 30%, transparent)' }}>
                     {service.imageUrl ? (
-                      <img src={service.imageUrl} alt={service.title} className="w-full h-full object-cover" />
+                      <img src={service.imageUrl} alt={service.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                     ) : (
                       <div className="w-full h-full" style={{
                         background: `linear-gradient(${isReversed ? '225deg' : '135deg'}, color-mix(in srgb, var(--color-primary) 20%, var(--color-bg)), color-mix(in srgb, var(--color-accent) 15%, var(--color-bg)))`
                       }} />
                     )}
                     {/* Service number badge */}
-                    <div className="absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
-                      style={{ background: 'var(--color-accent)', color: 'var(--color-primary)' }}>
+                    <div className="absolute top-4 left-4 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg"
+                      style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white' }}>
                       {String(i + 1).padStart(2, '0')}
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className={isReversed ? 'lg:order-1' : ''}>
-                    <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>
+                  <div className={`relative z-10 ${isReversed ? 'lg:order-1' : ''}`}>
+                    <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>
                       Service {String(i + 1).padStart(2, '0')}
                     </span>
                     <h3 className="text-2xl sm:text-3xl font-bold mt-2 mb-4"
@@ -67,8 +72,8 @@ export default function ServicesAsymmetric() {
                       {service.description}
                     </p>
                     {service.priceTag && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
-                        style={{ background: 'color-mix(in srgb, var(--color-accent) 15%, transparent)', color: 'var(--color-accent)' }}>
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold shadow-lg"
+                        style={{ background: 'var(--color-primary-cta)', color: 'white' }}>
                         {service.priceTag}
                       </div>
                     )}

@@ -1,14 +1,18 @@
 {
   "ruleBased": {
-    "overall": 7,
+    "overall": 2,
     "accessibility": 4,
-    "contentQuality": 10,
-    "imageQuality": 9,
-    "structureScore": 4,
-    "issues": [],
+    "contentQuality": 0,
+    "imageQuality": 5,
+    "structureScore": 0,
+    "issues": [
+      "Could not read site-config.json for content scoring",
+      "Could not read image-map.json for image scoring"
+    ],
     "recommendations": [
-      "Consider adding more images for visual richness",
       "Fix accessibility issues: add alt text, ARIA labels, and proper form labels",
+      "Improve content quality: fill in all required fields, remove placeholders",
+      "Add more images and ensure all categories have thumbnails",
       "Fix structural issues: ensure all required files and pages exist"
     ]
   },
@@ -22,9 +26,9 @@
       "uniqueness": 0,
       "overall": 0
     },
-    "feedback": "LLM judge call failed — skipping visual scoring",
+    "feedback": "Could not capture screenshots — Playwright may not be available",
     "recommendation": "pass"
   },
-  "timestamp": "2026-09-02T17:13:24.171Z",
+  "timestamp": "2026-09-18T15:49:02.044Z",
   "buildFolder": "C:\\Users\\seany\\OneDrive\\Documents\\Coding Projects\\sitegeist_ecosystem\\Websites\\mamma_mia_cakes_and_catering"
 }

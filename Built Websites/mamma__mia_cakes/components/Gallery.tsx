@@ -2,31 +2,30 @@
 
 import { useSiteData } from '@/lib/use-site-data'
 import { AnimateOnScroll } from '@/components/AnimateOnScroll'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+import Lightbox from './_Lightbox'
 
-export default function GalleryCarousel() {
+export default function GalleryFilterable() {
   const { imageMap, config } = useSiteData()
   const pc = config?.pageContent || {}
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const [activeCategory, setActiveCategory] = useState('All')
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const sectionTitle = pc.galleryTitle || 'Our Work'
   const sectionSubtitle = pc.gallerySubtitle || ''
 
   const categories = imageMap?.categories || {}
+  const categoryNames = Object.keys(categories)
   const allImages: { url: string; category: string }[] = []
-  Object.entries(categories).forEach(([catName, catData]: [string, any]) => {
-    (catData.images || []).forEach((img: any) => {
+  categoryNames.forEach(catName => {
+    (categories[catName].images || []).forEach((img: any) => {
       allImages.push({ url: typeof img === 'string' ? img : img.src || img.imageUrl || img, category: catName })
     })
   })
 
-  if (allImages.length === 0) return null
+  const filtered = activeCategory === 'All' ? allImages : allImages.filter(img => img.category === activeCategory)
 
-  const scroll = (dir: number) => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: dir * 320, behavior: 'smooth' })
-    }
-  }
+  if (allImages.length === 0) return null
 
   return (
     <section id="gallery" className="section-padding" style={{ background: 'var(--color-bg)' }}>
@@ -46,36 +45,40 @@ export default function GalleryCarousel() {
           )}
         </AnimateOnScroll>
 
-        <AnimateOnScroll>
-          <div className="relative">
-            <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {allImages.map((img, i) => (
-                <div key={i} className="flex-shrink-0 w-72 sm:w-80 snap-start group">
-                  <div className="relative aspect-[3/4] rounded-xl overflow-hidden img-treated">
-                    <img src={img.url} alt={img.category} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                      <span className="text-white font-medium">{img.category}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Nav buttons */}
-            <button onClick={() => scroll(-1)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg z-10 transition-all duration-200 hover:scale-110"
-              style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+        {/* Filter tabs */}
+        <AnimateOnScroll delay={100} className="flex flex-wrap justify-center gap-2 mb-10">
+          {['All', ...categoryNames].map(cat => (
+            <button key={cat} onClick={() => setActiveCategory(cat)}
+              className="px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
+              style={{
+                background: activeCategory === cat ? 'var(--color-primary)' : 'color-mix(in srgb, var(--color-text) 5%, transparent)',
+                color: activeCategory === cat ? '#fff' : 'var(--color-text)',
+                border: `1px solid ${activeCategory === cat ? 'var(--color-primary)' : 'color-mix(in srgb, var(--color-text) 10%, transparent)'}`,
+              }}>
+              {cat}
             </button>
-            <button onClick={() => scroll(1)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg z-10 transition-all duration-200 hover:scale-110"
-              style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-            </button>
-          </div>
+          ))}
         </AnimateOnScroll>
+
+        {/* Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filtered.map((img, i) => (
+            <div key={`${img.url}-${i}`}
+              className="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg img-treated"
+              onClick={() => setLightboxIndex(i)}>
+              <img src={img.url} alt={img.category} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span className="text-white text-sm font-medium">{img.category}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && (
+        <Lightbox images={filtered} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onNavigate={setLightboxIndex} />
+      )}
     </section>
   )
 }

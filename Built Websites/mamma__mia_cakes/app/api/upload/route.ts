@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
+import { protectRoute } from '@/lib/dashboard-middleware'
 
 export async function POST(request: NextRequest) {
+  // Verify authentication and origin
+  const sessionOrError = await protectRoute(request)
+  if (sessionOrError instanceof NextResponse) {
+    return sessionOrError // Return error response
+  }
+
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File

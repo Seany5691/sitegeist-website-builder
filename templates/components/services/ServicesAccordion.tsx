@@ -18,7 +18,7 @@ export default function ServicesAccordion() {
     <section id="services" className="section-padding ambient-glow" style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-bg))' }}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center mb-12">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-accent)' }}>
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--safe-eyebrow)' }}>
             What We Offer
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4"
@@ -41,7 +41,7 @@ export default function ServicesAccordion() {
                   className="w-full flex items-center justify-between px-6 py-5 text-left transition-colors duration-200"
                   style={{ background: openIndex === i ? 'color-mix(in srgb, var(--color-primary) 5%, var(--color-bg))' : 'var(--color-bg)' }}>
                   <div className="flex items-center gap-4">
-                    <span className="text-sm font-bold" style={{ color: 'var(--color-accent)' }}>
+                    <span className="text-sm font-bold" style={{ color: 'var(--safe-eyebrow)' }}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span className="text-lg font-bold" style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
@@ -59,7 +59,7 @@ export default function ServicesAccordion() {
                   <div ref={contentRef} className="px-6 pb-5" style={{ color: 'var(--color-muted)' }}>
                     <p className="leading-relaxed">{service.description}</p>
                     {service.priceTag && (
-                      <div className="mt-3 text-sm font-semibold" style={{ color: 'var(--color-accent)' }}>
+                      <div className="mt-3 text-sm font-semibold" style={{ color: 'var(--safe-eyebrow)' }}>
                         {service.priceTag}
                       </div>
                     )}
