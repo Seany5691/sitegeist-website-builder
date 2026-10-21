@@ -228,9 +228,7 @@ const CP_HTML_TESTIMONIALS = `<div class="section-header">
               <button class="reset-btn" onclick="resetSection('testimonials')">
                 <i class="fas fa-undo"></i> Reset to Default
               </button>
-              <button class="primary-btn" onclick="openTestimonialEditor()">
-                <i class="fas fa-plus"></i><span>Add Testimonial</span>
-              </button>
+              
             </div>
           </div>
           <div class="content-page-card" style="margin-bottom:1.25rem;">
@@ -334,9 +332,7 @@ const CP_HTML_FAQ = `<div class="section-header">
               <button class="reset-btn" onclick="resetSection('faq')">
                 <i class="fas fa-undo"></i> Reset to Default
               </button>
-              <button class="primary-btn" onclick="openFaqEditor()">
-                <i class="fas fa-plus"></i><span>Add FAQ Item</span>
-              </button>
+              
             </div>
           </div>
           <div class="content-page-card" style="margin-bottom:1.25rem;">
@@ -816,6 +812,10 @@ function cpSetSectionMode(pageId, sectionId, mode) {
 // ── Editor rendering (NO DOM borrowing) ────────────────────────────────────
 
 function cpRenderEditorHtml(sectionId) {
+  // Modal-based list editors (Phase 3)
+  if (typeof CP_LIST_SECTIONS !== 'undefined' && CP_LIST_SECTIONS[sectionId]) {
+    return cpRenderListEditor(sectionId)
+  }
   // Type A: schema-driven
   if (typeof isSectionEditor === 'function' && isSectionEditor(sectionId)) {
     return renderFeatureCardBody(sectionId)
@@ -1209,6 +1209,7 @@ function renderCPSectionList() {
           })
           // Post-init (hydrate + load)
           cpPostInitEditor(id)
+          if (typeof CP_LIST_SECTIONS !== 'undefined' && CP_LIST_SECTIONS[id]) { cpWireListDrag(id) }
         }
       }
     })
@@ -1724,6 +1725,287 @@ function folderDetailSetThumb() {
   saveImageMap().then(function() {
     if (typeof loadGalleryFolders === 'function') loadGalleryFolders()
     showToast('Thumbnail set!')
+  })
+}
+
+
+// ── CP_LIST_SECTIONS: config for modal-based list editors ────────────────
+const CP_LIST_SECTIONS = {
+  statsBar: {
+    addLabel: 'Add Stat',
+    itemTitle: (it) => (it.value || '') + (it.label ? ' — ' + it.label : ''),
+    itemPreview: (it) => it.label || '',
+    headingFields: ['statsTitle', 'statsSubtitle'],
+    listKey: 'stats',
+    modalTitle: (idx) => idx >= 0 ? 'Edit Stat' : 'Add Stat',
+  },
+  process: {
+    addLabel: 'Add Step',
+    itemTitle: (it) => (it.step ? it.step + '. ' : '') + (it.title || ''),
+    itemPreview: (it) => it.description || '',
+    headingFields: ['processLayout', 'processTitle', 'processSubtitle'],
+    listKey: 'process',
+    modalTitle: (idx) => idx >= 0 ? 'Edit Step' : 'Add Step',
+  },
+  latestWork: {
+    addLabel: 'Add Case Study',
+    itemTitle: (it) => it.title || '',
+    itemPreview: (it) => it.result || it.summary || '',
+    headingFields: ['caseStudiesTitle', 'caseStudiesSubtitle'],
+    listKey: 'caseStudies',
+    modalTitle: (idx) => idx >= 0 ? 'Edit Case Study' : 'Add Case Study',
+  },
+  partners: {
+    addLabel: 'Add Partner',
+    itemTitle: (it) => it.name || '',
+    itemPreview: (it) => it.url || '',
+    headingFields: ['title'],
+    listKey: 'items',
+    modalTitle: (idx) => idx >= 0 ? 'Edit Partner' : 'Add Partner',
+  },
+  video: {
+    addLabel: 'Add Video',
+    itemTitle: (it) => (it.url || '').slice(0, 60) + ((it.url || '').length > 60 ? '…' : ''),
+    itemPreview: () => '',
+    headingFields: [],
+    listKey: 'videos',
+    modalTitle: (idx) => idx >= 0 ? 'Edit Video' : 'Add Video',
+  },
+  awards: {
+    addLabel: 'Add Award',
+    itemTitle: (it) => it.title || '',
+    itemPreview: (it) => (it.issuer || '') + (it.year ? ' · ' + it.year : ''),
+    headingFields: ['awardsTitle', 'awardsSubtitle'],
+    listKey: 'awards',
+    modalTitle: (idx) => idx >= 0 ? 'Edit Award' : 'Add Award',
+  },
+  instagram: {
+    addLabel: 'Add Photo',
+    itemTitle: (it) => (it.url || '').slice(0, 50) + ((it.url || '').length > 50 ? '…' : ''),
+    itemPreview: () => '',
+    headingFields: ['socialTitle', 'socialSubtitle'],
+    listKey: 'instagramFeed',
+    modalTitle: () => 'Add Photo',
+    itemShape: 'string',
+  },
+}
+
+var cpModalSectionId = null
+var cpModalEditIndex = -1
+
+function cpRenderListEditor(sectionId) {
+  const cfg = CP_LIST_SECTIONS[sectionId]
+  if (!cfg) return null
+  const def = (typeof SECTION_FIELDS !== 'undefined' && SECTION_FIELDS[sectionId]) || {}
+  const view = (typeof ensureSectionView === 'function') ? ensureSectionView(sectionId) : {}
+  const items = Array.isArray(view[cfg.listKey]) ? view[cfg.listKey] : []
+
+  // Heading fields (non-list fields)
+  let headingHtml = ''
+  const headingDefs = (def.fields || []).filter(f => cfg.headingFields.includes(f.key) && f.type !== 'list')
+  if (headingDefs.length > 0) {
+    headingHtml = '<div class="editor-card" style="margin-bottom:12px">' +
+      headingDefs.map(f => {
+        if (typeof renderFeatureField === 'function') {
+          return renderFeatureField(sectionId, f, view[f.key])
+        }
+        return '<div class="editor-field"><label>' + (f.label || f.key) + '</label><input type="text" data-feature-field="' + sectionId + '" data-key="' + f.key + '" value="' + (view[f.key] || '') + '"></div>'
+      }).join('') +
+      '</div>'
+  }
+
+  // Item list
+  let listHtml = '<div class="cp-item-list" id="cpList_' + sectionId + '">'
+  if (items.length === 0) {
+    listHtml += '<p class="help-text" style="color:#64748b;text-align:center;padding:20px">No items yet. Click "' + cfg.addLabel + '" to create one.</p>'
+  } else {
+    items.forEach((item, i) => {
+      const title = cfg.itemTitle(item) || 'Untitled'
+      const preview = cfg.itemPreview(item)
+      const thumb = item.image || item.logoUrl || item.url && item.url.match(/^https?:\/\//) ? (item.image || item.logoUrl || '') : ''
+      listHtml += '<div class="cp-item-card" data-index="' + i + '">' +
+        '<div class="cp-drag" draggable="true" title="Drag to reorder">⠿</div>' +
+        (thumb ? '<img src="' + thumb + '" class="cp-item-thumb" alt="">' : '<div class="cp-item-thumb-placeholder"><i class="fas fa-grip-vertical"></i></div>') +
+        '<div class="cp-item-info">' +
+        '<div class="cp-item-title">' + title + '</div>' +
+        (preview ? '<div class="cp-item-preview">' + preview + '</div>' : '') +
+        '</div>' +
+        '<div class="cp-item-actions">' +
+        '<button type="button" class="cp-edit-btn-sm" onclick="cpOpenItemModal(\'' + sectionId + '\',' + i + ')"><i class="fas fa-pen"></i></button>' +
+        '<button type="button" class="cp-delete-btn-sm" onclick="cpDeleteItem(\'' + sectionId + '\',' + i + ')"><i class="fas fa-trash"></i></button>' +
+        '</div>' +
+        '</div>'
+    })
+  }
+  listHtml += '</div>'
+
+  // Add button
+  const addHtml = '<button type="button" class="primary-btn" onclick="cpOpenItemModal(\'' + sectionId + '\',-1)" style="width:100%;margin-top:12px"><i class="fas fa-plus"></i> ' + cfg.addLabel + '</button>'
+
+  return headingHtml + listHtml + addHtml
+}
+
+function cpOpenItemModal(sectionId, editIndex) {
+  cpModalSectionId = sectionId
+  cpModalEditIndex = editIndex
+  const cfg = CP_LIST_SECTIONS[sectionId]
+  const def = (typeof SECTION_FIELDS !== 'undefined' && SECTION_FIELDS[sectionId]) || {}
+  const view = (typeof ensureSectionView === 'function') ? ensureSectionView(sectionId) : {}
+  const listKey = cfg.listKey
+  const items = Array.isArray(view[listKey]) ? view[listKey] : []
+  const item = editIndex >= 0 ? items[editIndex] : null
+
+  // Build fields from SECTION_FIELDS list definition
+  const listField = (def.fields || []).find(f => f.key === listKey)
+  const itemFields = (listField && listField.itemFields) || []
+
+  let fieldsHtml = itemFields.map(f => {
+    const val = item ? (item[f.key] != null ? item[f.key] : '') : (f.default != null ? f.default : '')
+    if (typeof renderFeatureField === 'function') {
+      // Use renderFeatureField but with cpModal_ prefixed data attrs so we can read them
+      let html = renderFeatureField(sectionId, f, val)
+      // Replace data-feature-field with data-cp-field for modal context
+      html = html.replace(/data-feature-field="[^"]*"/g, 'data-cp-field="1"')
+      return html
+    }
+    return '<div class="editor-field"><label>' + (f.label || f.key) + '</label><input type="text" data-cp-field="1" data-key="' + f.key + '" value="' + (val || '') + '"></div>'
+  }).join('')
+
+  // Create or reuse modal
+  var modal = document.getElementById('cpItemModal')
+  if (!modal) {
+    modal = document.createElement('div')
+    modal.id = 'cpItemModal'
+    modal.className = 'modal'
+    document.body.appendChild(modal)
+  }
+  modal.innerHTML =
+    '<div class="modal-overlay" onclick="cpCloseItemModal()"></div>' +
+    '<div class="modal-content" style="max-width:520px;max-height:85vh;overflow-y:auto;">' +
+    '<div class="modal-header"><h3>' + cfg.modalTitle(editIndex) + '</h3>' +
+    '<button class="modal-close" onclick="cpCloseItemModal()"><i class="fas fa-times"></i></button></div>' +
+    '<div class="modal-body">' + fieldsHtml + '</div>' +
+    '<div class="modal-footer">' +
+    '<button class="secondary-btn" onclick="cpCloseItemModal()">Cancel</button>' +
+    '<button class="primary-btn" onclick="cpSaveItemModal()"><i class="fas fa-save"></i> Save</button>' +
+    '</div></div></div>'
+  modal.classList.remove('hidden')
+}
+
+function cpCloseItemModal() {
+  var modal = document.getElementById('cpItemModal')
+  if (modal) modal.classList.add('hidden')
+  cpModalSectionId = null
+  cpModalEditIndex = -1
+}
+
+function cpSaveItemModal() {
+  if (!cpModalSectionId) return
+  const cfg = CP_LIST_SECTIONS[cpModalSectionId]
+  const def = (typeof SECTION_FIELDS !== 'undefined' && SECTION_FIELDS[cpModalSectionId]) || {}
+  const view = (typeof ensureSectionView === 'function') ? ensureSectionView(cpModalSectionId) : {}
+  const listKey = cfg.listKey
+  const listField = (def.fields || []).find(f => f.key === listKey)
+  const itemFields = (listField && listField.itemFields) || []
+
+  // Read values from modal
+  const item = {}
+  itemFields.forEach(f => {
+    const inputs = document.querySelectorAll('#cpItemModal [data-cp-field][data-key="' + f.key + '"]')
+    if (inputs.length > 0) {
+      const el = inputs[0]
+      if (el.type === 'checkbox') item[f.key] = !!el.checked
+      else item[f.key] = el.value
+    }
+  })
+
+  if (!Array.isArray(view[listKey])) view[listKey] = []
+  if (cpModalEditIndex >= 0) {
+    view[listKey][cpModalEditIndex] = item
+  } else {
+    view[listKey].push(item)
+  }
+
+  cpCloseItemModal()
+  if (typeof markDirty === 'function') markDirty()
+  // Re-render the list
+  const listEl = document.getElementById('cpList_' + cpModalSectionId)
+  if (listEl) {
+    // Re-render just the editor content
+    const section = cpModalSectionId
+    cpModalSectionId = null // prevent recursion
+    const html = cpRenderListEditor(section)
+    const accBody = document.querySelector('.cp-card[data-id="' + section + '"] .cp-accordion-body')
+    if (accBody && html) {
+      // Find the save bar and keep it
+      const saveBar = accBody.querySelector('.cp-editor-save')
+      accBody.innerHTML = html
+      if (saveBar) accBody.appendChild(saveBar)
+    }
+    // Re-wire drag handles
+    cpWireListDrag(section)
+  }
+}
+
+function cpDeleteItem(sectionId, index) {
+  const cfg = CP_LIST_SECTIONS[sectionId]
+  if (!cfg) return
+  if (typeof showConfirm === 'function') {
+    showConfirm('Delete this item?', 'Delete').then(ok => {
+      if (!ok) return
+      const view = (typeof ensureSectionView === 'function') ? ensureSectionView(sectionId) : {}
+      if (Array.isArray(view[cfg.listKey])) {
+        view[cfg.listKey].splice(index, 1)
+      }
+      if (typeof markDirty === 'function') markDirty()
+      // Re-render
+      const html = cpRenderListEditor(sectionId)
+      const accBody = document.querySelector('.cp-card[data-id="' + sectionId + '"] .cp-accordion-body')
+      if (accBody && html) {
+        const saveBar = accBody.querySelector('.cp-editor-save')
+        accBody.innerHTML = html
+        if (saveBar) accBody.appendChild(saveBar)
+      }
+      cpWireListDrag(sectionId)
+    })
+  }
+}
+
+function cpWireListDrag(sectionId) {
+  const cfg = CP_LIST_SECTIONS[sectionId]
+  if (!cfg) return
+  const handles = document.querySelectorAll('#cpList_' + sectionId + ' .cp-drag[draggable]')
+  handles.forEach(handle => {
+    const row = handle.closest('.cp-item-card')
+    handle.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', row.dataset.index)
+      row.classList.add('dragging')
+    })
+    handle.addEventListener('dragend', () => row.classList.remove('dragging'))
+    row.addEventListener('dragover', (e) => { e.preventDefault(); row.classList.add('drag-over') })
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'))
+    row.addEventListener('drop', (e) => {
+      e.preventDefault()
+      row.classList.remove('drag-over')
+      const from = parseInt(e.dataTransfer.getData('text/plain'))
+      const to = parseInt(row.dataset.index)
+      if (from === to) return
+      const view = (typeof ensureSectionView === 'function') ? ensureSectionView(sectionId) : {}
+      if (Array.isArray(view[cfg.listKey])) {
+        const moved = view[cfg.listKey].splice(from, 1)[0]
+        view[cfg.listKey].splice(to, 0, moved)
+      }
+      if (typeof markDirty === 'function') markDirty()
+      // Re-render
+      const html = cpRenderListEditor(sectionId)
+      const accBody = document.querySelector('.cp-card[data-id="' + sectionId + '"] .cp-accordion-body')
+      if (accBody && html) {
+        const saveBar = accBody.querySelector('.cp-editor-save')
+        accBody.innerHTML = html
+        if (saveBar) accBody.appendChild(saveBar)
+      }
+      cpWireListDrag(sectionId)
+    })
   })
 }
 

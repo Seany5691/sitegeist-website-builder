@@ -572,3 +572,73 @@
 #cpSections { padding-bottom: 80px; }
 .cp-accordion-body { padding-bottom: 60px; }
 /* Floating save clearance */
+
+/* ── CP Item List (modal-based editors) ───────────────────── */
+.cp-item-list { display: flex; flex-direction: column; gap: 8px; }
+.cp-item-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+.cp-item-card:hover { border-color: rgba(99,102,241,0.3); }
+.cp-item-card.dragging { opacity: 0.5; }
+.cp-item-card.drag-over { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.3); }
+.cp-item-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.cp-item-thumb-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  flex-shrink: 0;
+}
+.cp-item-info { flex: 1; min-width: 0; }
+.cp-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cp-item-preview {
+  font-size: 11px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cp-item-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.cp-edit-btn-sm, .cp-delete-btn-sm {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+.cp-edit-btn-sm:hover { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+.cp-delete-btn-sm:hover { background: rgba(239,68,68,0.15); color: #f87171; }
