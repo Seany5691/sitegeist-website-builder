@@ -642,3 +642,75 @@
 }
 .cp-edit-btn-sm:hover { background: rgba(99,102,241,0.15); color: #a5b4fc; }
 .cp-delete-btn-sm:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+
+/* ── Phase 5: UI/UX Polish ────────────────────────────────── */
+/* Modal consistency */
+.modal-content { border-radius: 16px; }
+.modal-header { padding: 20px 24px 0; }
+.modal-header h3 { font-size: 18px; font-weight: 600; color: #e2e8f0; margin: 0; }
+.modal-body { padding: 20px 24px; }
+.modal-footer {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* List card consistency */
+.cp-item-card { min-height: 56px; }
+
+/* Editor field consistency */
+.editor-field { margin-bottom: 14px; }
+.editor-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 5px;
+}
+.editor-field input,
+.editor-field textarea,
+.editor-field select {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #e2e8f0;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+.editor-field input:focus,
+.editor-field textarea:focus,
+.editor-field select:focus {
+  outline: none;
+  border-color: rgba(99,102,241,0.5);
+}
+
+/* Image upload preview */
+.feature-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.feature-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Heading fields card at top of accordion */
+.cp-accordion-body > .editor-card:first-child {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 16px;
+}
